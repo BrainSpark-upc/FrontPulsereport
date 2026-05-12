@@ -1,0 +1,27 @@
+<div class="view-container">
+  <div class="page-hero"><div><span class="eyebrow">{{ 'reports.eyebrow' | translate }}</span><h2>{{ 'reports.title' | translate }}</h2><p>{{ 'reports.subtitle' | translate }}</p></div>@if (iamStore.canGenerateReports()) { <button class="btn-primary" (click)="showForm.set(true)">{{ 'reports.generate' | translate }}</button> }</div>
+  @if (showForm()) {
+    <div class="card form-card"><div class="form-title"><h3>{{ 'reports.formTitle' | translate }}</h3><p>{{ 'reports.formSubtitle' | translate }}</p></div><form class="grid-form" (ngSubmit)="save()">
+      <label class="form-field"><span>{{ 'reports.type' | translate }}</span><select name="type" [(ngModel)]="form.type">@for (t of types; track t) { <option [value]="t">{{ t }}</option> }</select></label>
+      <label class="form-field span-2"><span>{{ 'reports.titleField' | translate }}</span><input name="title" [(ngModel)]="form.title" placeholder="Ej. Resumen clínico del turno mañana" required /></label>
+      <label class="form-field"><span>{{ 'reports.startDate' | translate }}</span><input name="startDate" [(ngModel)]="form.startDate" type="date" required /></label>
+      <label class="form-field"><span>{{ 'reports.endDate' | translate }}</span><input name="endDate" [(ngModel)]="form.endDate" type="date" required /></label>
+      <div class="form-help">{{ 'reports.help' | translate }}</div>
+      <div class="form-actions"><button class="btn-secondary" type="button" (click)="showForm.set(false)">{{ 'common.cancel' | translate }}</button><button class="btn-primary" type="submit">{{ 'reports.generateTransaction' | translate }}</button></div>
+    </form></div>
+  }
+  <div class="reports-grid">
+    @for (r of store.reports(); track r.id) {
+      <div class="report-card">
+        <div class="report-header"><span class="type-badge">{{ r.type }}</span><span class="status-tag" [class]="'st-' + r.status">{{ r.status }}</span></div>
+        <h3>{{ r.title }}</h3>
+        <p class="muted">{{ 'reports.generatedBy' | translate }} {{ r.generatedBy }} · {{ r.createdAt | date:'dd/MM/yyyy h:mm a' }}</p>
+        @if (r.summary) {
+          <div class="summary-grid"><div><strong>{{ r.summary.patients }}</strong><span>{{ 'common.patients' | translate }}</span></div><div><strong>{{ r.summary.vitalSigns }}</strong><span>{{ 'reports.vitals' | translate }}</span></div><div><strong>{{ r.summary.clinicalEvents }}</strong><span>{{ 'events.title' | translate }}</span></div><div><strong>{{ r.summary.sbarTransfers }}</strong><span>SBAR</span></div><div><strong>{{ r.summary.activeAlerts }}</strong><span>{{ 'common.alerts' | translate }}</span></div><div><strong>{{ r.summary.auditLogs }}</strong><span>{{ 'common.audit' | translate }}</span></div></div>
+        }
+        <div class="conclusion"><strong>{{ 'reports.conclusion' | translate }}</strong> {{ r.clinicalConclusion || ('reports.noConclusion' | translate) }}</div>
+        <button class="btn-sm" (click)="download(r.title)">{{ 'reports.viewDetail' | translate }}</button>
+      </div>
+    } @empty { <div class="card empty-state">{{ 'reports.empty' | translate }}</div> }
+  </div>
+</div>
