@@ -1,0 +1,70 @@
+<div class="view-container">
+  <div class="page-hero">
+    <div>
+      <span class="eyebrow">{{ 'patients.eyebrow' | translate }}</span>
+      <h2>{{ 'patients.title' | translate }}</h2>
+      <p>{{ 'patients.subtitle' | translate }}</p>
+    </div>
+    <button class="btn-primary" (click)="showForm.set(true)">{{ 'patients.new' | translate }}</button>
+  </div>
+
+  @if (showForm()) {
+    <div class="card form-card">
+      <div class="form-title">
+        <h3>{{ 'patients.new' | translate }}</h3>
+        <p>{{ 'patients.form.subtitle' | translate }}</p>
+      </div>
+      @if (errorMessage()) { <div class="form-error">{{ errorMessage() }}</div> }
+      <form class="grid-form" (ngSubmit)="savePatient()">
+        <label class="form-field"><span>{{ 'patients.firstNames' | translate }}</span><input name="firstName" [(ngModel)]="form.firstName" placeholder="Ej. Carlos" required /></label>
+        <label class="form-field"><span>{{ 'patients.lastNames' | translate }}</span><input name="lastName" [(ngModel)]="form.lastName" placeholder="Ej. Mendoza" required /></label>
+        <label class="form-field"><span>{{ 'patients.document' | translate }}</span><input name="documentNumber" [(ngModel)]="form.documentNumber" placeholder="Ej. 12345678" required /></label>
+        <label class="form-field"><span>{{ 'patients.birthDate' | translate }}</span><input name="dateOfBirth" [(ngModel)]="form.dateOfBirth" type="date" required /></label>
+        <label class="form-field"><span>{{ 'patients.gender' | translate }}</span><select name="gender" [(ngModel)]="form.gender"><option>{{ 'patients.male' | translate }}</option><option>{{ 'patients.female' | translate }}</option><option>{{ 'patients.other' | translate }}</option></select></label>
+        <label class="form-field"><span>{{ 'patients.phone' | translate }}</span><input name="phone" [(ngModel)]="form.phone" placeholder="Ej. 999111222" /></label>
+        <label class="form-field"><span>{{ 'common.email' | translate }}</span><input name="email" [(ngModel)]="form.email" type="email" placeholder="paciente@mail.com" /></label>
+        <label class="form-field"><span>{{ 'patients.roomBed' | translate }}</span><input name="roomNumber" [(ngModel)]="form.roomNumber" placeholder="Ej. 203-B" required /></label>
+        <div class="form-help">{{ 'patients.formHelp' | translate }}</div>
+        <div class="form-actions"><button class="btn-secondary" type="button" (click)="showForm.set(false)">{{ 'common.cancel' | translate }}</button><button class="btn-primary" type="submit">{{ 'patients.save' | translate }}</button></div>
+      </form>
+    </div>
+  }
+
+  <div class="card">
+    <div class="table-toolbar">
+      <input type="text" placeholder="{{ 'patients.search' | translate }}" class="search-input" [ngModel]="query()" (ngModelChange)="query.set($event)" />
+      <span class="table-count">{{ filteredPatients().length }} {{ 'common.results' | translate }}</span>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>{{ 'common.code' | translate }}</th><th>{{ 'common.fullName' | translate }}</th><th>{{ 'patients.documentCol' | translate }}</th><th>{{ 'patients.age' | translate }}</th><th>{{ 'common.status' | translate }}</th><th>{{ 'patients.room' | translate }}</th><th>{{ 'patients.contact' | translate }}</th><th></th></tr></thead>
+      <tbody>
+        @for (p of filteredPatients(); track p.id) {
+          <tr>
+            <td class="code">{{ p.code }}</td>
+            <td class="name-cell"><div class="avatar-sm">{{ p.firstName.charAt(0) }}{{ p.lastName.charAt(0) }}</div>{{ p.fullName }}</td>
+            <td>{{ p.documentNumber }}</td>
+            <td>{{ p.age }} {{ 'patients.years' | translate }}</td>
+            <td><span class="status-badge" [attr.data-status]="p.status">{{ p.status }}</span></td>
+            <td>{{ p.roomNumber }}</td>
+            <td class="contact-cell"><span>{{ p.phone || ('patients.noPhone' | translate) }}</span><span class="email">{{ p.email || ('patients.noEmail' | translate) }}</span></td>
+            <td class="actions-cell">
+              <button class="btn-secondary compact" (click)="goToMonitoring(p.id)">{{ 'patients.clinicalDetail' | translate }}</button>
+              <button class="dots-btn" (click)="toggleMenu(p.id); $event.stopPropagation()">⋮</button>
+              @if (activeMenu() === p.id) {
+                <div class="action-overlay" (click)="closeMenu()"></div>
+                <div class="action-menu">
+                  <button class="action-menu-item" (click)="goToMonitoring(p.id)">{{ 'patients.viewClinicalDetail' | translate }}</button>
+                  <button class="action-menu-item" (click)="editPatient(p.id)">{{ 'patients.editProfile' | translate }}</button>
+                  <div class="action-menu-divider"></div>
+                  <button class="action-menu-item danger" (click)="dischargePatient(p.id)">{{ 'patients.discharge' | translate }}</button>
+                </div>
+              }
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="8"><div class="empty-state">{{ 'patients.empty' | translate }}</div></td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
