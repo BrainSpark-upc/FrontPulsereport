@@ -1,0 +1,42 @@
+<main class="auth-page">
+  <section class="auth-card wide">
+    <div class="brand-mark">PR</div>
+    <h1>{{ 'auth.signUp.title' | translate }}</h1>
+    <p class="auth-subtitle">{{ 'auth.signUp.subtitle' | translate }}</p>
+
+    <form (ngSubmit)="signUp()" class="auth-form grid">
+      <label>{{ 'auth.firstName' | translate }}
+        <input name="firstName" [(ngModel)]="form.firstName" required />
+      </label>
+      <label>{{ 'auth.lastName' | translate }}
+        <input name="lastName" [(ngModel)]="form.lastName" required />
+      </label>
+      <label>{{ 'auth.username' | translate }}
+        <input name="username" [(ngModel)]="form.username" required />
+      </label>
+      <label>{{ 'common.email' | translate }}
+        <input name="email" type="email" [(ngModel)]="form.email" required />
+      </label>
+      <label>{{ 'auth.password' | translate }}
+        <input name="password" type="password" [(ngModel)]="form.password" required minlength="4" />
+      </label>
+      <label>{{ 'common.role' | translate }}
+        <select name="role" [(ngModel)]="form.role" required>
+          @for (role of roles; track role) {
+            <option [value]="role">{{ roleLabels[role] }}</option>
+          }
+        </select>
+      </label>
+
+      @if (iamStore.errorMessage()) {
+        <p class="error-message full">{{ iamStore.errorMessage() }}</p>
+      }
+
+      <button class="full" type="submit" [disabled]="iamStore.isLoading()">
+        {{ iamStore.isLoading() ? ('auth.saving' | translate) : ('auth.createAccount' | translate) }}
+      </button>
+    </form>
+
+    <p class="auth-link">{{ 'auth.alreadyHaveAccount' | translate }} <a routerLink="/sign-in">{{ 'auth.signIn.title' | translate }}</a></p>
+  </section>
+</main>
