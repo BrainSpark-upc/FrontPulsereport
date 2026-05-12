@@ -1,0 +1,151 @@
+﻿<div class="dashboard">
+    <div class="dashboard-hero">
+        <div><span class="eyebrow">{{ 'dashboard.eyebrow' | translate }}</span><h1>Dashboard</h1><p>{{ 'dashboard.subtitle' | translate }}</p></div>
+        <div class="hero-actions"><a routerLink="/patients" class="hero-btn secondary">{{ 'dashboard.newPatient' | translate }}</a><a routerLink="/vital-signs" class="hero-btn">{{ 'dashboard.recordVitals' | translate }}</a></div>
+    </div>
+    <!-- Stats Cards -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon patients-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <div class="stat-content">
+                <span class="stat-number">{{ activePatientsCount() }}</span>
+                <span class="stat-label">{{ 'dashboard.monitoredPatients' | translate }}</span>
+                <span class="stat-sub">{{ 'dashboard.lastUpdate' | translate }}: {{ lastUpdate() | date:'h:mm a' }}</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon alerts-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="stat-content">
+                <span class="stat-number">{{ activeAlertsCount() }}</span>
+                <span class="stat-label">{{ 'dashboard.activeAlerts' | translate }}</span>
+                <span class="stat-sub">{{ criticalAlertsCount() }} {{ 'alerts.critical' | translate }} | {{ moderateAlertsCount() }} {{ 'alerts.moderate' | translate }}</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon events-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="stat-content">
+                <span class="stat-number">{{ todayEventsCount() }}</span>
+                <span class="stat-label">{{ 'dashboard.eventsToday' | translate }}</span>
+                <span class="stat-sub">{{ 'dashboard.today' | translate }}</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon inspections-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+            </div>
+            <div class="stat-content">
+                <span class="stat-number">{{ pendingSbarCount() }}</span>
+                <span class="stat-label">{{ 'dashboard.sbarTransfers' | translate }}</span>
+                <span class="stat-sub">{{ 'dashboard.registered' | translate }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="dashboard-grid">
+        <!-- Patient Monitoring Table -->
+        <div class="card monitoring-card">
+            <div class="card-header">
+                <h2>{{ 'dashboard.patientMonitoring' | translate }}</h2>
+                <div class="search-box">
+                    <input type="text" placeholder="{{ 'common.searchPatient' | translate }}" />
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </div>
+            </div>
+            <table class="data-table">
+                <thead>
+                <tr><th>{{ 'common.patient' | translate }}</th><th>{{ 'dashboard.state' | translate }}</th><th>{{ 'common.vitalSigns' | translate }}</th><th>{{ 'dashboard.risk' | translate }}</th><th>{{ 'dashboard.lastUpdateColumn' | translate }}</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @for (vs of latestVitals(); track vs.id) {
+                        <tr>
+                            <td class="patient-cell">
+                                <div class="patient-avatar"></div>
+                                <div><span class="patient-name">{{ vs.patientName }}</span><br/><span class="patient-id">ID: {{ vs.patientId | slice:0:5 | uppercase }}</span></div>
+                            </td>
+                            <td><span class="status-badge" [class]="'status-' + vs.riskLevel">{{ vs.riskLevel === 'Bajo' ? 'Estable' : vs.riskLevel === 'Medio' ? 'En observación' : vs.riskLevel === 'Alto' ? 'Inestable' : 'Crítico' }}</span></td>
+                            <td class="vitals-cell"><span>{{ vs.heartRateFormatted }}</span><span>{{ vs.respiratoryRateFormatted }}</span><span>{{ vs.bloodPressureFormatted }}</span></td>
+                            <td><span class="risk-badge" [class]="'risk-' + vs.riskLevel">{{ vs.riskLevel }}</span></td>
+                            <td>{{ vs.recordedAt | date:'h:mm a' }}</td>
+                            <td><button class="dots-btn">⋮</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="card-footer"><a routerLink="/patients">{{ 'dashboard.seeAllPatients' | translate }}</a></div>
+        </div>
+
+        <!-- Critical Alerts -->
+        <div class="card alerts-card">
+            <div class="card-header"><h2>{{ 'dashboard.criticalAlerts' | translate }}</h2><a class="link" routerLink="/alerts">{{ 'common.seeAll' | translate }}</a></div>
+            @for (alert of latestAlerts(); track alert.id) {
+                <div class="alert-item" [class.critical]="alert.isCritical">
+                    <div class="alert-icon-wrap" [class.critical-bg]="alert.isCritical" [class.moderate-bg]="!alert.isCritical">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    </div>
+                    <div class="alert-content">
+                        <span class="alert-patient">{{ alert.patientName }}</span>
+                        <span class="alert-detail">{{ alert.title }}</span>
+                    </div>
+                    <div class="alert-meta">
+                        <span class="severity-tag" [class]="alert.isCritical ? 'tag-critical' : 'tag-moderate'">{{ alert.severity }}</span>
+                        <span class="alert-time">{{ alert.triggeredAt | date:'h:mm a' }}</span>
+                    </div>
+                </div>
+            }
+            <div class="card-footer"><a routerLink="/alerts">{{ 'dashboard.seeAllAlerts' | translate }}</a></div>
+        </div>
+
+        <!-- SBAR Summary -->
+        <div class="card sbar-card">
+            <h2>{{ 'common.sbar' | translate }}</h2>
+            <div class="sbar-sections">
+                <div class="sbar-row"><span class="sbar-letter s">S</span><span class="sbar-label">{{ 'dashboard.situation' | translate }}</span><div class="sbar-bar"></div></div>
+                <div class="sbar-row"><span class="sbar-letter b">B</span><span class="sbar-label">{{ 'dashboard.background' | translate }}</span><div class="sbar-bar"></div></div>
+                <div class="sbar-row"><span class="sbar-letter a">A</span><span class="sbar-label">{{ 'dashboard.assessment' | translate }}</span><div class="sbar-bar"></div></div>
+                <div class="sbar-row"><span class="sbar-letter r">R</span><span class="sbar-label">{{ 'dashboard.recommendation' | translate }}</span><div class="sbar-bar"></div></div>
+            </div>
+            <button class="btn-primary" routerLink="/sbar">{{ 'dashboard.registerTransfer' | translate }}</button>
+        </div>
+
+        <!-- Audit Trail -->
+        <div class="card audit-card">
+            <div class="card-header"><h2>{{ 'dashboard.traceabilityAudit' | translate }}</h2><a class="link" routerLink="/audit">{{ 'common.viewAll' | translate }}</a></div>
+            @for (log of latestAudits(); track log.id) {
+                <div class="audit-item">
+                    <span class="audit-code">{{ log.code }}</span>
+                    <div class="audit-content">
+                        <span class="audit-desc">{{ log.description }}</span>
+                        <span class="audit-user">{{ 'dashboard.by' | translate }} {{ log.username }}</span>
+                    </div>
+                    <span class="audit-time">{{ log.performedAt | date:'h:mm a' }}</span>
+                </div>
+            }
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card actions-card">
+            <h2>{{ 'dashboard.quickActions' | translate }}</h2>
+            <div class="actions-list">
+                <button class="action-btn" routerLink="/vital-signs">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    <span>{{ 'dashboard.recordVitals' | translate }}</span>
+                </button>
+                <button class="action-btn" routerLink="/clinical-events">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <span>{{ 'dashboard.registerEvent' | translate }}</span>
+                </button>
+                <button class="action-btn" routerLink="/reports">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <span>{{ 'dashboard.generateReport' | translate }}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
