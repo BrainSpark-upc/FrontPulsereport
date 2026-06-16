@@ -3,12 +3,8 @@
  * codigo:U202417693
  */
 
-/**
- * Environment configuration for development.
- * Care-Labs / PulseReport
- */
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:3000',
+  apiBaseUrl: 'http://localhost:8080/api/v1',
   appName: 'Care-Labs / PulseReport',
 };
