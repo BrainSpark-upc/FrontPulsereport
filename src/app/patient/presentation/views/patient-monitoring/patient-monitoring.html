@@ -1,71 +1,18 @@
-@if (patient(); as p) {
-  <div class="view-container">
-    <button class="back-btn" (click)="goBack()">{{ 'patients.back' | translate }}</button>
-
-    <div class="patient-hero">
-      <div class="patient-main">
-        <div class="avatar-lg">{{ p.firstName.charAt(0) }}{{ p.lastName.charAt(0) }}</div>
-        <div>
-          <span class="eyebrow">{{ 'patients.detailEyebrow' | translate }}</span>
-          <h1>{{ p.fullName }}</h1>
-          <p>ID: {{ p.code }} · DNI: {{ p.documentNumber }} · {{ p.age }} años · Habitación {{ p.roomNumber }}</p>
-        </div>
+<div class="view-container">
+  <div class="page-hero">
+    @if (patient(); as p) {
+      <div>
+        <span class="eyebrow">{{ 'monitoring.eyebrow' | translate }}</span>
+        <h2>{{ p.fullName }}</h2>
+        <p>ID: {{ p.code }} · DNI: {{ p.documentNumber }} · {{ p.age }} años · Habitación {{ p.roomNumber }} · Cama {{ p.bedNumber }}</p>
       </div>
-      <div class="patient-state">
-        <span>{{ 'patients.currentStatus' | translate }}</span>
-        <strong [attr.data-status]="p.status">{{ p.status }}</strong>
+      <button class="btn-secondary" (click)="goBack()">{{ 'monitoring.back' | translate }}</button>
+    } @else {
+      <div>
+        <span class="eyebrow">{{ 'monitoring.eyebrow' | translate }}</span>
+        <h2>{{ 'monitoring.noPatient' | translate }}</h2>
       </div>
-    </div>
-
-    <div class="quick-actions">
-      <a routerLink="/vital-signs" class="action-card">+ {{ 'vitals.register' | translate }}</a>
-      <a routerLink="/clinical-events" class="action-card">{{ 'patients.recordEvent' | translate }}</a>
-      <a routerLink="/sbar" class="action-card">{{ 'patients.newSbar' | translate }}</a>
-      <a routerLink="/reports" class="action-card">{{ 'dashboard.generateReport' | translate }}</a>
-    </div>
-
-    <div class="metrics-grid">
-      <div class="metric-card"><span>{{ 'patients.lastHr' | translate }}</span><strong>{{ lastVital()?.heartRate ?? '-' }} <small>bpm</small></strong><p>{{ 'vitals.hr' | translate }}</p></div>
-      <div class="metric-card"><span>{{ 'patients.lastBp' | translate }}</span><strong>{{ lastVital() ? lastVital()?.systolic + '/' + lastVital()?.diastolic : '-' }}</strong><p>{{ 'vitals.systolic' | translate }}</p></div>
-      <div class="metric-card"><span>SatO₂</span><strong>{{ lastVital()?.oxygenSaturation ?? '-' }} <small>%</small></strong><p>{{ 'vitals.spo2' | translate }}</p></div>
-      <div class="metric-card"><span>{{ 'dashboard.risk' | translate }}</span><strong [attr.data-risk]="lastVital()?.riskLevel">{{ lastVital()?.riskLevel ?? ('common.noData' | translate) }}</strong><p>{{ 'dashboard.assessment' | translate }}</p></div>
-    </div>
-
-    <div class="content-grid">
-      <section class="card span-2">
-        <div class="section-header"><h2>{{ 'patients.vitalsHistory' | translate }}</h2><span>{{ patientVitals().length }} {{ 'patients.records' | translate }}</span></div>
-        <table class="data-table">
-          <thead><tr><th>{{ 'common.date' | translate }}</th><th>FC</th><th>FR</th><th>TA</th><th>SatO₂</th><th>Temp</th><th>{{ 'dashboard.risk' | translate }}</th></tr></thead>
-          <tbody>
-            @for (v of patientVitals(); track v.id) {
-              <tr><td>{{ v.recordedAt | date:'dd/MM h:mm a' }}</td><td>{{ v.heartRate }}</td><td>{{ v.respiratoryRate }}</td><td>{{ v.systolic }}/{{ v.diastolic }}</td><td>{{ v.oxygenSaturation }}%</td><td>{{ v.temperature }}°C</td><td><span class="risk-badge" [class]="'risk-' + v.riskLevel">{{ v.riskLevel }}</span></td></tr>
-            } @empty { <tr><td colspan="7"><div class="empty-state">{{ 'patients.noVitals' | translate }}</div></td></tr> }
-          </tbody>
-        </table>
-      </section>
-
-      <section class="card">
-        <div class="section-header"><h2>{{ 'patients.patientAlerts' | translate }}</h2><span>{{ activeAlerts().length }} {{ 'patients.pending' | translate }}</span></div>
-        @for (a of patientAlerts(); track a.id) {
-          <div class="mini-item"><strong>{{ a.title }}</strong><p>{{ a.message }}</p><span class="status-pill" [attr.data-status]="a.status">{{ a.status }}</span></div>
-        } @empty { <div class="empty-state">{{ 'patients.noAlerts' | translate }}</div> }
-      </section>
-
-      <section class="card">
-        <div class="section-header"><h2>{{ 'events.title' | translate }}</h2><span>{{ patientEvents().length }} {{ 'events.title' | translate }}</span></div>
-        @for (e of patientEvents(); track e.id) {
-          <div class="mini-item"><strong>{{ e.title }}</strong><p>{{ e.eventType }} · {{ e.description }}</p><span class="risk-badge" [class]="'risk-' + e.severity">{{ e.severity }}</span></div>
-        } @empty { <div class="empty-state">Sin {{ 'events.title' | translate }} registrados.</div> }
-      </section>
-
-      <section class="card span-2">
-        <div class="section-header"><h2>{{ 'sbar.title' | translate }}</h2><span>{{ patientSbar().length }} {{ 'sbar.registered' | translate }}</span></div>
-        @for (s of patientSbar(); track s.id) {
-          <div class="sbar-box"><div><span class="sbar-letter">S</span><p>{{ s.situation }}</p></div><div><span class="sbar-letter b">B</span><p>{{ s.background }}</p></div><div><span class="sbar-letter a">A</span><p>{{ s.assessment }}</p></div><div><span class="sbar-letter r">R</span><p>{{ s.recommendation }}</p></div><small>{{ s.sourceNurseName }} → {{ s.targetNurseName }} · {{ s.transferredAt | date:'dd/MM/yyyy h:mm a' }}</small></div>
-        } @empty { <div class="empty-state">{{ 'patients.noSbar' | translate }}</div> }
-      </section>
-    </div>
+      <button class="btn-secondary" (click)="goBack()">{{ 'monitoring.back' | translate }}</button>
+    }
   </div>
-} @else {
-  <div class="card empty-state">{{ 'common.loadingPatient' | translate }}</div>
-}
+</div>

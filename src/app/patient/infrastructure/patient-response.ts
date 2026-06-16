@@ -1,13 +1,17 @@
+import { PatientStatusEnum } from '../domain/model/patient.entity';
+
 export interface PatientResponse {
   id: string;
-  code: string;
   firstName: string;
   lastName: string;
+  fullName?: string;
   documentNumber: string;
-  dateOfBirth: string;
+  birthDate: string;
   gender: string;
-  phone: string;
-  email: string;
-  status: string;
+  diagnosis: string;
   roomNumber: string;
+  bedNumber: string;
+  attendingPhysician: string;
+  status: PatientStatusEnum;
+  admissionDate: string;
 }
