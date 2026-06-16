@@ -17,6 +17,7 @@ import { SbarStore } from '../../../../sbar/application/sbar.store';
 import { AuditStore } from '../../../../audit/application/audit.store';
 import { VitalSign } from '../../../../vital-sign/domain/model/vital-sign.entity';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AlertStatus } from '../../../../notification/domain/model/alert.entity';
 
 @Component({
   selector: 'app-patient-monitoring',
@@ -43,7 +44,7 @@ export class PatientMonitoringComponent implements OnInit {
   protected patientAlerts = computed(() => this.notificationStore.alerts().filter(item => item.patientId === this.patient()?.id));
   protected patientSbar = computed(() => this.sbarStore.transfers().filter(item => item.patientId === this.patient()?.id));
   protected lastVital = computed<VitalSign | undefined>(() => this.patientVitals()[0]);
-  protected activeAlerts = computed(() => this.patientAlerts().filter(item => item.status !== 'Resuelta'));
+  protected activeAlerts = computed(() => this.patientAlerts().filter(item => item.status !== AlertStatus.CLOSED));
 
   ngOnInit(): void {
     this.patientStore.loadPatients();
