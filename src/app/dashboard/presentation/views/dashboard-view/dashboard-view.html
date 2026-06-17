@@ -5,9 +5,12 @@
       @if (viewModeStore.isAdmin()) {
       <h1>{{ 'dashboard.adminTitle' | translate }}</h1>
       <p>{{ 'dashboard.adminSubtitle' | translate }}</p>
+      } @else if (viewModeStore.isDoctor()) {
+      <h1>{{ 'dashboard.doctorTitle' | translate }}</h1>
+      <p>{{ 'dashboard.doctorSubtitle' | translate }}</p>
       } @else {
-      <h1>{{ 'dashboard.userTitle' | translate }}</h1>
-      <p>{{ 'dashboard.userSubtitle' | translate }}</p>
+      <h1>{{ 'dashboard.nurseTitle' | translate }}</h1>
+      <p>{{ 'dashboard.nurseSubtitle' | translate }}</p>
       }
     </div>
 
@@ -18,6 +21,13 @@
       >
       <a routerLink="/audit" class="hero-btn"
         >{{ 'dashboard.goAudit' | translate }}</a
+      >
+      } @else if (viewModeStore.isDoctor()) {
+      <a routerLink="/patients" class="hero-btn secondary"
+        >{{ 'dashboard.goPatients' | translate }}</a
+      >
+      <a routerLink="/reports" class="hero-btn"
+        >{{ 'dashboard.goReports' | translate }}</a
       >
       } @else {
       <a routerLink="/patients" class="hero-btn secondary"
@@ -134,23 +144,31 @@
         >
         <span class="stat-sub">
           @if (viewModeStore.isAdmin()) { {{ 'dashboard.adminModules' |
-          translate }} } @else { {{ 'dashboard.userModules' | translate }} }
+          translate }} } @else if (viewModeStore.isDoctor()) { {{
+          'dashboard.doctorModules' | translate }} } @else { {{
+          'dashboard.nurseModules' | translate }} }
         </span>
       </div>
     </div>
   </div>
 
-  <section class="mode-summary" [class.admin]="viewModeStore.isAdmin()">
+  <section
+    class="mode-summary"
+    [class.admin]="viewModeStore.isAdmin()"
+    [class.doctor]="viewModeStore.isDoctor()"
+  >
     <div>
       <span>{{ 'access.currentView' | translate }}</span>
       <strong>
         @if (viewModeStore.isAdmin()) { {{ 'access.adminTitle' | translate }} }
-        @else { {{ 'access.userTitle' | translate }} }
+        @else if (viewModeStore.isDoctor()) { {{ 'access.doctorTitle' |
+        translate }} } @else { {{ 'access.nurseTitle' | translate }} }
       </strong>
     </div>
     <p>
       @if (viewModeStore.isAdmin()) { {{ 'dashboard.adminModeText' | translate
-      }} } @else { {{ 'dashboard.userModeText' | translate }} }
+      }} } @else if (viewModeStore.isDoctor()) { {{ 'dashboard.doctorModeText' |
+      translate }} } @else { {{ 'dashboard.nurseModeText' | translate }} }
     </p>
   </section>
 
@@ -295,6 +313,19 @@
         >
         <a routerLink="/audit" class="action-btn"
           >{{ 'dashboard.goAudit' | translate }}</a
+        >
+        <a routerLink="/alerts" class="action-btn"
+          >{{ 'dashboard.goAlerts' | translate }}</a
+        >
+        } @else if (viewModeStore.isDoctor()) {
+        <a routerLink="/patients" class="action-btn"
+          >{{ 'dashboard.goPatients' | translate }}</a
+        >
+        <a routerLink="/clinical-events" class="action-btn"
+          >{{ 'dashboard.goClinicalEvents' | translate }}</a
+        >
+        <a routerLink="/reports" class="action-btn"
+          >{{ 'dashboard.goReports' | translate }}</a
         >
         <a routerLink="/alerts" class="action-btn"
           >{{ 'dashboard.goAlerts' | translate }}</a
