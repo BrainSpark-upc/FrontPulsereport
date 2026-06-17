@@ -318,5 +318,12 @@
   "sbar.validation.situation": "Completa la situación actual del paciente.",
   "sbar.validation.background": "Completa los antecedentes relevantes.",
   "sbar.validation.assessment": "Completa la evaluación clínica.",
-  "sbar.validation.recommendation": "Completa la recomendación para el siguiente turno."
+  "sbar.validation.recommendation": "Completa la recomendación para el siguiente turno.",
+  "reports.backendSubtitle": "Genera reportes usando datos reales del backend: pacientes, signos vitales, alertas, SBAR y auditoría.",
+  "reports.backendHelp": "El reporte se genera desde módulos conectados al backend y se registra en auditoría.",
+  "reports.titlePlaceholder": "Ej. Resumen clínico del turno mañana",
+  "reports.prepared": "Reporte preparado",
+  "reports.validation.titleRequired": "Ingresa un título para el reporte.",
+  "reports.validation.dateRequired": "Selecciona fecha de inicio y fin.",
+  "reports.validation.invalidRange": "La fecha de inicio no puede ser mayor que la fecha final."
 }

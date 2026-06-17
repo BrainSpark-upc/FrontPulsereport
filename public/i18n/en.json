@@ -318,5 +318,12 @@
   "sbar.validation.situation": "Complete the patient current situation.",
   "sbar.validation.background": "Complete the relevant background.",
   "sbar.validation.assessment": "Complete the clinical assessment.",
-  "sbar.validation.recommendation": "Complete the recommendation for the next shift."
+  "sbar.validation.recommendation": "Complete the recommendation for the next shift.",
+  "reports.backendSubtitle": "Generate reports using real backend data: patients, vital signs, alerts, SBAR, and audit logs.",
+  "reports.backendHelp": "The report is generated from backend-connected modules and registered in audit.",
+  "reports.titlePlaceholder": "Example: Morning shift clinical summary",
+  "reports.prepared": "Report prepared",
+  "reports.validation.titleRequired": "Enter a report title.",
+  "reports.validation.dateRequired": "Select start and end dates.",
+  "reports.validation.invalidRange": "The start date cannot be greater than the end date."
 }
