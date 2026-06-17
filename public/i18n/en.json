@@ -325,5 +325,8 @@
   "reports.prepared": "Report prepared",
   "reports.validation.titleRequired": "Enter a report title.",
   "reports.validation.dateRequired": "Select start and end dates.",
-  "reports.validation.invalidRange": "The start date cannot be greater than the end date."
+  "reports.validation.invalidRange": "The start date cannot be greater than the end date.",
+  "events.validation.patientRequired": "Select the patient related to the event.",
+  "events.validation.titleRequired": "The title must clearly describe the clinical event.",
+  "events.validation.descriptionRequired": "Add a description of at least 10 characters."
 }

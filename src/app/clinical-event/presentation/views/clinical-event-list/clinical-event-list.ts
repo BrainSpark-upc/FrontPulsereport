@@ -1,35 +1,69 @@
-﻿import { Component, inject, OnInit, signal } from '@angular/core';
+/**
+ * @author: Alexander Auden Aliaga Ocampo
+ * codigo:U202417693
+ */
+
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ClinicalEventStore } from '../../../application/clinical-event.store';
 import { PatientStore } from '@patient/application/patient.store';
 import { ClinicalEventSeverity, ClinicalEventType } from '../../../domain/model/clinical-event.entity';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-@Component({ selector: 'app-clinical-event-list', standalone: true, imports: [TranslatePipe, DatePipe, FormsModule], templateUrl: './clinical-event-list.html', styleUrl: './clinical-event-list.css' })
+@Component({
+  selector: 'app-clinical-event-list',
+  standalone: true,
+  imports: [TranslatePipe, DatePipe, FormsModule],
+  templateUrl: './clinical-event-list.html',
+  styleUrl: './clinical-event-list.css',
+})
 export class ClinicalEventListComponent implements OnInit {
-    protected store = inject(ClinicalEventStore);
-    protected patientStore = inject(PatientStore);
-    showForm = signal(false);
-    errorMessage = signal<string | null>(null);
-    eventTypes = Object.values(ClinicalEventType);
-    severities = Object.values(ClinicalEventSeverity);
-    form = { patientId: '', eventType: ClinicalEventType.OBSERVATION, severity: ClinicalEventSeverity.LOW, title: '', description: '' };
+  protected store = inject(ClinicalEventStore);
+  protected patientStore = inject(PatientStore);
+  private translate = inject(TranslateService);
 
-    ngOnInit(): void { this.patientStore.loadPatients(); this.store.loadEvents(); }
+  showForm = signal(false);
+  errorMessage = signal<string | null>(null);
 
-    save(): void {
-        this.errorMessage.set(this.validateForm());
-        if (this.errorMessage()) return;
-        this.store.registerEvent({ ...this.form, title: this.form.title.trim(), description: this.form.description.trim() });
-        this.form = { patientId: '', eventType: ClinicalEventType.OBSERVATION, severity: ClinicalEventSeverity.LOW, title: '', description: '' };
-        this.showForm.set(false);
-    }
+  eventTypes = Object.values(ClinicalEventType);
+  severities = Object.values(ClinicalEventSeverity);
 
-    private validateForm(): string | null {
-        if (!this.form.patientId) return 'Selecciona el paciente relacionado al evento.';
-        if (this.form.title.trim().length < 4) return 'El título debe describir claramente el evento clínico.';
-        if (this.form.description.trim().length < 10) return 'Agrega una descripción mínima de 10 caracteres.';
-        return null;
-    }
+  form = this.emptyForm();
+
+  ngOnInit(): void {
+    this.patientStore.loadPatients();
+    this.store.loadEvents();
+  }
+
+  save(): void {
+    this.errorMessage.set(this.validateForm());
+    if (this.errorMessage()) return;
+
+    this.store.registerEvent({
+      ...this.form,
+      title: this.form.title.trim(),
+      description: this.form.description.trim(),
+    });
+
+    this.form = this.emptyForm();
+    this.showForm.set(false);
+  }
+
+  private emptyForm() {
+    return {
+      patientId: '',
+      eventType: ClinicalEventType.OBSERVATION,
+      severity: ClinicalEventSeverity.LOW,
+      title: '',
+      description: '',
+    };
+  }
+
+  private validateForm(): string | null {
+    if (!this.form.patientId) return this.translate.instant('events.validation.patientRequired');
+    if (this.form.title.trim().length < 4) return this.translate.instant('events.validation.titleRequired');
+    if (this.form.description.trim().length < 10) return this.translate.instant('events.validation.descriptionRequired');
+    return null;
+  }
 }
