@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'backpulsereport-production.up.railway.app',
-  appName: "Care-Labs / PulseReport",
+  apiBaseUrl: 'https://backpulsereport-production.up.railway.app/api/v1',
+  appName: 'Care-Labs / PulseReport',
 };
