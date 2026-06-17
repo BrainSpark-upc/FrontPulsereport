@@ -1,5 +1,20 @@
+/**
+ * @author: Alexander Auden Aliaga Ocampo
+ * codigo:U202417693
+ */
+
+import { RiskLevel } from '../domain/model/vital-sign.entity';
+
 export interface VitalSignResponse {
-  id: string; patientId: string; patientName: string; nurseId: string;
-  heartRate: number; respiratoryRate: number; systolic: number; diastolic: number;
-  oxygenSaturation: number; temperature: number; riskLevel: string; recordedAt: string;
+  id: string | number;
+  patientId: string | number;
+  nurseId: string | number;
+  heartRate: number;
+  respiratoryRate: number;
+  systolic: number;
+  diastolic: number;
+  oxygenSaturation: number;
+  temperature: number;
+  riskLevel: RiskLevel | string;
+  recordedAt: string;
 }
