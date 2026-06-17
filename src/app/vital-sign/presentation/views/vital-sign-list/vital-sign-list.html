@@ -1,7 +1,7 @@
 <div class="view-container">
   <div class="view-header">
     <h2>{{ 'vitals.title' | translate }}</h2>
-    <button class="btn-primary" (click)="showForm.set(true)">+ {{ 'vitals.register' | translate }}</button>
+    <button class="btn-primary" (click)="openForm()">+ {{ 'vitals.register' | translate }}</button>
   </div>
 
   @if (showForm()) {
@@ -11,14 +11,17 @@
         <p>{{ 'vitals.formSubtitle' | translate }}</p>
       </div>
 
-      @if (errorMessage()) { <div class="form-error">{{ errorMessage() }}</div> }
+      @if (errorMessage()) {
+        <div class="form-error">{{ errorMessage() }}</div>
+      }
+
       <form class="grid-form" (ngSubmit)="save()">
         <label class="form-field">
           <span>{{ 'common.patient' | translate }}</span>
           <select name="patientId" [(ngModel)]="form.patientId" required>
             <option value="">{{ 'vitals.selectPatient' | translate }}</option>
             @for (p of patientStore.patients(); track p.id) {
-              <option [value]="p.id">{{ p.fullName }}</option>
+              <option [value]="p.id">{{ p.fullName }} - {{ p.roomNumber }}</option>
             }
           </select>
         </label>
@@ -58,7 +61,7 @@
         </div>
 
         <div class="form-actions">
-          <button class="btn-secondary" type="button" (click)="showForm.set(false)">{{ 'common.cancel' | translate }}</button>
+          <button class="btn-secondary" type="button" (click)="cancelForm()">{{ 'common.cancel' | translate }}</button>
           <button class="btn-primary" type="submit">{{ 'common.save' | translate }}</button>
         </div>
       </form>
@@ -68,17 +71,18 @@
   <div class="card">
     <table class="data-table">
       <thead>
-      <tr>
-        <th>{{ 'common.patient' | translate }}</th>
-        <th>FC (bpm)</th>
-        <th>FR (rpm)</th>
-        <th>TA (mmHg)</th>
-        <th>SatO₂ (%)</th>
-        <th>Temp (°C)</th>
-        <th>{{ 'dashboard.risk' | translate }}</th>
-        <th>{{ 'vitals.registered' | translate }}</th>
-      </tr>
+        <tr>
+          <th>{{ 'common.patient' | translate }}</th>
+          <th>FC (bpm)</th>
+          <th>FR (rpm)</th>
+          <th>TA (mmHg)</th>
+          <th>SatOâ‚‚ (%)</th>
+          <th>Temp (Â°C)</th>
+          <th>{{ 'dashboard.risk' | translate }}</th>
+          <th>{{ 'vitals.registered' | translate }}</th>
+        </tr>
       </thead>
+
       <tbody>
         @for (vs of store.vitalSigns(); track vs.id) {
           <tr>
@@ -88,8 +92,8 @@
             <td><span class="mono">{{ vs.systolic }}/{{ vs.diastolic }}</span></td>
             <td><span class="mono">{{ vs.oxygenSaturation }}</span></td>
             <td><span class="mono">{{ vs.temperature }}</span></td>
-            <td><span class="risk-badge" [class]="'risk-' + vs.riskLevel">{{ vs.riskLevel }}</span></td>
-            <td>{{ vs.recordedAt | date:'h:mm a' }}</td>
+            <td><span class="risk-badge" [class]="'risk-badge risk-' + vs.riskLevel">{{ vs.riskLabel }}</span></td>
+            <td>{{ vs.recordedAt | date:'dd/MM/yyyy h:mm a' }}</td>
           </tr>
         } @empty {
           <tr><td colspan="8"><div class="empty-state">{{ 'vitals.empty' | translate }}</div></td></tr>

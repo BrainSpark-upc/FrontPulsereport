@@ -170,10 +170,10 @@
   font-weight: 500;
 }
 
-.risk-Bajo { background: #ecfdf5; color: #059669; }
-.risk-Medio { background: #fef3c7; color: #d97706; }
-.risk-Alto { background: #fee2e2; color: #dc2626; }
-.risk-Crítico { background: #fecaca; color: #991b1b; }
+.risk-LOW { background: #ecfdf5; color: #059669; }
+.risk-MEDIUM { background: #fef3c7; color: #d97706; }
+.risk-HIGH { background: #fee2e2; color: #dc2626; }
+.risk-CrÃƒÂ­tico { background: #fecaca; color: #991b1b; }
 
 @media (max-width: 900px) {
   .grid-form {
@@ -194,3 +194,42 @@
 }
 
 .form-error{padding:10px 12px;border-radius:10px;background:#fef2f2;color:#b91c1c;font-size:12px;font-weight:700}.empty-state{text-align:center;color:#94a3b8;padding:28px}.card{box-shadow:0 10px 30px rgba(15,23,42,.04);border-radius:16px}.btn-primary{font-weight:700;border-radius:10px}.btn-secondary{font-weight:700;border-radius:10px}.data-table tbody tr:hover{background:#f8fafc}
+
+.risk-UNASSESSED {
+  background: #f1f5f9;
+  color: #475569;
+}
+.risk-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.risk-LOW {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.risk-MEDIUM {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.risk-HIGH {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+.risk-CRITICAL {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.risk-UNASSESSED {
+  background: #f1f5f9;
+  color: #475569;
+}
