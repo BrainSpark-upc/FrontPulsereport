@@ -78,6 +78,7 @@ export class ReportStore {
       const sbarTransfers = data.sbarTransfers.filter(item => item.transferredAt ? inRange(item.transferredAt) : true);
       const alerts = data.alerts.filter(item => inRange(item.triggeredAt));
       const auditLogs = data.auditLogs.filter(item => inRange(item.performedAt));
+      const clinicalEvents = auditLogs.filter(item => item.entityType === 'CLINICAL_EVENT');
 
       const activeAlerts = alerts.filter(item => item.status !== 'CLOSED');
       const criticalAlerts = alerts.filter(item => item.severity === 'CRITICAL' && item.status !== 'CLOSED');
@@ -91,7 +92,7 @@ export class ReportStore {
         summary: {
           patients: data.patients.length,
           vitalSigns: vitalSigns.length,
-          clinicalEvents: 0,
+          clinicalEvents: clinicalEvents.length,
           sbarTransfers: sbarTransfers.length,
           activeAlerts: activeAlerts.length,
           criticalAlerts: criticalAlerts.length,
@@ -106,16 +107,16 @@ export class ReportStore {
       const report = ReportAssembler.toEntity(response);
       this._reports.update(list => [report, ...list]);
 
-      this.audit.register(AuditAction.REPORT_GENERATED, `GenerÃ³ reporte: ${report.title}`);
-      this.audit.register(AuditAction.BUSINESS_TRANSACTION_EXECUTED, 'TransacciÃ³n: consolidaciÃ³n de datos clÃ­nicos conectados al backend â†’ reporte â†’ auditorÃ­a');
+      this.audit.register(AuditAction.REPORT_GENERATED, `GenerÃƒÂ³ reporte: ${report.title}`);
+      this.audit.register(AuditAction.BUSINESS_TRANSACTION_EXECUTED, 'TransacciÃƒÂ³n: consolidaciÃƒÂ³n de datos clÃƒÂ­nicos conectados al backend Ã¢â€ â€™ reporte Ã¢â€ â€™ auditorÃƒÂ­a');
     });
   }
 
   private buildConclusion(vitalSigns: number, sbarTransfers: number, alerts: number, criticalAlerts: number): string {
-    if (criticalAlerts > 0) return `Se detectaron ${criticalAlerts} alerta(s) crÃ­tica(s). Requiere revisiÃ³n mÃ©dica prioritaria.`;
+    if (criticalAlerts > 0) return `Se detectaron ${criticalAlerts} alerta(s) crÃƒÂ­tica(s). Requiere revisiÃƒÂ³n mÃƒÂ©dica prioritaria.`;
     if (alerts > 0) return `Existen ${alerts} alerta(s) activa(s). Mantener seguimiento del turno.`;
-    if (vitalSigns > 0 || sbarTransfers > 0) return 'Periodo con actividad clÃ­nica registrada y sin alertas crÃ­ticas activas.';
-    return 'No se encontraron movimientos clÃ­nicos relevantes en el periodo seleccionado.';
+    if (vitalSigns > 0 || sbarTransfers > 0) return 'Periodo con actividad clÃƒÂ­nica registrada y sin alertas crÃƒÂ­ticas activas.';
+    return 'No se encontraron movimientos clÃƒÂ­nicos relevantes en el periodo seleccionado.';
   }
 
   private readStoredReports(): ReportResponse[] {
