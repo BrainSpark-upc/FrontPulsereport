@@ -96,9 +96,19 @@
   background: #e6fffb;
   color: #0f766e;
 }
-.role-card.user .role-icon {
+.role-card.doctor .role-icon {
+  background: #eff6ff;
+  color: #2563eb;
+}
+.role-card.nurse .role-icon {
   background: #ecfdf5;
   color: #059669;
+}
+.role-card.doctor:hover {
+  border-color: #bfdbfe;
+}
+.role-card.nurse:hover {
+  border-color: #a7f3d0;
 }
 .role-icon svg {
   width: 24px;
