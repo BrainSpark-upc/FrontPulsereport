@@ -68,7 +68,9 @@ export class DashboardViewComponent implements OnInit {
   }
 
   protected connectedModulesCount(): number {
-    return 3;
+    if (this.viewModeStore.isAdmin()) return 8;
+    if (this.viewModeStore.isDoctor()) return 5;
+    return 6;
   }
 
   protected lastUpdate(): Date {
