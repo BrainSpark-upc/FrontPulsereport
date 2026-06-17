@@ -49,7 +49,7 @@ export class AuditLog {
     public readonly entityId?: string,
   ) {}
 
-  get actionLabel(): string {
+  get action1Label(): string {
     const labels: Record<string, string> = {
       CREATE: 'Crear',
       UPDATE: this.entityType === 'ALERT' ? 'Alerta cerrada' : 'Actualizar',
