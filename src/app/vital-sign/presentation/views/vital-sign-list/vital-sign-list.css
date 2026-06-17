@@ -19,7 +19,7 @@
 
 .btn-primary {
   padding: 8px 20px;
-  background: #4f46e5;
+  background: #0f766e;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -29,7 +29,7 @@
 }
 
 .btn-primary:hover {
-  background: #4338ca;
+  background: #115e59;
 }
 
 .btn-secondary {
@@ -103,8 +103,8 @@
 
 .form-field input:focus,
 .form-field select:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+  border-color: #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
 }
 
 .form-help {
@@ -159,21 +159,33 @@
 }
 
 .mono {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 12px;
 }
 
 .risk-badge {
   padding: 3px 10px;
-  border-radius: 20px;
+  border-radius: 16px;
   font-size: 11px;
   font-weight: 500;
 }
 
-.risk-LOW { background: #ecfdf5; color: #059669; }
-.risk-MEDIUM { background: #fef3c7; color: #d97706; }
-.risk-HIGH { background: #fee2e2; color: #dc2626; }
-.risk-CrÃƒÂ­tico { background: #fecaca; color: #991b1b; }
+.risk-LOW {
+  background: #ecfdf5;
+  color: #059669;
+}
+.risk-MEDIUM {
+  background: #fef3c7;
+  color: #d97706;
+}
+.risk-HIGH {
+  background: #fee2e2;
+  color: #dc2626;
+}
+.risk-Crítico {
+  background: #fecaca;
+  color: #991b1b;
+}
 
 @media (max-width: 900px) {
   .grid-form {
@@ -193,7 +205,34 @@
   }
 }
 
-.form-error{padding:10px 12px;border-radius:10px;background:#fef2f2;color:#b91c1c;font-size:12px;font-weight:700}.empty-state{text-align:center;color:#94a3b8;padding:28px}.card{box-shadow:0 10px 30px rgba(15,23,42,.04);border-radius:16px}.btn-primary{font-weight:700;border-radius:10px}.btn-secondary{font-weight:700;border-radius:10px}.data-table tbody tr:hover{background:#f8fafc}
+.form-error {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 12px;
+  font-weight: 700;
+}
+.empty-state {
+  text-align: center;
+  color: #94a3b8;
+  padding: 28px;
+}
+.card {
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+  border-radius: 16px;
+}
+.btn-primary {
+  font-weight: 700;
+  border-radius: 10px;
+}
+.btn-secondary {
+  font-weight: 700;
+  border-radius: 10px;
+}
+.data-table tbody tr:hover {
+  background: #f8fafc;
+}
 
 .risk-UNASSESSED {
   background: #f1f5f9;

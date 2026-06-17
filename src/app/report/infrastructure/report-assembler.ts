@@ -1,12 +1,11 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
-
-import { Report, ReportType, ReportStatus } from '../domain/model/report.entity';
-import { ReportResponse } from './report-response';
-import { GenerateReportCommand } from '../domain/model/generate-report.command';
-import { GenerateReportRequest } from './generate-report.request';
+import {
+  Report,
+  ReportType,
+  ReportStatus,
+} from "../domain/model/report.entity";
+import { ReportResponse } from "./report-response";
+import { GenerateReportCommand } from "../domain/model/generate-report.command";
+import { GenerateReportRequest } from "./generate-report.request";
 
 export class ReportAssembler {
   static toEntity(r: ReportResponse): Report {
@@ -25,10 +24,15 @@ export class ReportAssembler {
   }
 
   static toEntityList(responses: ReportResponse[]): Report[] {
-    return responses.map(r => this.toEntity(r));
+    return responses.map((r) => this.toEntity(r));
   }
 
   static toRequest(cmd: GenerateReportCommand): GenerateReportRequest {
-    return { type: cmd.type, title: cmd.title, startDate: cmd.startDate.toISOString(), endDate: cmd.endDate.toISOString() };
+    return {
+      type: cmd.type,
+      title: cmd.title,
+      startDate: cmd.startDate.toISOString(),
+      endDate: cmd.endDate.toISOString(),
+    };
   }
 }

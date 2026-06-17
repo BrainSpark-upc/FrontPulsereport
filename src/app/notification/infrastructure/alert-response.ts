@@ -1,9 +1,8 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
-
-import { AlertSeverity, AlertStatus, AlertType } from '../domain/model/alert.entity';
+import {
+  AlertSeverity,
+  AlertStatus,
+  AlertType,
+} from "../domain/model/alert.entity";
 
 export interface AlertResponse {
   id: string | number;

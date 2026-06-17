@@ -270,43 +270,5 @@
       "description": "Traspaso SBAR registrado para María López",
       "performedAt": "2026-05-11T11:30:00.000Z"
     }
-  ],
-  "users": [
-    {
-      "id": "n-001",
-      "username": "enfermera.ana",
-      "password": "123456",
-      "firstName": "Ana",
-      "lastName": "García",
-      "email": "ana@care-labs.com",
-      "role": "NURSE"
-    },
-    {
-      "id": "n-002",
-      "username": "enfermero.luis",
-      "password": "123456",
-      "firstName": "Luis",
-      "lastName": "Paredes",
-      "email": "luis@care-labs.com",
-      "role": "HEAD_NURSE"
-    },
-    {
-      "id": "d-001",
-      "username": "doctor.rene",
-      "password": "123456",
-      "firstName": "René",
-      "lastName": "Salazar",
-      "email": "rene@care-labs.com",
-      "role": "DOCTOR"
-    },
-    {
-      "id": "admin",
-      "username": "admin",
-      "password": "admin123",
-      "firstName": "Admin",
-      "lastName": "PulseReport",
-      "email": "admin@care-labs.com",
-      "role": "ADMIN"
-    }
   ]
 }

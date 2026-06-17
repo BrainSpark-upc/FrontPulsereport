@@ -1,59 +1,52 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
-
-import { Component, Input, computed, inject, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
-import { IamStore } from '../../../../iam/application/iam.store';
-import { NotificationStore } from '../../../../notification/application/notification.store';
-import { AlertStatus } from '../../../../notification/domain/model/alert.entity';
-import { LanguageSwitcherComponent } from '../language-switcher/language-switcher';
+import { Component, Input, computed, inject, signal } from "@angular/core";
+import { DatePipe } from "@angular/common";
+import { Router } from "@angular/router";
+import { TranslatePipe } from "@ngx-translate/core";
+import { NotificationStore } from "../../../../notification/application/notification.store";
+import { AlertStatus } from "../../../../notification/domain/model/alert.entity";
+import { LanguageSwitcherComponent } from "../language-switcher/language-switcher";
+import { ViewMode, ViewModeStore } from "../../../application/view-mode.store";
 
 @Component({
-  selector: 'app-header',
+  selector: "app-header",
   standalone: true,
   imports: [LanguageSwitcherComponent, TranslatePipe, DatePipe],
-  templateUrl: './header.html',
-  styleUrl: './header.css',
+  templateUrl: "./header.html",
+  styleUrl: "./header.css",
 })
 export class HeaderComponent {
-  @Input() pageTitle = '';
+  @Input() pageTitle = "";
 
-  protected iamStore = inject(IamStore);
   protected notificationStore = inject(NotificationStore);
+  protected viewModeStore = inject(ViewModeStore);
   private router = inject(Router);
 
-  dropdownOpen = signal(false);
   notificationsOpen = signal(false);
   helpOpen = signal(false);
+  modeOpen = signal(false);
 
   protected activeAlerts = computed(() =>
-    this.notificationStore.alerts().filter(alert => alert.status !== AlertStatus.RESOLVED),
+    this.notificationStore
+      .alerts()
+      .filter((alert) => alert.status !== AlertStatus.RESOLVED),
   );
 
   protected latestAlerts = computed(() => this.activeAlerts().slice(0, 5));
+  protected modeTitleKey = computed(() =>
+    this.viewModeStore.isAdmin() ? "access.adminTitle" : "access.userTitle",
+  );
+  protected modeInitials = computed(() =>
+    this.viewModeStore.isAdmin() ? "AD" : "CL",
+  );
 
   constructor() {
     this.notificationStore.loadAlerts();
   }
 
-  toggleDropdown(): void {
-    this.notificationsOpen.set(false);
-    this.helpOpen.set(false);
-    this.dropdownOpen.update(v => !v);
-  }
-
-  closeDropdown(): void {
-    this.dropdownOpen.set(false);
-  }
-
   toggleNotifications(): void {
-    this.dropdownOpen.set(false);
     this.helpOpen.set(false);
-    this.notificationsOpen.update(value => !value);
+    this.modeOpen.set(false);
+    this.notificationsOpen.update((value) => !value);
   }
 
   closeNotifications(): void {
@@ -61,20 +54,42 @@ export class HeaderComponent {
   }
 
   toggleHelp(): void {
-    this.dropdownOpen.set(false);
     this.notificationsOpen.set(false);
-    this.helpOpen.update(value => !value);
+    this.modeOpen.set(false);
+    this.helpOpen.update((value) => !value);
   }
 
   closeHelp(): void {
     this.helpOpen.set(false);
   }
 
+  toggleModeMenu(): void {
+    this.notificationsOpen.set(false);
+    this.helpOpen.set(false);
+    this.modeOpen.update((value) => !value);
+  }
+
+  closeModeMenu(): void {
+    this.modeOpen.set(false);
+  }
+
+  selectMode(mode: ViewMode): void {
+    this.viewModeStore.setMode(mode);
+    this.closeModeMenu();
+    this.router.navigate(["/dashboard"]);
+  }
+
   goTo(path: string): void {
-    this.closeDropdown();
     this.closeNotifications();
     this.closeHelp();
+    this.closeModeMenu();
     this.router.navigate([path]);
+  }
+
+  returnToAccess(): void {
+    this.viewModeStore.clearMode();
+    this.closeModeMenu();
+    this.router.navigate(["/sign-in"]);
   }
 
   acknowledgeAlert(alertId: string): void {
@@ -83,15 +98,5 @@ export class HeaderComponent {
 
   resolveAlert(alertId: string): void {
     this.notificationStore.resolve(alertId);
-  }
-
-  goToProfile(): void {
-    this.goTo('/profile');
-  }
-
-  signOut(): void {
-    this.closeDropdown();
-    this.iamStore.signOut();
-    this.router.navigate(['/sign-in']);
   }
 }

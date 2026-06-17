@@ -2,82 +2,165 @@
   <div class="dashboard-hero">
     <div>
       <span class="eyebrow">{{ 'dashboard.eyebrow' | translate }}</span>
-      <h1>{{ 'dashboard.title' | translate }}</h1>
-      <p>{{ 'dashboard.backendSubtitle' | translate }}</p>
+      @if (viewModeStore.isAdmin()) {
+      <h1>{{ 'dashboard.adminTitle' | translate }}</h1>
+      <p>{{ 'dashboard.adminSubtitle' | translate }}</p>
+      } @else {
+      <h1>{{ 'dashboard.userTitle' | translate }}</h1>
+      <p>{{ 'dashboard.userSubtitle' | translate }}</p>
+      }
     </div>
 
     <div class="hero-actions">
-      <a routerLink="/patients" class="hero-btn secondary">{{ 'dashboard.goPatients' | translate }}</a>
-      <a routerLink="/alerts" class="hero-btn">{{ 'dashboard.goAlerts' | translate }}</a>
+      @if (viewModeStore.isAdmin()) {
+      <a routerLink="/reports" class="hero-btn secondary"
+        >{{ 'dashboard.goReports' | translate }}</a
+      >
+      <a routerLink="/audit" class="hero-btn"
+        >{{ 'dashboard.goAudit' | translate }}</a
+      >
+      } @else {
+      <a routerLink="/patients" class="hero-btn secondary"
+        >{{ 'dashboard.goPatients' | translate }}</a
+      >
+      <a routerLink="/vital-signs" class="hero-btn"
+        >{{ 'dashboard.recordVitals' | translate }}</a
+      >
+      }
     </div>
   </div>
 
   <div class="stats-row">
     <div class="stat-card">
       <div class="stat-icon patients-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
-          <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/>
-          <circle cx="9" cy="7" r="4"/>
-          <path d="M22 21v-2a4 4 0 00-3-3.87"/>
-          <path d="M16 3.13a4 4 0 010 7.75"/>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          width="28"
+          height="28"
+        >
+          <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M22 21v-2a4 4 0 00-3-3.87" />
+          <path d="M16 3.13a4 4 0 010 7.75" />
         </svg>
       </div>
       <div class="stat-content">
         <span class="stat-number">{{ activePatientsCount() }}</span>
-        <span class="stat-label">{{ 'dashboard.monitoredPatients' | translate }}</span>
-        <span class="stat-sub">{{ 'dashboard.backendConnected' | translate }}</span>
+        <span class="stat-label"
+          >{{ 'dashboard.monitoredPatients' | translate }}</span
+        >
+        <span class="stat-sub"
+          >{{ 'dashboard.backendConnected' | translate }}</span
+        >
       </div>
     </div>
 
     <div class="stat-card">
       <div class="stat-icon alerts-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
-          <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
-          <line x1="12" y1="9" x2="12" y2="13"/>
-          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          width="28"
+          height="28"
+        >
+          <path
+            d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+          />
+          <line x1="12" y1="9" x2="12" y2="13" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
         </svg>
       </div>
       <div class="stat-content">
         <span class="stat-number">{{ activeAlertsCount() }}</span>
-        <span class="stat-label">{{ 'dashboard.activeAlerts' | translate }}</span>
-        <span class="stat-sub">{{ criticalAlertsCount() }} {{ 'alerts.critical' | translate }} | {{ moderateAlertsCount() }} {{ 'alerts.moderate' | translate }}</span>
+        <span class="stat-label"
+          >{{ 'dashboard.activeAlerts' | translate }}</span
+        >
+        <span class="stat-sub"
+          >{{ criticalAlertsCount() }} {{ 'alerts.critical' | translate }} | {{
+          moderateAlertsCount() }} {{ 'alerts.moderate' | translate }}</span
+        >
       </div>
     </div>
 
     <div class="stat-card">
       <div class="stat-icon events-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
-          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          width="28"
+          height="28"
+        >
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
         </svg>
       </div>
       <div class="stat-content">
         <span class="stat-number">{{ auditMovementsCount() }}</span>
-        <span class="stat-label">{{ 'dashboard.auditMovements' | translate }}</span>
-        <span class="stat-sub">{{ 'dashboard.lastUpdate' | translate }}: {{ lastUpdate() | date:'h:mm a' }}</span>
+        <span class="stat-label"
+          >{{ 'dashboard.auditMovements' | translate }}</span
+        >
+        <span class="stat-sub"
+          >{{ 'dashboard.lastUpdate' | translate }}: {{ lastUpdate() |
+          date:'h:mm a' }}</span
+        >
       </div>
     </div>
 
     <div class="stat-card">
       <div class="stat-icon inspections-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
-          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-          <line x1="9" y1="3" x2="9" y2="21"/>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          width="28"
+          height="28"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+          <line x1="9" y1="3" x2="9" y2="21" />
         </svg>
       </div>
       <div class="stat-content">
         <span class="stat-number">{{ connectedModulesCount() }}</span>
-        <span class="stat-label">{{ 'dashboard.connectedModules' | translate }}</span>
-        <span class="stat-sub">Patients · Alerts · Audit</span>
+        <span class="stat-label"
+          >{{ 'dashboard.connectedModules' | translate }}</span
+        >
+        <span class="stat-sub">
+          @if (viewModeStore.isAdmin()) { {{ 'dashboard.adminModules' |
+          translate }} } @else { {{ 'dashboard.userModules' | translate }} }
+        </span>
       </div>
     </div>
   </div>
+
+  <section class="mode-summary" [class.admin]="viewModeStore.isAdmin()">
+    <div>
+      <span>{{ 'access.currentView' | translate }}</span>
+      <strong>
+        @if (viewModeStore.isAdmin()) { {{ 'access.adminTitle' | translate }} }
+        @else { {{ 'access.userTitle' | translate }} }
+      </strong>
+    </div>
+    <p>
+      @if (viewModeStore.isAdmin()) { {{ 'dashboard.adminModeText' | translate
+      }} } @else { {{ 'dashboard.userModeText' | translate }} }
+    </p>
+  </section>
 
   <div class="dashboard-grid">
     <div class="card monitoring-card">
       <div class="card-header">
         <h2>{{ 'dashboard.patientMonitoring' | translate }}</h2>
-        <a routerLink="/patients" class="link">{{ 'common.seeAll' | translate }}</a>
+        <a routerLink="/patients" class="link"
+          >{{ 'common.seeAll' | translate }}</a
+        >
       </div>
 
       <table class="data-table">
@@ -93,25 +176,31 @@
 
         <tbody>
           @for (patient of latestPatients(); track patient.id) {
-            <tr>
-              <td class="patient-cell">
-                <div class="patient-avatar"></div>
-                <div>
-                  <span class="patient-name">{{ patient.fullName }}</span><br />
-                  <span class="patient-id">ID: {{ patient.code }}</span>
-                </div>
-              </td>
-              <td><span class="status-badge">{{ patient.statusLabel }}</span></td>
-              <td>{{ patient.roomNumber }} / {{ patient.bedNumber }}</td>
-              <td>{{ patient.diagnosis }}</td>
-              <td><a class="link" [routerLink]="['/patients', patient.id, 'monitoring']">{{ 'patients.clinicalDetail' | translate }}</a></td>
-            </tr>
+          <tr>
+            <td class="patient-cell">
+              <div class="patient-avatar"></div>
+              <div>
+                <span class="patient-name">{{ patient.fullName }}</span><br />
+                <span class="patient-id">ID: {{ patient.code }}</span>
+              </div>
+            </td>
+            <td><span class="status-badge">{{ patient.statusLabel }}</span></td>
+            <td>{{ patient.roomNumber }} / {{ patient.bedNumber }}</td>
+            <td>{{ patient.diagnosis }}</td>
+            <td>
+              <a
+                class="link"
+                [routerLink]="['/patients', patient.id, 'monitoring']"
+                >{{ 'patients.clinicalDetail' | translate }}</a
+              >
+            </td>
+          </tr>
           } @empty {
-            <tr>
-              <td colspan="5">
-                <div class="empty-state">{{ 'patients.empty' | translate }}</div>
-              </td>
-            </tr>
+          <tr>
+            <td colspan="5">
+              <div class="empty-state">{{ 'patients.empty' | translate }}</div>
+            </td>
+          </tr>
           }
         </tbody>
       </table>
@@ -120,53 +209,79 @@
     <div class="card alerts-card">
       <div class="card-header">
         <h2>{{ 'dashboard.activeAlerts' | translate }}</h2>
-        <a routerLink="/alerts" class="link">{{ 'common.seeAll' | translate }}</a>
+        <a routerLink="/alerts" class="link"
+          >{{ 'common.seeAll' | translate }}</a
+        >
       </div>
 
       @for (alert of latestAlerts(); track alert.id) {
-        <div class="alert-item">
-          <div class="alert-icon-wrap" [class.critical-bg]="alert.isCritical" [class.moderate-bg]="!alert.isCritical">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18">
-              <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
-              <line x1="12" y1="9" x2="12" y2="13"/>
-              <line x1="12" y1="17" x2="12.01" y2="17"/>
-            </svg>
-          </div>
-
-          <div class="alert-content">
-            <span class="alert-patient">{{ alert.patientName }}</span>
-            <span class="alert-detail">{{ alert.title }}</span>
-          </div>
-
-          <div class="alert-meta">
-            <span class="severity-tag" [class.tag-critical]="alert.isCritical" [class.tag-moderate]="!alert.isCritical">{{ alert.severityLabel }}</span>
-            <span class="alert-time">{{ alert.triggeredAt | date:'h:mm a' }}</span>
-          </div>
+      <div class="alert-item">
+        <div
+          class="alert-icon-wrap"
+          [class.critical-bg]="alert.isCritical"
+          [class.moderate-bg]="!alert.isCritical"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            width="18"
+            height="18"
+          >
+            <path
+              d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+            />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
         </div>
+
+        <div class="alert-content">
+          <span class="alert-patient">{{ alert.patientName }}</span>
+          <span class="alert-detail">{{ alert.title }}</span>
+        </div>
+
+        <div class="alert-meta">
+          <span
+            class="severity-tag"
+            [class.tag-critical]="alert.isCritical"
+            [class.tag-moderate]="!alert.isCritical"
+            >{{ alert.severityLabel }}</span
+          >
+          <span class="alert-time"
+            >{{ alert.triggeredAt | date:'h:mm a' }}</span
+          >
+        </div>
+      </div>
       } @empty {
-        <div class="empty-state">{{ 'alerts.emptyFilter' | translate }}</div>
+      <div class="empty-state">{{ 'alerts.emptyFilter' | translate }}</div>
       }
     </div>
 
+    @if (viewModeStore.isAdmin()) {
     <div class="card audit-card">
       <div class="card-header">
         <h2>{{ 'audit.title' | translate }}</h2>
-        <a routerLink="/audit" class="link">{{ 'common.seeAll' | translate }}</a>
+        <a routerLink="/audit" class="link"
+          >{{ 'common.seeAll' | translate }}</a
+        >
       </div>
 
       @for (log of latestAudits(); track log.id) {
-        <div class="audit-item">
-          <span class="audit-code">{{ log.code }}</span>
-          <div class="audit-content">
-            <span class="audit-desc">{{ log.description }}</span>
-            <span class="audit-user">{{ log.username }}</span>
-          </div>
-          <span class="audit-time">{{ log.performedAt | date:'h:mm a' }}</span>
+      <div class="audit-item">
+        <span class="audit-code">{{ log.code }}</span>
+        <div class="audit-content">
+          <span class="audit-desc">{{ log.description }}</span>
+          <span class="audit-user">{{ log.username }}</span>
         </div>
+        <span class="audit-time">{{ log.performedAt | date:'h:mm a' }}</span>
+      </div>
       } @empty {
-        <div class="empty-state">{{ 'audit.empty' | translate }}</div>
+      <div class="empty-state">{{ 'audit.empty' | translate }}</div>
       }
     </div>
+    }
 
     <div class="card actions-card">
       <div class="card-header">
@@ -174,9 +289,30 @@
       </div>
 
       <div class="actions-list">
-        <a routerLink="/patients" class="action-btn">{{ 'dashboard.goPatients' | translate }}</a>
-        <a routerLink="/alerts" class="action-btn">{{ 'dashboard.goAlerts' | translate }}</a>
-        <a routerLink="/audit" class="action-btn">{{ 'dashboard.goAudit' | translate }}</a>
+        @if (viewModeStore.isAdmin()) {
+        <a routerLink="/reports" class="action-btn"
+          >{{ 'dashboard.goReports' | translate }}</a
+        >
+        <a routerLink="/audit" class="action-btn"
+          >{{ 'dashboard.goAudit' | translate }}</a
+        >
+        <a routerLink="/alerts" class="action-btn"
+          >{{ 'dashboard.goAlerts' | translate }}</a
+        >
+        } @else {
+        <a routerLink="/patients" class="action-btn"
+          >{{ 'dashboard.goPatients' | translate }}</a
+        >
+        <a routerLink="/clinical-events" class="action-btn"
+          >{{ 'dashboard.goClinicalEvents' | translate }}</a
+        >
+        <a routerLink="/sbar" class="action-btn"
+          >{{ 'dashboard.goSbar' | translate }}</a
+        >
+        <a routerLink="/alerts" class="action-btn"
+          >{{ 'dashboard.goAlerts' | translate }}</a
+        >
+        }
       </div>
     </div>
   </div>

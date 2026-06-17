@@ -1,5 +1,10 @@
-import { Alert, AlertSeverity, AlertStatus, AlertType } from '../domain/model/alert.entity';
-import { AlertResponse } from './alert-response';
+import {
+  Alert,
+  AlertSeverity,
+  AlertStatus,
+  AlertType,
+} from "../domain/model/alert.entity";
+import { AlertResponse } from "./alert-response";
 
 export class AlertAssembler {
   static toEntity(response: AlertResponse, patientName?: string): Alert {
@@ -27,8 +32,11 @@ export class AlertAssembler {
     );
   }
 
-  static toEntityList(responses: AlertResponse[], resolvePatientName?: (patientId: string) => string): Alert[] {
-    return responses.map(response =>
+  static toEntityList(
+    responses: AlertResponse[],
+    resolvePatientName?: (patientId: string) => string,
+  ): Alert[] {
+    return responses.map((response) =>
       this.toEntity(response, resolvePatientName?.(String(response.patientId))),
     );
   }

@@ -1,4 +1,4 @@
-import { PatientStatusEnum } from '../domain/model/patient.entity';
+import { PatientStatusEnum } from "../domain/model/patient.entity";
 
 export interface PatientResponse {
   id: string;

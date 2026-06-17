@@ -1,23 +1,18 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
-
 export enum ReportType {
-  VITAL_SIGNS = 'Signos vitales',
-  PATIENTS = 'Pacientes',
-  CLINICAL_EVENTS = 'Eventos clínicos',
-  SBAR = 'Traspasos SBAR',
-  ALERTS = 'Alertas',
-  AUDIT = 'Auditoría',
-  GENERAL = 'General',
+  VITAL_SIGNS = "Signos vitales",
+  PATIENTS = "Pacientes",
+  CLINICAL_EVENTS = "Eventos clínicos",
+  SBAR = "Traspasos SBAR",
+  ALERTS = "Alertas",
+  AUDIT = "Auditoría",
+  GENERAL = "General",
 }
 
 export enum ReportStatus {
-  PENDING = 'Pendiente',
-  GENERATING = 'Generando',
-  COMPLETED = 'Completado',
-  FAILED = 'Fallido',
+  PENDING = "Pendiente",
+  GENERATING = "Generando",
+  COMPLETED = "Completado",
+  FAILED = "Fallido",
 }
 
 export interface ReportSummary {

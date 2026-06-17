@@ -1,27 +1,22 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
+import { Component, inject } from "@angular/core";
+import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 
-import { Component, inject } from '@angular/core';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-
-type AppLanguage = 'es' | 'en';
+type AppLanguage = "es" | "en";
 
 @Component({
-  selector: 'app-language-switcher',
+  selector: "app-language-switcher",
   standalone: true,
   imports: [TranslatePipe],
-  templateUrl: './language-switcher.html',
-  styleUrl: './language-switcher.css',
+  templateUrl: "./language-switcher.html",
+  styleUrl: "./language-switcher.css",
 })
 export class LanguageSwitcherComponent {
-  private readonly storageKey = 'pulse-report-language';
+  private readonly storageKey = "pulse-report-language";
   protected readonly translate = inject(TranslateService);
-  protected readonly languages: AppLanguage[] = ['es', 'en'];
+  protected readonly languages: AppLanguage[] = ["es", "en"];
 
   protected currentLanguage(): string {
-    return this.translate.getCurrentLang() || 'es';
+    return this.translate.getCurrentLang() || "es";
   }
 
   protected useLanguage(language: AppLanguage): void {

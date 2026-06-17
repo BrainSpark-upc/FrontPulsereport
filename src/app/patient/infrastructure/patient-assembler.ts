@@ -1,5 +1,5 @@
-import { Patient } from '../domain/model/patient.entity';
-import { PatientResponse } from './patient-response';
+import { Patient } from "../domain/model/patient.entity";
+import { PatientResponse } from "./patient-response";
 
 export class PatientAssembler {
   static toEntity(response: PatientResponse): Patient {
@@ -20,6 +20,6 @@ export class PatientAssembler {
   }
 
   static toEntityList(responses: PatientResponse[]): Patient[] {
-    return responses.map(response => PatientAssembler.toEntity(response));
+    return responses.map((response) => PatientAssembler.toEntity(response));
   }
 }

@@ -1,21 +1,19 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
-
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { PatientStore } from '../../../application/patient.store';
-import { Router } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
-import { Patient, PatientStatusEnum } from '../../../domain/model/patient.entity';
+import { Component, inject, OnInit, signal } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { PatientStore } from "../../../application/patient.store";
+import { Router } from "@angular/router";
+import { TranslatePipe } from "@ngx-translate/core";
+import {
+  Patient,
+  PatientStatusEnum,
+} from "../../../domain/model/patient.entity";
 
 @Component({
-  selector: 'app-patient-list',
+  selector: "app-patient-list",
   standalone: true,
   imports: [TranslatePipe, FormsModule],
-  templateUrl: './patient-list.html',
-  styleUrl: './patient-list.css',
+  templateUrl: "./patient-list.html",
+  styleUrl: "./patient-list.css",
 })
 export class PatientListComponent implements OnInit {
   protected store = inject(PatientStore);
@@ -24,7 +22,7 @@ export class PatientListComponent implements OnInit {
   activeMenu = signal<string | null>(null);
   showForm = signal(false);
   editingPatientId = signal<string | null>(null);
-  query = signal('');
+  query = signal("");
   errorMessage = signal<string | null>(null);
 
   form = this.emptyForm();
@@ -35,15 +33,15 @@ export class PatientListComponent implements OnInit {
 
   private emptyForm() {
     return {
-      firstName: '',
-      lastName: '',
-      documentNumber: '',
-      birthDate: '1980-01-01',
-      gender: 'Male',
-      diagnosis: '',
-      roomNumber: '',
-      bedNumber: '',
-      attendingPhysician: '',
+      firstName: "",
+      lastName: "",
+      documentNumber: "",
+      birthDate: "1980-01-01",
+      gender: "Male",
+      diagnosis: "",
+      roomNumber: "",
+      bedNumber: "",
+      attendingPhysician: "",
       status: PatientStatusEnum.OBSERVATION,
       admissionDate: new Date().toISOString().slice(0, 10),
     };
@@ -69,9 +67,13 @@ export class PatientListComponent implements OnInit {
     const value = this.query().trim().toLowerCase();
     if (!value) return this.store.patients();
 
-    return this.store.patients().filter(patient =>
-      `${patient.code} ${patient.fullName} ${patient.documentNumber} ${patient.roomNumber} ${patient.bedNumber} ${patient.statusLabel} ${patient.diagnosis}`.toLowerCase().includes(value),
-    );
+    return this.store
+      .patients()
+      .filter((patient) =>
+        `${patient.code} ${patient.fullName} ${patient.documentNumber} ${patient.roomNumber} ${patient.bedNumber} ${patient.statusLabel} ${patient.diagnosis}`
+          .toLowerCase()
+          .includes(value),
+      );
   }
 
   openCreateForm(): void {
@@ -89,7 +91,7 @@ export class PatientListComponent implements OnInit {
   }
 
   toggleMenu(patientId: string): void {
-    this.activeMenu.update(v => v === patientId ? null : patientId);
+    this.activeMenu.update((v) => (v === patientId ? null : patientId));
   }
 
   closeMenu(): void {
@@ -98,11 +100,11 @@ export class PatientListComponent implements OnInit {
 
   goToMonitoring(patientId: string): void {
     this.closeMenu();
-    this.router.navigate(['/patients', patientId, 'monitoring']);
+    this.router.navigate(["/patients", patientId, "monitoring"]);
   }
 
   editPatient(patientId: string): void {
-    const patient = this.store.patients().find(p => p.id === patientId);
+    const patient = this.store.patients().find((p) => p.id === patientId);
     if (!patient) return;
 
     this.closeMenu();
@@ -110,13 +112,15 @@ export class PatientListComponent implements OnInit {
     this.editingPatientId.set(patientId);
     this.fillForm(patient);
     this.showForm.set(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   dischargePatient(patientId: string): void {
     this.closeMenu();
 
-    const confirmed = confirm('¿Seguro que deseas dar de alta a este paciente?');
+    const confirmed = confirm(
+      "¿Seguro que deseas dar de alta a este paciente?",
+    );
     if (!confirmed) return;
 
     this.store.dischargePatient(patientId);
@@ -125,7 +129,7 @@ export class PatientListComponent implements OnInit {
   deletePatient(patientId: string): void {
     this.closeMenu();
 
-    const confirmed = confirm('¿Seguro que deseas eliminar este paciente?');
+    const confirmed = confirm("¿Seguro que deseas eliminar este paciente?");
     if (!confirmed) return;
 
     this.store.deletePatient(patientId);
@@ -136,12 +140,16 @@ export class PatientListComponent implements OnInit {
 
     const editingId = this.editingPatientId();
 
-    const documentExists = this.store.patients().some(p =>
-      p.documentNumber === this.form.documentNumber.trim() && p.id !== editingId
-    );
+    const documentExists = this.store
+      .patients()
+      .some(
+        (p) =>
+          p.documentNumber === this.form.documentNumber.trim() &&
+          p.id !== editingId,
+      );
 
     if (documentExists) {
-      this.errorMessage.set('Ya existe un paciente con ese documento.');
+      this.errorMessage.set("Ya existe un paciente con ese documento.");
       return;
     }
 
@@ -154,7 +162,9 @@ export class PatientListComponent implements OnInit {
       !this.form.diagnosis.trim() ||
       !this.form.attendingPhysician.trim()
     ) {
-      this.errorMessage.set('Completa nombres, apellidos, documento, diagnóstico, habitación, cama y médico.');
+      this.errorMessage.set(
+        "Completa nombres, apellidos, documento, diagnóstico, habitación, cama y médico.",
+      );
       return;
     }
 

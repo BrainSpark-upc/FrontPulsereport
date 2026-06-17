@@ -1,21 +1,16 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
-
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { VitalSignStore } from '../../../application/vital-sign.store';
-import { PatientStore } from '../../../../patient/application/patient.store';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { Component, inject, OnInit, signal } from "@angular/core";
+import { DatePipe } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { VitalSignStore } from "../../../application/vital-sign.store";
+import { PatientStore } from "../../../../patient/application/patient.store";
+import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-vital-sign-list',
+  selector: "app-vital-sign-list",
   standalone: true,
   imports: [TranslatePipe, DatePipe, FormsModule],
-  templateUrl: './vital-sign-list.html',
-  styleUrl: './vital-sign-list.css',
+  templateUrl: "./vital-sign-list.html",
+  styleUrl: "./vital-sign-list.css",
 })
 export class VitalSignListComponent implements OnInit {
   protected store = inject(VitalSignStore);
@@ -53,7 +48,7 @@ export class VitalSignListComponent implements OnInit {
 
   private emptyForm() {
     return {
-      patientId: '',
+      patientId: "",
       heartRate: 78,
       respiratoryRate: 18,
       systolic: 120,
@@ -64,14 +59,22 @@ export class VitalSignListComponent implements OnInit {
   }
 
   private validateForm(): string | null {
-    if (!this.form.patientId) return this.translate.instant('vitals.validation.patientRequired');
-    if (this.form.heartRate < 20 || this.form.heartRate > 250) return this.translate.instant('vitals.validation.heartRate');
-    if (this.form.respiratoryRate < 5 || this.form.respiratoryRate > 80) return this.translate.instant('vitals.validation.respiratoryRate');
-    if (this.form.systolic < 50 || this.form.systolic > 260) return this.translate.instant('vitals.validation.systolic');
-    if (this.form.diastolic < 30 || this.form.diastolic > 180) return this.translate.instant('vitals.validation.diastolic');
-    if (this.form.systolic <= this.form.diastolic) return this.translate.instant('vitals.validation.bloodPressure');
-    if (this.form.oxygenSaturation < 0 || this.form.oxygenSaturation > 100) return this.translate.instant('vitals.validation.oxygen');
-    if (this.form.temperature < 30 || this.form.temperature > 45) return this.translate.instant('vitals.validation.temperature');
+    if (!this.form.patientId)
+      return this.translate.instant("vitals.validation.patientRequired");
+    if (this.form.heartRate < 20 || this.form.heartRate > 250)
+      return this.translate.instant("vitals.validation.heartRate");
+    if (this.form.respiratoryRate < 5 || this.form.respiratoryRate > 80)
+      return this.translate.instant("vitals.validation.respiratoryRate");
+    if (this.form.systolic < 50 || this.form.systolic > 260)
+      return this.translate.instant("vitals.validation.systolic");
+    if (this.form.diastolic < 30 || this.form.diastolic > 180)
+      return this.translate.instant("vitals.validation.diastolic");
+    if (this.form.systolic <= this.form.diastolic)
+      return this.translate.instant("vitals.validation.bloodPressure");
+    if (this.form.oxygenSaturation < 0 || this.form.oxygenSaturation > 100)
+      return this.translate.instant("vitals.validation.oxygen");
+    if (this.form.temperature < 30 || this.form.temperature > 45)
+      return this.translate.instant("vitals.validation.temperature");
     return null;
   }
 }

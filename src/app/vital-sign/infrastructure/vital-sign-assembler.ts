@@ -1,8 +1,11 @@
-import { VitalSign, RiskLevel } from '../domain/model/vital-sign.entity';
-import { VitalSignResponse } from './vital-sign-response';
+import { VitalSign, RiskLevel } from "../domain/model/vital-sign.entity";
+import { VitalSignResponse } from "./vital-sign-response";
 
 export class VitalSignAssembler {
-  static toEntity(response: VitalSignResponse, patientName?: string): VitalSign {
+  static toEntity(
+    response: VitalSignResponse,
+    patientName?: string,
+  ): VitalSign {
     const calculatedRisk = this.resolveRiskLevel(response);
 
     return new VitalSign(
@@ -21,8 +24,11 @@ export class VitalSignAssembler {
     );
   }
 
-  static toEntityList(responses: VitalSignResponse[], resolvePatientName?: (patientId: string) => string): VitalSign[] {
-    return responses.map(response =>
+  static toEntityList(
+    responses: VitalSignResponse[],
+    resolvePatientName?: (patientId: string) => string,
+  ): VitalSign[] {
+    return responses.map((response) =>
       this.toEntity(response, resolvePatientName?.(String(response.patientId))),
     );
   }

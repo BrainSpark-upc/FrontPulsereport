@@ -1,9 +1,4 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
-
-import { ReportSummary } from '../domain/model/report.entity';
+import { ReportSummary } from "../domain/model/report.entity";
 
 export interface ReportResponse {
   id: string;

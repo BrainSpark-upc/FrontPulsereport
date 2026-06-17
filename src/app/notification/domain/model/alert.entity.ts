@@ -1,31 +1,31 @@
 export enum AlertSeverity {
-  LOW = 'LOW',
-  MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH',
-  CRITICAL = 'CRITICAL',
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+  CRITICAL = "CRITICAL",
 
   // Compatibilidad con pantallas antiguas del front
-  MODERATE = 'MEDIUM',
+  MODERATE = "MEDIUM",
 }
 
 export enum AlertStatus {
-  OPEN = 'OPEN',
-  ATTENDED = 'ATTENDED',
-  CLOSED = 'CLOSED',
+  OPEN = "OPEN",
+  ATTENDED = "ATTENDED",
+  CLOSED = "CLOSED",
 
   // Compatibilidad con nombres antiguos del front
-  ACTIVE = 'OPEN',
-  ACKNOWLEDGED = 'ATTENDED',
-  RESOLVED = 'CLOSED',
+  ACTIVE = "OPEN",
+  ACKNOWLEDGED = "ATTENDED",
+  RESOLVED = "CLOSED",
 }
 
 export enum AlertType {
-  CARDIAC = 'CARDIAC',
-  RESPIRATORY = 'RESPIRATORY',
-  NEUROLOGICAL = 'NEUROLOGICAL',
-  FALL = 'FALL',
-  MEDICATION = 'MEDICATION',
-  OTHER = 'OTHER',
+  CARDIAC = "CARDIAC",
+  RESPIRATORY = "RESPIRATORY",
+  NEUROLOGICAL = "NEUROLOGICAL",
+  FALL = "FALL",
+  MEDICATION = "MEDICATION",
+  OTHER = "OTHER",
 }
 
 export class Alert {
@@ -48,15 +48,15 @@ export class Alert {
 
   get title(): string {
     const labels: Record<string, string> = {
-      CARDIAC: 'Alerta cardiaca',
-      RESPIRATORY: 'Alerta respiratoria',
-      NEUROLOGICAL: 'Alerta neurológica',
-      FALL: 'Riesgo de caída',
-      MEDICATION: 'Alerta de medicación',
-      OTHER: 'Alerta clínica',
+      CARDIAC: "Alerta cardiaca",
+      RESPIRATORY: "Alerta respiratoria",
+      NEUROLOGICAL: "Alerta neurológica",
+      FALL: "Riesgo de caída",
+      MEDICATION: "Alerta de medicación",
+      OTHER: "Alerta clínica",
     };
 
-    return labels[this.type] ?? 'Alerta clínica';
+    return labels[this.type] ?? "Alerta clínica";
   }
 
   get message(): string {
@@ -65,10 +65,10 @@ export class Alert {
 
   get severityLabel(): string {
     const labels: Record<string, string> = {
-      LOW: 'Baja',
-      MEDIUM: 'Moderada',
-      HIGH: 'Alta',
-      CRITICAL: 'Crítica',
+      LOW: "Baja",
+      MEDIUM: "Moderada",
+      HIGH: "Alta",
+      CRITICAL: "Crítica",
     };
 
     return labels[this.severity] ?? this.severity;
@@ -76,9 +76,9 @@ export class Alert {
 
   get statusLabel(): string {
     const labels: Record<string, string> = {
-      OPEN: 'Activa',
-      ATTENDED: 'Atendida',
-      CLOSED: 'Cerrada',
+      OPEN: "Activa",
+      ATTENDED: "Atendida",
+      CLOSED: "Cerrada",
     };
 
     return labels[this.status] ?? this.status;

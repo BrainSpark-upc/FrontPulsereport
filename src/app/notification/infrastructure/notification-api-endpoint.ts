@@ -1,20 +1,15 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
-
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { environment } from "../../../environments/environment";
 import {
   AlertResponse,
   AttendAlertRequest,
   CloseAlertRequest,
   CreateAlertRequest,
-} from './alert-response';
+} from "./alert-response";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class NotificationApiEndpoint {
   private readonly baseUrl = `${environment.apiBaseUrl}/alerts`;
 
@@ -25,7 +20,9 @@ export class NotificationApiEndpoint {
   }
 
   getByPatientId(patientId: string): Observable<AlertResponse[]> {
-    return this.http.get<AlertResponse[]>(`${this.baseUrl}/patients/${patientId}`);
+    return this.http.get<AlertResponse[]>(
+      `${this.baseUrl}/patients/${patientId}`,
+    );
   }
 
   create(request: CreateAlertRequest): Observable<AlertResponse> {
@@ -37,15 +34,25 @@ export class NotificationApiEndpoint {
       attendedBy: userName,
     };
 
-    return this.http.patch<AlertResponse>(`${this.baseUrl}/${id}/attend`, request);
+    return this.http.patch<AlertResponse>(
+      `${this.baseUrl}/${id}/attend`,
+      request,
+    );
   }
 
-  resolve(id: string, userName: string, note = 'Alerta cerrada desde seguimiento clínico.'): Observable<AlertResponse> {
+  resolve(
+    id: string,
+    userName: string,
+    note = "Alerta cerrada desde seguimiento clínico.",
+  ): Observable<AlertResponse> {
     const request: CloseAlertRequest = {
       closedBy: userName,
       resolutionNotes: note,
     };
 
-    return this.http.patch<AlertResponse>(`${this.baseUrl}/${id}/close`, request);
+    return this.http.patch<AlertResponse>(
+      `${this.baseUrl}/${id}/close`,
+      request,
+    );
   }
 }

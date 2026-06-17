@@ -1,8 +1,3 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
-
 export interface RecordVitalSignRequest {
   patientId: number;
   nurseId: number;

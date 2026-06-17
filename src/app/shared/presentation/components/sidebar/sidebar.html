@@ -1,6 +1,48 @@
 <aside class="sidebar">
   <div class="sidebar-brand">
-    <svg class="brand-icon" viewBox="0 0 32 32" fill="none"><rect x="4" y="4" width="24" height="24" rx="4" stroke="currentColor" stroke-width="2"/><line x1="10" y1="16" x2="16" y2="10" stroke="currentColor" stroke-width="2"/><line x1="16" y1="10" x2="22" y2="16" stroke="currentColor" stroke-width="2"/><line x1="10" y1="22" x2="16" y2="16" stroke="currentColor" stroke-width="2"/><line x1="16" y1="16" x2="22" y2="22" stroke="currentColor" stroke-width="2"/></svg>
+    <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+      <rect
+        x="4"
+        y="4"
+        width="24"
+        height="24"
+        rx="4"
+        stroke="currentColor"
+        stroke-width="2"
+      />
+      <line
+        x1="10"
+        y1="16"
+        x2="16"
+        y2="10"
+        stroke="currentColor"
+        stroke-width="2"
+      />
+      <line
+        x1="16"
+        y1="10"
+        x2="22"
+        y2="16"
+        stroke="currentColor"
+        stroke-width="2"
+      />
+      <line
+        x1="10"
+        y1="22"
+        x2="16"
+        y2="16"
+        stroke="currentColor"
+        stroke-width="2"
+      />
+      <line
+        x1="16"
+        y1="16"
+        x2="22"
+        y2="22"
+        stroke="currentColor"
+        stroke-width="2"
+      />
+    </svg>
     <div class="brand-text">
       <span class="brand-title">Care-Labs</span>
       <span class="brand-subtitle">PulseReport</span>
@@ -9,52 +51,122 @@
 
   <nav class="sidebar-nav">
     <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <svg
+        class="nav-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+      </svg>
       <span>{{ 'sidebar.dashboard' | translate }}</span>
     </a>
     <a routerLink="/patients" routerLinkActive="active" class="nav-item">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      <svg
+        class="nav-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M22 21v-2a4 4 0 00-3-3.87" />
+        <path d="M16 3.13a4 4 0 010 7.75" />
+      </svg>
       <span>{{ 'sidebar.patients' | translate }}</span>
     </a>
+
     <a routerLink="/vital-signs" routerLinkActive="active" class="nav-item">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      <svg
+        class="nav-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+      </svg>
       <span>{{ 'sidebar.vitalSigns' | translate }}</span>
     </a>
     <a routerLink="/clinical-events" routerLinkActive="active" class="nav-item">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <svg
+        class="nav-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+        <polyline points="14 2 14 8 20 8" />
+        <line x1="16" y1="13" x2="8" y2="13" />
+        <line x1="16" y1="17" x2="8" y2="17" />
+      </svg>
       <span>{{ 'sidebar.clinicalEvents' | translate }}</span>
     </a>
-    @if (iamStore.canRegisterSbar()) {
     <a routerLink="/sbar" routerLinkActive="active" class="nav-item">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      <svg
+        class="nav-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 00-3-3.87" />
+        <path d="M16 3.13a4 4 0 010 7.75" />
+      </svg>
       <span>{{ 'sidebar.sbar' | translate }}</span>
     </a>
-    }
+
     <a routerLink="/alerts" routerLinkActive="active" class="nav-item">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      <svg
+        class="nav-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" />
+        <path d="M13.73 21a2 2 0 01-3.46 0" />
+      </svg>
       <span>{{ 'sidebar.alerts' | translate }}</span>
     </a>
-    @if (iamStore.canGenerateReports()) {
+
+    @if (viewModeStore.isAdmin()) {
     <a routerLink="/reports" routerLinkActive="active" class="nav-item">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <svg
+        class="nav-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+        <polyline points="17 8 12 3 7 8" />
+        <line x1="12" y1="3" x2="12" y2="15" />
+      </svg>
       <span>{{ 'sidebar.reports' | translate }}</span>
     </a>
-    }
-    @if (iamStore.canSeeAudit()) {
     <a routerLink="/audit" routerLinkActive="active" class="nav-item">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <svg
+        class="nav-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
       <span>{{ 'sidebar.audit' | translate }}</span>
     </a>
     }
-
-    
-
   </nav>
-
-  <div class="sidebar-footer">
-    <button type="button" class="nav-item logout" (click)="signOut()">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      <span>{{ 'sidebar.signOut' | translate }}</span>
-    </button>
-  </div>
 </aside>
