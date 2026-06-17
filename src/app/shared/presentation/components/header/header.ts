@@ -32,12 +32,16 @@ export class HeaderComponent {
   );
 
   protected latestAlerts = computed(() => this.activeAlerts().slice(0, 5));
-  protected modeTitleKey = computed(() =>
-    this.viewModeStore.isAdmin() ? "access.adminTitle" : "access.userTitle",
-  );
-  protected modeInitials = computed(() =>
-    this.viewModeStore.isAdmin() ? "AD" : "CL",
-  );
+  protected modeTitleKey = computed(() => {
+    if (this.viewModeStore.isAdmin()) return "access.adminTitle";
+    if (this.viewModeStore.isDoctor()) return "access.doctorTitle";
+    return "access.nurseTitle";
+  });
+  protected modeInitials = computed(() => {
+    if (this.viewModeStore.isAdmin()) return "AD";
+    if (this.viewModeStore.isDoctor()) return "MD";
+    return "EN";
+  });
 
   constructor() {
     this.notificationStore.loadAlerts();

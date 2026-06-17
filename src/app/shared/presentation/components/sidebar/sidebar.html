@@ -81,6 +81,7 @@
       <span>{{ 'sidebar.patients' | translate }}</span>
     </a>
 
+    @if (viewModeStore.isAdmin() || viewModeStore.isNurse()) {
     <a routerLink="/vital-signs" routerLinkActive="active" class="nav-item">
       <svg
         class="nav-icon"
@@ -93,6 +94,7 @@
       </svg>
       <span>{{ 'sidebar.vitalSigns' | translate }}</span>
     </a>
+    }
     <a routerLink="/clinical-events" routerLinkActive="active" class="nav-item">
       <svg
         class="nav-icon"
@@ -108,6 +110,8 @@
       </svg>
       <span>{{ 'sidebar.clinicalEvents' | translate }}</span>
     </a>
+
+    @if (viewModeStore.isAdmin() || viewModeStore.isNurse()) {
     <a routerLink="/sbar" routerLinkActive="active" class="nav-item">
       <svg
         class="nav-icon"
@@ -123,6 +127,7 @@
       </svg>
       <span>{{ 'sidebar.sbar' | translate }}</span>
     </a>
+    }
 
     <a routerLink="/alerts" routerLinkActive="active" class="nav-item">
       <svg
@@ -138,7 +143,7 @@
       <span>{{ 'sidebar.alerts' | translate }}</span>
     </a>
 
-    @if (viewModeStore.isAdmin()) {
+    @if (viewModeStore.isAdmin() || viewModeStore.isDoctor()) {
     <a routerLink="/reports" routerLinkActive="active" class="nav-item">
       <svg
         class="nav-icon"

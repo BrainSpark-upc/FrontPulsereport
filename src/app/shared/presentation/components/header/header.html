@@ -213,13 +213,24 @@
           </button>
           <button
             type="button"
-            [class.active]="viewModeStore.isUser()"
-            (click)="selectMode('user')"
+            [class.active]="viewModeStore.isDoctor()"
+            (click)="selectMode('doctor')"
           >
-            <span>CL</span>
+            <span>MD</span>
             <div>
-              <strong>{{ 'access.userTitle' | translate }}</strong>
-              <small>{{ 'access.userShort' | translate }}</small>
+              <strong>{{ 'access.doctorTitle' | translate }}</strong>
+              <small>{{ 'access.doctorShort' | translate }}</small>
+            </div>
+          </button>
+          <button
+            type="button"
+            [class.active]="viewModeStore.isNurse()"
+            (click)="selectMode('nurse')"
+          >
+            <span>EN</span>
+            <div>
+              <strong>{{ 'access.nurseTitle' | translate }}</strong>
+              <small>{{ 'access.nurseShort' | translate }}</small>
             </div>
           </button>
         </div>
