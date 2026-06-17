@@ -54,7 +54,7 @@ export class ClinicalEventStore {
 
       this.audit.register(
         AuditAction.BUSINESS_TRANSACTION_EXECUTED,
-        `Transacción: evento clínico → alerta si aplica → auditoría para ${event.patientName}`
+        `Transaccion: evento clinico - alerta si aplica - auditoria para ${event.patientName}`
       );
 
       this.createAlertWhenNeeded(event);
@@ -67,7 +67,7 @@ export class ClinicalEventStore {
     this.notifications.createClinicalAlert({
       patientId: event.patientId,
       patientName: event.patientName,
-      title: event.severity === ClinicalEventSeverity.CRITICAL ? 'Evento clínico crítico' : 'Evento clínico de alto riesgo',
+      title: event.severity === ClinicalEventSeverity.CRITICAL ? 'Evento clÃ­nico crÃ­tico' : 'Evento clÃ­nico de alto riesgo',
       message: `${event.eventType}: ${event.title}. ${event.description}`,
       severity: event.severity === ClinicalEventSeverity.CRITICAL ? AlertSeverity.CRITICAL : AlertSeverity.HIGH,
       sourceType: 'CLINICAL_EVENT',
