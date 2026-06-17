@@ -39,7 +39,7 @@ export const routes: Routes = [
       { path: 'reports', component: ReportListComponent, data: { titleKey: 'common.reports' } },
       { path: 'audit', component: AuditLogListComponent, data: { titleKey: 'common.audit' } },
       { path: 'profile', component: ProfileViewComponent, data: { titleKey: 'common.profile' } },
-      { path: 'users', component: UserManagementComponent, data: { titleKey: 'common.usersIam' } },
+      { path: 'users', redirectTo: 'dashboard' },
     ],
   },
   { path: '**', redirectTo: 'dashboard' },
