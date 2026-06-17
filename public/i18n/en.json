@@ -307,5 +307,16 @@
   "monitoring.noAlerts": "No alerts have been registered for this patient.",
   "monitoring.patientNotFound": "The selected patient was not found.",
   "patients.diagnosis": "Diagnosis",
-  "patients.attendingPhysician": "Attending physician"
+  "patients.attendingPhysician": "Attending physician",
+  "sbar.acknowledge": "Acknowledge handover",
+  "sbar.additionalNotes": "Acknowledgement notes",
+  "sbar.placeholder.situation": "Describe the patient current situation.",
+  "sbar.placeholder.background": "Add background, diagnosis, treatment, or relevant context.",
+  "sbar.placeholder.assessment": "Enter clinical assessment, signs, risks, or current interpretation.",
+  "sbar.placeholder.recommendation": "Enter suggested actions for the next shift.",
+  "sbar.validation.patientRequired": "Select the handover patient.",
+  "sbar.validation.situation": "Complete the patient current situation.",
+  "sbar.validation.background": "Complete the relevant background.",
+  "sbar.validation.assessment": "Complete the clinical assessment.",
+  "sbar.validation.recommendation": "Complete the recommendation for the next shift."
 }

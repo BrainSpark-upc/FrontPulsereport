@@ -307,5 +307,16 @@
   "monitoring.noAlerts": "No hay alertas registradas para este paciente.",
   "monitoring.patientNotFound": "No se encontró el paciente seleccionado.",
   "patients.diagnosis": "Diagnóstico",
-  "patients.attendingPhysician": "Médico tratante"
+  "patients.attendingPhysician": "Médico tratante",
+  "sbar.acknowledge": "Atender traspaso",
+  "sbar.additionalNotes": "Notas de atención",
+  "sbar.placeholder.situation": "Describe la situación actual del paciente.",
+  "sbar.placeholder.background": "Agrega antecedentes, diagnóstico, tratamiento o contexto relevante.",
+  "sbar.placeholder.assessment": "Indica evaluación clínica, signos, riesgos o interpretación actual.",
+  "sbar.placeholder.recommendation": "Indica acciones sugeridas para el siguiente turno.",
+  "sbar.validation.patientRequired": "Selecciona el paciente del traspaso.",
+  "sbar.validation.situation": "Completa la situación actual del paciente.",
+  "sbar.validation.background": "Completa los antecedentes relevantes.",
+  "sbar.validation.assessment": "Completa la evaluación clínica.",
+  "sbar.validation.recommendation": "Completa la recomendación para el siguiente turno."
 }
