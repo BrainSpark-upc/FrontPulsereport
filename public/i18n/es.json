@@ -325,5 +325,8 @@
   "reports.prepared": "Reporte preparado",
   "reports.validation.titleRequired": "Ingresa un título para el reporte.",
   "reports.validation.dateRequired": "Selecciona fecha de inicio y fin.",
-  "reports.validation.invalidRange": "La fecha de inicio no puede ser mayor que la fecha final."
+  "reports.validation.invalidRange": "La fecha de inicio no puede ser mayor que la fecha final.",
+  "events.validation.patientRequired": "Selecciona el paciente relacionado al evento.",
+  "events.validation.titleRequired": "El título debe describir claramente el evento clínico.",
+  "events.validation.descriptionRequired": "Agrega una descripción mínima de 10 caracteres."
 }
