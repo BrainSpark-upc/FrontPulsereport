@@ -1,13 +1,8 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
-
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { ClinicalEventResponse } from './clinical-event-response';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { map, Observable } from "rxjs";
+import { environment } from "../../../environments/environment";
+import { ClinicalEventResponse } from "./clinical-event-response";
 
 interface AuditLogResponse {
   id: string | number;
@@ -24,7 +19,7 @@ interface AuditLogPageResponse {
   content: AuditLogResponse[];
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class ClinicalEventApiEndpoint {
   private readonly baseUrl = `${environment.apiBaseUrl}/audit-logs`;
 
@@ -32,28 +27,33 @@ export class ClinicalEventApiEndpoint {
 
   getAll(): Observable<ClinicalEventResponse[]> {
     return this.http
-      .get<AuditLogPageResponse | AuditLogResponse[]>(`${this.baseUrl}?page=0&size=100`)
+      .get<
+        AuditLogPageResponse | AuditLogResponse[]
+      >(`${this.baseUrl}?page=0&size=100`)
       .pipe(
-        map(response => Array.isArray(response) ? response : response.content),
-        map(logs => logs
-          .filter(log => log.entityType === 'CLINICAL_EVENT')
-          .map(log => this.toClinicalEventResponse(log))
-        )
+        map((response) =>
+          Array.isArray(response) ? response : response.content,
+        ),
+        map((logs) =>
+          logs
+            .filter((log) => log.entityType === "CLINICAL_EVENT")
+            .map((log) => this.toClinicalEventResponse(log)),
+        ),
       );
   }
 
   getByPatientId(id: string): Observable<ClinicalEventResponse[]> {
     return this.getAll().pipe(
-      map(events => events.filter(event => event.patientId === id))
+      map((events) => events.filter((event) => event.patientId === id)),
     );
   }
 
   register(req: ClinicalEventResponse): Observable<ClinicalEventResponse> {
     const body = {
       patientId: Number(req.patientId),
-      entityType: 'CLINICAL_EVENT',
+      entityType: "CLINICAL_EVENT",
       entityId: req.id,
-      actionType: 'CLINICAL_NOTE_ADDED',
+      actionType: "CLINICAL_NOTE_ADDED",
       performedBy: req.nurseName,
       performedAt: req.occurredAt,
       metadata: {
@@ -66,31 +66,39 @@ export class ClinicalEventApiEndpoint {
       },
     };
 
-    return this.http.post<AuditLogResponse>(this.baseUrl, body).pipe(
-      map(log => this.toClinicalEventResponse(log))
-    );
+    return this.http
+      .post<AuditLogResponse>(this.baseUrl, body)
+      .pipe(map((log) => this.toClinicalEventResponse(log)));
   }
 
-  private toClinicalEventResponse(log: AuditLogResponse): ClinicalEventResponse {
+  private toClinicalEventResponse(
+    log: AuditLogResponse,
+  ): ClinicalEventResponse {
     const metadata = this.parseMetadata(log.metadata);
 
     return {
       id: String(log.entityId ?? log.id),
-      patientId: log.patientId == null ? '0' : String(log.patientId),
-      patientName: String(metadata['patientName'] ?? `Paciente #${log.patientId ?? '-'}`),
+      patientId: log.patientId == null ? "0" : String(log.patientId),
+      patientName: String(
+        metadata["patientName"] ?? `Paciente #${log.patientId ?? "-"}`,
+      ),
       nurseId: log.performedBy,
-      nurseName: String(metadata['nurseName'] ?? log.performedBy),
-      eventType: String(metadata['eventType'] ?? 'Observación'),
-      severity: String(metadata['severity'] ?? 'Bajo'),
-      title: String(metadata['title'] ?? 'Evento clínico'),
-      description: String(metadata['description'] ?? `${log.actionType} registrado en auditoría.`),
+      nurseName: String(metadata["nurseName"] ?? log.performedBy),
+      eventType: String(metadata["eventType"] ?? "Observación"),
+      severity: String(metadata["severity"] ?? "Bajo"),
+      title: String(metadata["title"] ?? "Evento clínico"),
+      description: String(
+        metadata["description"] ?? `${log.actionType} registrado en auditoría.`,
+      ),
       occurredAt: log.performedAt,
     };
   }
 
-  private parseMetadata(metadata?: string | Record<string, unknown> | null): Record<string, unknown> {
+  private parseMetadata(
+    metadata?: string | Record<string, unknown> | null,
+  ): Record<string, unknown> {
     if (!metadata) return {};
-    if (typeof metadata === 'object') return metadata;
+    if (typeof metadata === "object") return metadata;
 
     try {
       return JSON.parse(metadata);

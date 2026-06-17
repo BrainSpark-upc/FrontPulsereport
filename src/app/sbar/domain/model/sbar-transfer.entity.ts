@@ -1,4 +1,9 @@
-export type SbarStatus = 'PENDING' | 'ACKNOWLEDGED' | 'COMPLETED' | 'CANCELLED' | string;
+export type SbarStatus =
+  | "PENDING"
+  | "ACKNOWLEDGED"
+  | "COMPLETED"
+  | "CANCELLED"
+  | string;
 
 export class SbarTransfer {
   constructor(
@@ -14,22 +19,22 @@ export class SbarTransfer {
     public readonly assessment: string,
     public readonly recommendation: string,
     public readonly transferredAt: Date,
-    public readonly status: SbarStatus = 'PENDING',
+    public readonly status: SbarStatus = "PENDING",
     public readonly additionalNotes?: string | null,
   ) {}
 
   get statusLabel(): string {
     const labels: Record<string, string> = {
-      PENDING: 'Pendiente',
-      ACKNOWLEDGED: 'Atendido',
-      COMPLETED: 'Completado',
-      CANCELLED: 'Cancelado',
+      PENDING: "Pendiente",
+      ACKNOWLEDGED: "Atendido",
+      COMPLETED: "Completado",
+      CANCELLED: "Cancelado",
     };
 
     return labels[this.status] ?? this.status;
   }
 
   get canAcknowledge(): boolean {
-    return this.status === 'PENDING';
+    return this.status === "PENDING";
   }
 }

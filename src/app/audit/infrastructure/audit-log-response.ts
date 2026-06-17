@@ -1,9 +1,7 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
-
-import { AuditActionType, AuditedEntityType } from '../domain/model/audit-log.entity';
+import {
+  AuditActionType,
+  AuditedEntityType,
+} from "../domain/model/audit-log.entity";
 
 export interface AuditLogResponse {
   id: string | number;

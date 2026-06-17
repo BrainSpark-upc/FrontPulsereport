@@ -1,8 +1,8 @@
 export enum PatientStatusEnum {
-  STABLE = 'STABLE',
-  OBSERVATION = 'OBSERVATION',
-  CRITICAL = 'CRITICAL',
-  DISCHARGED = 'DISCHARGED',
+  STABLE = "STABLE",
+  OBSERVATION = "OBSERVATION",
+  CRITICAL = "CRITICAL",
+  DISCHARGED = "DISCHARGED",
 }
 
 export class Patient {
@@ -22,7 +22,7 @@ export class Patient {
   ) {}
 
   get code(): string {
-    return `P${String(this.id).padStart(3, '0')}`;
+    return `P${String(this.id).padStart(3, "0")}`;
   }
 
   get fullName(): string {
@@ -31,10 +31,10 @@ export class Patient {
 
   get statusLabel(): string {
     const labels: Record<PatientStatusEnum, string> = {
-      [PatientStatusEnum.STABLE]: 'Estable',
-      [PatientStatusEnum.OBSERVATION]: 'En observación',
-      [PatientStatusEnum.CRITICAL]: 'Crítico',
-      [PatientStatusEnum.DISCHARGED]: 'Alta',
+      [PatientStatusEnum.STABLE]: "Estable",
+      [PatientStatusEnum.OBSERVATION]: "En observación",
+      [PatientStatusEnum.CRITICAL]: "Crítico",
+      [PatientStatusEnum.DISCHARGED]: "Alta",
     };
 
     return labels[this.status] ?? this.status;
@@ -51,6 +51,9 @@ export class Patient {
   }
 
   get requiresMonitoring(): boolean {
-    return this.status !== PatientStatusEnum.STABLE && this.status !== PatientStatusEnum.DISCHARGED;
+    return (
+      this.status !== PatientStatusEnum.STABLE &&
+      this.status !== PatientStatusEnum.DISCHARGED
+    );
   }
 }

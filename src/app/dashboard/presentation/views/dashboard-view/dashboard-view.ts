@@ -1,24 +1,29 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { PatientStore } from '@patient/application/patient.store';
-import { PatientStatusEnum } from '@patient/domain/model/patient.entity';
-import { NotificationStore } from '@notification/application/notification.store';
-import { AuditStore } from '@audit/application/audit.store';
-import { AlertSeverity, AlertStatus } from '@notification/domain/model/alert.entity';
-import { TranslatePipe } from '@ngx-translate/core';
+import { Component, inject, OnInit } from "@angular/core";
+import { DatePipe } from "@angular/common";
+import { RouterLink } from "@angular/router";
+import { PatientStore } from "@patient/application/patient.store";
+import { PatientStatusEnum } from "@patient/domain/model/patient.entity";
+import { NotificationStore } from "@notification/application/notification.store";
+import { AuditStore } from "@audit/application/audit.store";
+import {
+  AlertSeverity,
+  AlertStatus,
+} from "@notification/domain/model/alert.entity";
+import { TranslatePipe } from "@ngx-translate/core";
+import { ViewModeStore } from "../../../../shared/application/view-mode.store";
 
 @Component({
-  selector: 'app-dashboard-view',
+  selector: "app-dashboard-view",
   standalone: true,
   imports: [TranslatePipe, DatePipe, RouterLink],
-  templateUrl: './dashboard-view.html',
-  styleUrl: './dashboard-view.css'
+  templateUrl: "./dashboard-view.html",
+  styleUrl: "./dashboard-view.css",
 })
 export class DashboardViewComponent implements OnInit {
   protected patientStore = inject(PatientStore);
   protected notificationStore = inject(NotificationStore);
   protected auditStore = inject(AuditStore);
+  protected viewModeStore = inject(ViewModeStore);
 
   ngOnInit(): void {
     this.patientStore.loadPatients();
@@ -27,23 +32,35 @@ export class DashboardViewComponent implements OnInit {
   }
 
   protected activePatientsCount(): number {
-    return this.patientStore.patients().filter(p => p.status !== PatientStatusEnum.DISCHARGED).length;
+    return this.patientStore
+      .patients()
+      .filter((p) => p.status !== PatientStatusEnum.DISCHARGED).length;
   }
 
   protected activeAlertsCount(): number {
-    return this.notificationStore.alerts().filter(a => a.status !== AlertStatus.CLOSED).length;
+    return this.notificationStore
+      .alerts()
+      .filter((a) => a.status !== AlertStatus.CLOSED).length;
   }
 
   protected criticalAlertsCount(): number {
-    return this.notificationStore.alerts().filter(a =>
-      a.severity === AlertSeverity.CRITICAL && a.status !== AlertStatus.CLOSED
-    ).length;
+    return this.notificationStore
+      .alerts()
+      .filter(
+        (a) =>
+          a.severity === AlertSeverity.CRITICAL &&
+          a.status !== AlertStatus.CLOSED,
+      ).length;
   }
 
   protected moderateAlertsCount(): number {
-    return this.notificationStore.alerts().filter(a =>
-      a.severity !== AlertSeverity.CRITICAL && a.status !== AlertStatus.CLOSED
-    ).length;
+    return this.notificationStore
+      .alerts()
+      .filter(
+        (a) =>
+          a.severity !== AlertSeverity.CRITICAL &&
+          a.status !== AlertStatus.CLOSED,
+      ).length;
   }
 
   protected auditMovementsCount(): number {
@@ -55,9 +72,11 @@ export class DashboardViewComponent implements OnInit {
   }
 
   protected lastUpdate(): Date {
-    return this.auditStore.logs()[0]?.performedAt ??
+    return (
+      this.auditStore.logs()[0]?.performedAt ??
       this.notificationStore.alerts()[0]?.triggeredAt ??
-      new Date();
+      new Date()
+    );
   }
 
   protected latestPatients() {
@@ -65,8 +84,9 @@ export class DashboardViewComponent implements OnInit {
   }
 
   protected latestAlerts() {
-    return this.notificationStore.alerts()
-      .filter(a => a.status !== AlertStatus.CLOSED)
+    return this.notificationStore
+      .alerts()
+      .filter((a) => a.status !== AlertStatus.CLOSED)
       .slice(0, 5);
   }
 

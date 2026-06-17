@@ -1,9 +1,4 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
-
-import { RiskLevel } from '../domain/model/vital-sign.entity';
+import { RiskLevel } from "../domain/model/vital-sign.entity";
 
 export interface VitalSignResponse {
   id: string | number;

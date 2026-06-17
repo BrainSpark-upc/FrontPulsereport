@@ -1,22 +1,20 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
-
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ClinicalEventStore } from '../../../application/clinical-event.store';
-import { PatientStore } from '@patient/application/patient.store';
-import { ClinicalEventSeverity, ClinicalEventType } from '../../../domain/model/clinical-event.entity';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { Component, inject, OnInit, signal } from "@angular/core";
+import { DatePipe } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { ClinicalEventStore } from "../../../application/clinical-event.store";
+import { PatientStore } from "@patient/application/patient.store";
+import {
+  ClinicalEventSeverity,
+  ClinicalEventType,
+} from "../../../domain/model/clinical-event.entity";
+import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-clinical-event-list',
+  selector: "app-clinical-event-list",
   standalone: true,
   imports: [TranslatePipe, DatePipe, FormsModule],
-  templateUrl: './clinical-event-list.html',
-  styleUrl: './clinical-event-list.css',
+  templateUrl: "./clinical-event-list.html",
+  styleUrl: "./clinical-event-list.css",
 })
 export class ClinicalEventListComponent implements OnInit {
   protected store = inject(ClinicalEventStore);
@@ -52,18 +50,21 @@ export class ClinicalEventListComponent implements OnInit {
 
   private emptyForm() {
     return {
-      patientId: '',
+      patientId: "",
       eventType: ClinicalEventType.OBSERVATION,
       severity: ClinicalEventSeverity.LOW,
-      title: '',
-      description: '',
+      title: "",
+      description: "",
     };
   }
 
   private validateForm(): string | null {
-    if (!this.form.patientId) return this.translate.instant('events.validation.patientRequired');
-    if (this.form.title.trim().length < 4) return this.translate.instant('events.validation.titleRequired');
-    if (this.form.description.trim().length < 10) return this.translate.instant('events.validation.descriptionRequired');
+    if (!this.form.patientId)
+      return this.translate.instant("events.validation.patientRequired");
+    if (this.form.title.trim().length < 4)
+      return this.translate.instant("events.validation.titleRequired");
+    if (this.form.description.trim().length < 10)
+      return this.translate.instant("events.validation.descriptionRequired");
     return null;
   }
 }

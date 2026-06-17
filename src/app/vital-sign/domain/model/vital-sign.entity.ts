@@ -1,9 +1,9 @@
 export enum RiskLevel {
-  UNASSESSED = 'UNASSESSED',
-  LOW = 'LOW',
-  MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH',
-  CRITICAL = 'CRITICAL',
+  UNASSESSED = "UNASSESSED",
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+  CRITICAL = "CRITICAL",
 }
 
 export class VitalSign {
@@ -36,11 +36,11 @@ export class VitalSign {
 
   get riskLabel(): string {
     const labels: Record<string, string> = {
-      UNASSESSED: 'Sin evaluar',
-      LOW: 'Bajo',
-      MEDIUM: 'Medio',
-      HIGH: 'Alto',
-      CRITICAL: 'Crítico',
+      UNASSESSED: "Sin evaluar",
+      LOW: "Bajo",
+      MEDIUM: "Medio",
+      HIGH: "Alto",
+      CRITICAL: "Crítico",
     };
 
     return labels[this.riskLevel] ?? this.riskLevel;
@@ -51,6 +51,8 @@ export class VitalSign {
   }
 
   get isHighRisk(): boolean {
-    return this.riskLevel === RiskLevel.CRITICAL || this.riskLevel === RiskLevel.HIGH;
+    return (
+      this.riskLevel === RiskLevel.CRITICAL || this.riskLevel === RiskLevel.HIGH
+    );
   }
 }

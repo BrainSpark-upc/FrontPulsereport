@@ -16,17 +16,16 @@
     "module": "preserve",
     "baseUrl": "./",
     "paths": {
-      "@shared/*":         ["src/app/shared/*"],
-      "@iam/*":            ["src/app/iam/*"],
-      "@dashboard/*":      ["src/app/dashboard/*"],
-      "@patient/*":        ["src/app/patient/*"],
-      "@vital-sign/*":     ["src/app/vital-sign/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@dashboard/*": ["src/app/dashboard/*"],
+      "@patient/*": ["src/app/patient/*"],
+      "@vital-sign/*": ["src/app/vital-sign/*"],
       "@clinical-event/*": ["src/app/clinical-event/*"],
-      "@sbar/*":           ["src/app/sbar/*"],
-      "@notification/*":   ["src/app/notification/*"],
-      "@report/*":         ["src/app/report/*"],
-      "@audit/*":          ["src/app/audit/*"],
-      "@environments/*":   ["src/environments/*"]
+      "@sbar/*": ["src/app/sbar/*"],
+      "@notification/*": ["src/app/notification/*"],
+      "@report/*": ["src/app/report/*"],
+      "@audit/*": ["src/app/audit/*"],
+      "@environments/*": ["src/environments/*"]
     }
   },
   "angularCompilerOptions": {

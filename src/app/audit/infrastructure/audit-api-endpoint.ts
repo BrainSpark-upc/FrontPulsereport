@@ -1,15 +1,14 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { map, Observable } from "rxjs";
+import { environment } from "../../../environments/environment";
+import {
+  AuditLogPageResponse,
+  AuditLogResponse,
+  CreateAuditLogRequest,
+} from "./audit-log-response";
 
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { AuditLogPageResponse, AuditLogResponse, CreateAuditLogRequest } from './audit-log-response';
-
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class AuditApiEndpoint {
   private readonly baseUrl = `${environment.apiBaseUrl}/audit-logs`;
 
@@ -17,8 +16,14 @@ export class AuditApiEndpoint {
 
   getAll(): Observable<AuditLogResponse[]> {
     return this.http
-      .get<AuditLogPageResponse | AuditLogResponse[]>(`${this.baseUrl}?page=0&size=100`)
-      .pipe(map(response => Array.isArray(response) ? response : response.content));
+      .get<
+        AuditLogPageResponse | AuditLogResponse[]
+      >(`${this.baseUrl}?page=0&size=100`)
+      .pipe(
+        map((response) =>
+          Array.isArray(response) ? response : response.content,
+        ),
+      );
   }
 
   create(request: CreateAuditLogRequest): Observable<AuditLogResponse> {

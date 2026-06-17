@@ -1,16 +1,11 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { environment } from "../../../environments/environment";
+import { PatientResponse } from "./patient-response";
+import { RegisterPatientRequest } from "./register-patient.request";
 
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { PatientResponse } from './patient-response';
-import { RegisterPatientRequest } from './register-patient.request';
-
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class PatientApiEndpoint {
   private readonly baseUrl = `${environment.apiBaseUrl}/patients`;
 
@@ -28,7 +23,10 @@ export class PatientApiEndpoint {
     return this.http.post<PatientResponse>(this.baseUrl, request);
   }
 
-  update(id: string, request: RegisterPatientRequest): Observable<PatientResponse> {
+  update(
+    id: string,
+    request: RegisterPatientRequest,
+  ): Observable<PatientResponse> {
     return this.http.put<PatientResponse>(`${this.baseUrl}/${id}`, request);
   }
 

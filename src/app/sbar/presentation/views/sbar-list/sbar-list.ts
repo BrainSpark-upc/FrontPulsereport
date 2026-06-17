@@ -1,21 +1,16 @@
-/**
- * @author: Alexander Auden Aliaga Ocampo
- * codigo:U202417693
- */
-
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { SbarStore } from '../../../application/sbar.store';
-import { PatientStore } from '../../../../patient/application/patient.store';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { Component, inject, OnInit, signal } from "@angular/core";
+import { DatePipe } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { SbarStore } from "../../../application/sbar.store";
+import { PatientStore } from "../../../../patient/application/patient.store";
+import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-sbar-list',
+  selector: "app-sbar-list",
   standalone: true,
   imports: [TranslatePipe, DatePipe, FormsModule],
-  templateUrl: './sbar-list.html',
-  styleUrl: './sbar-list.css',
+  templateUrl: "./sbar-list.html",
+  styleUrl: "./sbar-list.css",
 })
 export class SbarListComponent implements OnInit {
   protected store = inject(SbarStore);
@@ -64,21 +59,26 @@ export class SbarListComponent implements OnInit {
 
   private emptyForm() {
     return {
-      patientId: '',
-      targetNurseId: '2',
-      situation: '',
-      background: '',
-      assessment: '',
-      recommendation: '',
+      patientId: "",
+      targetNurseId: "2",
+      situation: "",
+      background: "",
+      assessment: "",
+      recommendation: "",
     };
   }
 
   private validateForm(): string | null {
-    if (!this.form.patientId) return this.translate.instant('sbar.validation.patientRequired');
-    if (this.form.situation.trim().length < 8) return this.translate.instant('sbar.validation.situation');
-    if (this.form.background.trim().length < 8) return this.translate.instant('sbar.validation.background');
-    if (this.form.assessment.trim().length < 8) return this.translate.instant('sbar.validation.assessment');
-    if (this.form.recommendation.trim().length < 8) return this.translate.instant('sbar.validation.recommendation');
+    if (!this.form.patientId)
+      return this.translate.instant("sbar.validation.patientRequired");
+    if (this.form.situation.trim().length < 8)
+      return this.translate.instant("sbar.validation.situation");
+    if (this.form.background.trim().length < 8)
+      return this.translate.instant("sbar.validation.background");
+    if (this.form.assessment.trim().length < 8)
+      return this.translate.instant("sbar.validation.assessment");
+    if (this.form.recommendation.trim().length < 8)
+      return this.translate.instant("sbar.validation.recommendation");
     return null;
   }
 }
