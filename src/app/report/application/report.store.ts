@@ -59,11 +59,11 @@ export class ReportStore {
 
       const vitalSigns = data.vitalSigns.filter(item => inRange(item.recordedAt));
       const clinicalEvents = data.clinicalEvents.filter(item => inRange(item.occurredAt));
-      const sbarTransfers = data.sbarTransfers.filter(item => inRange(item.transferredAt));
+      const sbarTransfers = data.sbarTransfers.filter(item => item.transferredAt ? inRange(item.transferredAt) : false);
       const alerts = data.alerts.filter(item => inRange(item.triggeredAt));
       const auditLogs = data.auditLogs.filter(item => inRange(item.performedAt));
       const activeAlerts = alerts.filter(item => item.status !== 'Resuelta');
-      const criticalAlerts = alerts.filter(item => item.severity === 'Crítica' && item.status !== 'Resuelta');
+      const criticalAlerts = alerts.filter(item => item.severity === 'CrÃ­tica' && item.status !== 'Resuelta');
 
       const request: ReportResponse = {
         ...form,
@@ -86,16 +86,16 @@ export class ReportStore {
       this.api.generate(request).subscribe(created => {
         const report = ReportAssembler.toEntity(created);
         this._reports.update(list => [report, ...list]);
-        this.audit.register(AuditAction.REPORT_GENERATED, `Generó reporte: ${report.title}`);
-        this.audit.register(AuditAction.BUSINESS_TRANSACTION_EXECUTED, `Transacción: consolidación de datos clínicos → reporte → auditoría`);
+        this.audit.register(AuditAction.REPORT_GENERATED, `GenerÃ³ reporte: ${report.title}`);
+        this.audit.register(AuditAction.BUSINESS_TRANSACTION_EXECUTED, `TransacciÃ³n: consolidaciÃ³n de datos clÃ­nicos â†’ reporte â†’ auditorÃ­a`);
       });
     });
   }
 
   private buildConclusion(vitalSigns: number, events: number, alerts: number, criticalAlerts: number): string {
-    if (criticalAlerts > 0) return `Se detectaron ${criticalAlerts} alerta(s) crítica(s). Requiere revisión médica prioritaria.`;
+    if (criticalAlerts > 0) return `Se detectaron ${criticalAlerts} alerta(s) crÃ­tica(s). Requiere revisiÃ³n mÃ©dica prioritaria.`;
     if (alerts > 0) return `Existen ${alerts} alerta(s) activa(s). Mantener seguimiento del turno.`;
-    if (vitalSigns > 0 || events > 0) return 'Periodo con actividad clínica registrada y sin alertas críticas activas.';
-    return 'No se encontraron movimientos clínicos relevantes en el periodo seleccionado.';
+    if (vitalSigns > 0 || events > 0) return 'Periodo con actividad clÃ­nica registrada y sin alertas crÃ­ticas activas.';
+    return 'No se encontraron movimientos clÃ­nicos relevantes en el periodo seleccionado.';
   }
 }
