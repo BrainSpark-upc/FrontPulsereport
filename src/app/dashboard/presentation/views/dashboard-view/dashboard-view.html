@@ -1,4 +1,4 @@
-﻿<div class="dashboard">
+<div class="dashboard">
     <div class="dashboard-hero">
         <div><span class="eyebrow">{{ 'dashboard.eyebrow' | translate }}</span><h1>Dashboard</h1><p>{{ 'dashboard.subtitle' | translate }}</p></div>
         <div class="hero-actions"><a routerLink="/patients" class="hero-btn secondary">{{ 'dashboard.newPatient' | translate }}</a><a routerLink="/vital-signs" class="hero-btn">{{ 'dashboard.recordVitals' | translate }}</a></div>
@@ -94,7 +94,7 @@
                         <span class="alert-detail">{{ alert.title }}</span>
                     </div>
                     <div class="alert-meta">
-                        <span class="severity-tag" [class]="alert.isCritical ? 'tag-critical' : 'tag-moderate'">{{ alert.severity }}</span>
+                        <span class="severity-tag" [class]="alert.isCritical ? 'tag-critical' : 'tag-moderate'">{{ alert.severityLabel }}</span>
                         <span class="alert-time">{{ alert.triggeredAt | date:'h:mm a' }}</span>
                     </div>
                 </div>
