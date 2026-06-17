@@ -20,7 +20,7 @@
   "common.loadingPatient": "Cargando detalle del paciente...",
   "common.searchPatient": "Buscar paciente...",
   "common.viewAll": "Ver todo",
-  "common.seeAll": "Ver todas",
+  "common.seeAll": "Ver todo",
   "common.generated": "Generada",
   "common.status": "Estado",
   "common.patient": "Paciente",
@@ -281,5 +281,13 @@
   "alerts.save": "Guardar alerta",
   "alerts.patientRequired": "Selecciona un paciente.",
   "alerts.descriptionRequired": "Ingresa una descripción para la alerta.",
-  "alerts.emptyFilter": "No hay alertas pendientes para este filtro."
+  "alerts.emptyFilter": "No hay alertas pendientes para este filtro.",
+  "dashboard.title": "Dashboard",
+  "dashboard.backendSubtitle": "Resumen operativo conectado al backend con pacientes, alertas y auditoría.",
+  "dashboard.backendConnected": "Conectado al backend",
+  "dashboard.auditMovements": "Movimientos de auditoría",
+  "dashboard.connectedModules": "Módulos conectados",
+  "dashboard.goPatients": "Ver pacientes",
+  "dashboard.goAlerts": "Ver alertas",
+  "dashboard.goAudit": "Ver auditoría"
 }

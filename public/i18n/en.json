@@ -281,5 +281,13 @@
   "alerts.save": "Save alert",
   "alerts.patientRequired": "Select a patient.",
   "alerts.descriptionRequired": "Enter a description for the alert.",
-  "alerts.emptyFilter": "There are no pending alerts for this filter."
+  "alerts.emptyFilter": "There are no pending alerts for this filter.",
+  "dashboard.title": "Dashboard",
+  "dashboard.backendSubtitle": "Operational overview connected to the backend with patients, alerts, and audit logs.",
+  "dashboard.backendConnected": "Connected to backend",
+  "dashboard.auditMovements": "Audit movements",
+  "dashboard.connectedModules": "Connected modules",
+  "dashboard.goPatients": "View patients",
+  "dashboard.goAlerts": "View alerts",
+  "dashboard.goAudit": "View audit"
 }
