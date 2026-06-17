@@ -76,7 +76,7 @@ export class ReportStore {
 
       const vitalSigns = data.vitalSigns.filter(item => inRange(item.recordedAt));
       const sbarTransfers = data.sbarTransfers.filter(item => item.transferredAt ? inRange(item.transferredAt) : true);
-      const alerts = data.alerts.filter(item => inRange(item.triggeredAt));
+      const alerts = data.alerts.filter(item => item.triggeredAt ? inRange(item.triggeredAt) : true);
       const auditLogs = data.auditLogs.filter(item => inRange(item.performedAt));
       const clinicalEvents = auditLogs.filter(item => item.entityType === 'CLINICAL_EVENT');
 
@@ -107,16 +107,16 @@ export class ReportStore {
       const report = ReportAssembler.toEntity(response);
       this._reports.update(list => [report, ...list]);
 
-      this.audit.register(AuditAction.REPORT_GENERATED, `GenerÃƒÂ³ reporte: ${report.title}`);
-      this.audit.register(AuditAction.BUSINESS_TRANSACTION_EXECUTED, 'TransacciÃƒÂ³n: consolidaciÃƒÂ³n de datos clÃƒÂ­nicos conectados al backend Ã¢â€ â€™ reporte Ã¢â€ â€™ auditorÃƒÂ­a');
+      this.audit.register(AuditAction.REPORT_GENERATED, `GenerÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ reporte: ${report.title}`);
+      this.audit.register(AuditAction.BUSINESS_TRANSACTION_EXECUTED, 'Transaccion: consolidacion de datos clinicos conectados al backend - reporte - auditoria');
     });
   }
 
-  private buildConclusion(vitalSigns: number, sbarTransfers: number, alerts: number, criticalAlerts: number): string {
-    if (criticalAlerts > 0) return `Se detectaron ${criticalAlerts} alerta(s) crÃƒÂ­tica(s). Requiere revisiÃƒÂ³n mÃƒÂ©dica prioritaria.`;
+    private buildConclusion(vitalSigns: number, sbarTransfers: number, alerts: number, criticalAlerts: number): string {
+    if (criticalAlerts > 0) return `Se detectaron ${criticalAlerts} alerta(s) critica(s). Requiere revision medica prioritaria.`;
     if (alerts > 0) return `Existen ${alerts} alerta(s) activa(s). Mantener seguimiento del turno.`;
-    if (vitalSigns > 0 || sbarTransfers > 0) return 'Periodo con actividad clÃƒÂ­nica registrada y sin alertas crÃƒÂ­ticas activas.';
-    return 'No se encontraron movimientos clÃƒÂ­nicos relevantes en el periodo seleccionado.';
+    if (vitalSigns > 0 || sbarTransfers > 0) return 'Periodo con actividad clinica registrada y sin alertas criticas activas.';
+    return 'No se encontraron movimientos clinicos relevantes en el periodo seleccionado.';
   }
 
   private readStoredReports(): ReportResponse[] {
