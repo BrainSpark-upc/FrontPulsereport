@@ -12,6 +12,9 @@
   },
   "private": true,
   "packageManager": "npm@11.9.0",
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "@angular/build": "^21.2.8",
     "@angular/cli": "^21.2.0",
