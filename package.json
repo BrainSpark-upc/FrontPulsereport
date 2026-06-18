@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@angular/build": "^21.2.8",
-    "@angular/cli": "^21.2.16",
+    "@angular/cli": "^21.2.0",
     "@angular/compiler-cli": "^21.2.0",
     "autoprefixer": "^10.5.0",
     "concurrently": "^9.1.2",
