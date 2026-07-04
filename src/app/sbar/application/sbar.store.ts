@@ -3,11 +3,11 @@ import { forkJoin, map, of, switchMap } from "rxjs";
 import { SbarTransfer } from "../domain/model/sbar-transfer.entity";
 import { SbarApiEndpoint } from "../infrastructure/sbar-api-endpoint";
 import { SbarAssembler } from "../infrastructure/sbar-assembler";
-import { PatientStore } from "../../patient/application/patient.store";
-import { PatientApiEndpoint } from "../../patient/infrastructure/patient-api-endpoint";
-import { PatientAssembler } from "../../patient/infrastructure/patient-assembler";
-import { AuditStore } from "../../audit/application/audit.store";
-import { AuditAction } from "../../audit/domain/model/audit-log.entity";
+import { PatientStore } from "@patient/application/patient.store";
+import { PatientApiEndpoint } from "@patient/infrastructure/patient-api-endpoint";
+import { PatientAssembler } from "@patient/infrastructure/patient-assembler";
+import { AuditStore } from "@audit/application/audit.store";
+import { AuditAction } from "@audit/domain/model/audit-log.entity";
 
 const DEFAULT_ACTOR = "Equipo clínico";
 

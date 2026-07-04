@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from "@angular/core";
 import { DatePipe } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { SbarStore } from "../../../application/sbar.store";
-import { PatientStore } from "../../../../patient/application/patient.store";
+import { PatientStore } from "@patient/application/patient.store";
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 
 @Component({

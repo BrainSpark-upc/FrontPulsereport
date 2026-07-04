@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { catchError, Observable, of } from "rxjs";
-import { environment } from "../../../environments/environment";
+import { environment } from "@environments/environment";
 import { SbarTransferResponse } from "./sbar-transfer-response";
 import {
   AcknowledgeSbarRequest,
