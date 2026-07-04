@@ -2,11 +2,11 @@ import { Injectable, inject, signal } from "@angular/core";
 import { VitalSign, RiskLevel } from "../domain/model/vital-sign.entity";
 import { VitalSignApiEndpoint } from "../infrastructure/vital-sign-api-endpoint";
 import { VitalSignAssembler } from "../infrastructure/vital-sign-assembler";
-import { PatientStore } from "../../patient/application/patient.store";
-import { AuditStore } from "../../audit/application/audit.store";
-import { AuditAction } from "../../audit/domain/model/audit-log.entity";
-import { NotificationStore } from "../../notification/application/notification.store";
-import { AlertSeverity } from "../../notification/domain/model/alert.entity";
+import { PatientStore } from "@patient/application/patient.store";
+import { AuditStore } from "@audit/application/audit.store";
+import { AuditAction } from "@audit/domain/model/audit-log.entity";
+import { NotificationStore } from "@notification/application/notification.store";
+import { AlertSeverity } from "@notification/domain/model/alert.entity";
 
 export interface VitalSignForm {
   patientId: string;

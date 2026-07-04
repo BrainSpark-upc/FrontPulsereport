@@ -173,5 +173,22 @@
       <span>{{ 'sidebar.audit' | translate }}</span>
     </a>
     }
+
+    @if (viewModeStore.isAdmin()) {
+    <a routerLink="/subscriptions" routerLinkActive="active" class="nav-item">
+      <svg
+        class="nav-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <rect x="2" y="5" width="20" height="14" rx="2" />
+        <line x1="2" y1="10" x2="22" y2="10" />
+        <line x1="6" y1="15" x2="10" y2="15" />
+      </svg>
+      <span>{{ 'sidebar.subscriptions' | translate }}</span>
+    </a>
+    }
   </nav>
 </aside>

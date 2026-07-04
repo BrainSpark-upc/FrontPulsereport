@@ -17,6 +17,8 @@
     "baseUrl": "./",
     "paths": {
       "@shared/*": ["src/app/shared/*"],
+      "@iam/*": ["src/app/iam/*"],
+      "@subscriptions/*": ["src/app/subscriptions/*"],
       "@dashboard/*": ["src/app/dashboard/*"],
       "@patient/*": ["src/app/patient/*"],
       "@vital-sign/*": ["src/app/vital-sign/*"],

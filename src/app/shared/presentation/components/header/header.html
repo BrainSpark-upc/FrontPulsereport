@@ -171,11 +171,11 @@
       <button
         class="operator-chip"
         type="button"
-        [title]="'access.switchView' | translate"
+        [title]="'access.accountMenu' | translate"
         (click)="toggleModeMenu()"
       >
         <span>{{ modeInitials() }}</span>
-        <strong>{{ modeTitleKey() | translate }}</strong>
+        <strong>{{ username() }}</strong>
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -194,49 +194,13 @@
       <section class="floating-panel mode-panel">
         <div class="panel-header">
           <div>
-            <strong>{{ 'access.switchView' | translate }}</strong>
-            <span>{{ 'access.switchHint' | translate }}</span>
+            <strong>{{ username() }}</strong>
+            <span>{{ modeTitleKey() | translate }}</span>
           </div>
         </div>
 
-        <div class="mode-options">
-          <button
-            type="button"
-            [class.active]="viewModeStore.isAdmin()"
-            (click)="selectMode('admin')"
-          >
-            <span>AD</span>
-            <div>
-              <strong>{{ 'access.adminTitle' | translate }}</strong>
-              <small>{{ 'access.adminShort' | translate }}</small>
-            </div>
-          </button>
-          <button
-            type="button"
-            [class.active]="viewModeStore.isDoctor()"
-            (click)="selectMode('doctor')"
-          >
-            <span>MD</span>
-            <div>
-              <strong>{{ 'access.doctorTitle' | translate }}</strong>
-              <small>{{ 'access.doctorShort' | translate }}</small>
-            </div>
-          </button>
-          <button
-            type="button"
-            [class.active]="viewModeStore.isNurse()"
-            (click)="selectMode('nurse')"
-          >
-            <span>EN</span>
-            <div>
-              <strong>{{ 'access.nurseTitle' | translate }}</strong>
-              <small>{{ 'access.nurseShort' | translate }}</small>
-            </div>
-          </button>
-        </div>
-
-        <button class="access-link" type="button" (click)="returnToAccess()">
-          {{ 'access.backToEntry' | translate }}
+        <button class="access-link" type="button" (click)="signOut()">
+          {{ 'access.signOut' | translate }}
         </button>
       </section>
       }

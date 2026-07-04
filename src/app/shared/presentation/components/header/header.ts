@@ -2,10 +2,11 @@ import { Component, Input, computed, inject, signal } from "@angular/core";
 import { DatePipe } from "@angular/common";
 import { Router } from "@angular/router";
 import { TranslatePipe } from "@ngx-translate/core";
-import { NotificationStore } from "../../../../notification/application/notification.store";
-import { AlertStatus } from "../../../../notification/domain/model/alert.entity";
+import { NotificationStore } from "@notification/application/notification.store";
+import { AlertStatus } from "@notification/domain/model/alert.entity";
 import { LanguageSwitcherComponent } from "../language-switcher/language-switcher";
-import { ViewMode, ViewModeStore } from "../../../application/view-mode.store";
+import { ViewModeStore } from "../../../application/view-mode.store";
+import { AuthStore } from "@iam/application/auth.store";
 
 @Component({
   selector: "app-header",
@@ -19,6 +20,7 @@ export class HeaderComponent {
 
   protected notificationStore = inject(NotificationStore);
   protected viewModeStore = inject(ViewModeStore);
+  protected authStore = inject(AuthStore);
   private router = inject(Router);
 
   notificationsOpen = signal(false);
@@ -38,10 +40,13 @@ export class HeaderComponent {
     return "access.nurseTitle";
   });
   protected modeInitials = computed(() => {
+    const username = this.authStore.user()?.username ?? "";
+    if (username.length >= 2) return username.slice(0, 2).toUpperCase();
     if (this.viewModeStore.isAdmin()) return "AD";
     if (this.viewModeStore.isDoctor()) return "MD";
     return "EN";
   });
+  protected username = computed(() => this.authStore.user()?.username ?? "");
 
   constructor() {
     this.notificationStore.loadAlerts();
@@ -77,12 +82,6 @@ export class HeaderComponent {
     this.modeOpen.set(false);
   }
 
-  selectMode(mode: ViewMode): void {
-    this.viewModeStore.setMode(mode);
-    this.closeModeMenu();
-    this.router.navigate(["/dashboard"]);
-  }
-
   goTo(path: string): void {
     this.closeNotifications();
     this.closeHelp();
@@ -90,8 +89,8 @@ export class HeaderComponent {
     this.router.navigate([path]);
   }
 
-  returnToAccess(): void {
-    this.viewModeStore.clearMode();
+  signOut(): void {
+    this.authStore.signOut();
     this.closeModeMenu();
     this.router.navigate(["/sign-in"]);
   }

@@ -1,26 +1,41 @@
 import { Routes } from "@angular/router";
-import { MainLayoutComponent } from "./shared/presentation/layouts/main-layout/main-layout";
-import { DashboardViewComponent } from "./dashboard/presentation/views/dashboard-view/dashboard-view";
-import { PatientListComponent } from "./patient/presentation/views/patient-list/patient-list";
-import { PatientMonitoringComponent } from "./patient/presentation/views/patient-monitoring/patient-monitoring";
-import { VitalSignListComponent } from "./vital-sign/presentation/views/vital-sign-list/vital-sign-list";
-import { ClinicalEventListComponent } from "./clinical-event/presentation/views/clinical-event-list/clinical-event-list";
-import { SbarListComponent } from "./sbar/presentation/views/sbar-list/sbar-list";
-import { AlertListComponent } from "./notification/presentation/views/alert-list/alert-list";
-import { ReportListComponent } from "./report/presentation/views/report-list/report-list";
-import { AuditLogListComponent } from "./audit/presentation/views/audit-log-list/audit-log-list";
-import { SignInComponent } from "./access/presentation/views/sign-in/sign-in";
+import { MainLayoutComponent } from "@shared/presentation/layouts/main-layout/main-layout";
+import { DashboardViewComponent } from "@dashboard/presentation/views/dashboard-view/dashboard-view";
+import { PatientListComponent } from "@patient/presentation/views/patient-list/patient-list";
+import { PatientMonitoringComponent } from "@patient/presentation/views/patient-monitoring/patient-monitoring";
+import { VitalSignListComponent } from "@vital-sign/presentation/views/vital-sign-list/vital-sign-list";
+import { ClinicalEventListComponent } from "@clinical-event/presentation/views/clinical-event-list/clinical-event-list";
+import { SbarListComponent } from "@sbar/presentation/views/sbar-list/sbar-list";
+import { AlertListComponent } from "@notification/presentation/views/alert-list/alert-list";
+import { ReportListComponent } from "@report/presentation/views/report-list/report-list";
+import { AuditLogListComponent } from "@audit/presentation/views/audit-log-list/audit-log-list";
+import { SignInComponent } from "@iam/presentation/views/sign-in/sign-in";
+import { SignUpComponent } from "@iam/presentation/views/sign-up/sign-up";
+import { SubscriptionPlansComponent } from "@subscriptions/presentation/views/subscription-plans/subscription-plans";
+import {
+  authGuard,
+  guestGuard,
+  roleGuard,
+} from "@iam/infrastructure/auth.guards";
 
 export const routes: Routes = [
   { path: "", redirectTo: "sign-in", pathMatch: "full" },
   {
     path: "sign-in",
     component: SignInComponent,
+    canActivate: [guestGuard],
     data: { titleKey: "access.title" },
+  },
+  {
+    path: "sign-up",
+    component: SignUpComponent,
+    canActivate: [guestGuard],
+    data: { titleKey: "access.signUpTitle" },
   },
   {
     path: "",
     component: MainLayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: "dashboard",
@@ -66,6 +81,12 @@ export const routes: Routes = [
         path: "audit",
         component: AuditLogListComponent,
         data: { titleKey: "common.audit" },
+      },
+      {
+        path: "subscriptions",
+        component: SubscriptionPlansComponent,
+        canActivate: [roleGuard(["ROLE_ADMIN"])],
+        data: { titleKey: "common.subscriptions" },
       },
     ],
   },
