@@ -11,7 +11,12 @@ import { ReportListComponent } from "@report/presentation/views/report-list/repo
 import { AuditLogListComponent } from "@audit/presentation/views/audit-log-list/audit-log-list";
 import { SignInComponent } from "@iam/presentation/views/sign-in/sign-in";
 import { SignUpComponent } from "@iam/presentation/views/sign-up/sign-up";
-import { authGuard, guestGuard } from "@iam/infrastructure/auth.guards";
+import { SubscriptionPlansComponent } from "@subscriptions/presentation/views/subscription-plans/subscription-plans";
+import {
+  authGuard,
+  guestGuard,
+  roleGuard,
+} from "@iam/infrastructure/auth.guards";
 
 export const routes: Routes = [
   { path: "", redirectTo: "sign-in", pathMatch: "full" },
@@ -76,6 +81,12 @@ export const routes: Routes = [
         path: "audit",
         component: AuditLogListComponent,
         data: { titleKey: "common.audit" },
+      },
+      {
+        path: "subscriptions",
+        component: SubscriptionPlansComponent,
+        canActivate: [roleGuard(["ROLE_ADMIN"])],
+        data: { titleKey: "common.subscriptions" },
       },
     ],
   },
