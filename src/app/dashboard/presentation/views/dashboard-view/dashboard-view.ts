@@ -10,7 +10,7 @@ import {
   AlertStatus,
 } from "@notification/domain/model/alert.entity";
 import { TranslatePipe } from "@ngx-translate/core";
-import { ViewModeStore } from "../../../../shared/application/view-mode.store";
+import { ViewModeStore } from "@shared/application/view-mode.store";
 
 @Component({
   selector: "app-dashboard-view",

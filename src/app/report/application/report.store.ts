@@ -3,14 +3,14 @@ import { catchError, forkJoin, map, of, switchMap } from "rxjs";
 import { Report, ReportStatus } from "../domain/model/report.entity";
 import { ReportAssembler } from "../infrastructure/report-assembler";
 import { ReportResponse } from "../infrastructure/report-response";
-import { AuditStore } from "../../audit/application/audit.store";
-import { AuditAction } from "../../audit/domain/model/audit-log.entity";
-import { PatientApiEndpoint } from "../../patient/infrastructure/patient-api-endpoint";
-import { VitalSignApiEndpoint } from "../../vital-sign/infrastructure/vital-sign-api-endpoint";
-import { SbarApiEndpoint } from "../../sbar/infrastructure/sbar-api-endpoint";
-import { NotificationApiEndpoint } from "../../notification/infrastructure/notification-api-endpoint";
-import { AuditApiEndpoint } from "../../audit/infrastructure/audit-api-endpoint";
-import { SbarTransferResponse } from "../../sbar/infrastructure/sbar-transfer-response";
+import { AuditStore } from "@audit/application/audit.store";
+import { AuditAction } from "@audit/domain/model/audit-log.entity";
+import { PatientApiEndpoint } from "@patient/infrastructure/patient-api-endpoint";
+import { VitalSignApiEndpoint } from "@vital-sign/infrastructure/vital-sign-api-endpoint";
+import { SbarApiEndpoint } from "@sbar/infrastructure/sbar-api-endpoint";
+import { NotificationApiEndpoint } from "@notification/infrastructure/notification-api-endpoint";
+import { AuditApiEndpoint } from "@audit/infrastructure/audit-api-endpoint";
+import { SbarTransferResponse } from "@sbar/infrastructure/sbar-transfer-response";
 
 @Injectable({ providedIn: "root" })
 export class ReportStore {

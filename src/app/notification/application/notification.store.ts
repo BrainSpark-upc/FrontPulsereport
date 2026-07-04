@@ -7,9 +7,9 @@ import {
 } from "../domain/model/alert.entity";
 import { NotificationApiEndpoint } from "../infrastructure/notification-api-endpoint";
 import { AlertAssembler } from "../infrastructure/alert-assembler";
-import { AuditStore } from "../../audit/application/audit.store";
-import { AuditAction } from "../../audit/domain/model/audit-log.entity";
-import { PatientStore } from "../../patient/application/patient.store";
+import { AuditStore } from "@audit/application/audit.store";
+import { AuditAction } from "@audit/domain/model/audit-log.entity";
+import { PatientStore } from "@patient/application/patient.store";
 
 const DEFAULT_ACTOR = "Equipo clínico";
 

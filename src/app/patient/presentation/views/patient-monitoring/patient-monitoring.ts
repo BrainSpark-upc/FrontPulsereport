@@ -5,13 +5,13 @@ import { PatientStore } from "../../../application/patient.store";
 import { PatientApiEndpoint } from "../../../infrastructure/patient-api-endpoint";
 import { PatientAssembler } from "../../../infrastructure/patient-assembler";
 import { Patient } from "../../../domain/model/patient.entity";
-import { VitalSignStore } from "../../../../vital-sign/application/vital-sign.store";
-import { ClinicalEventStore } from "../../../../clinical-event/application/clinical-event.store";
-import { NotificationStore } from "../../../../notification/application/notification.store";
-import { SbarStore } from "../../../../sbar/application/sbar.store";
-import { AuditStore } from "../../../../audit/application/audit.store";
-import { AlertStatus } from "../../../../notification/domain/model/alert.entity";
-import { VitalSign } from "../../../../vital-sign/domain/model/vital-sign.entity";
+import { VitalSignStore } from "@vital-sign/application/vital-sign.store";
+import { ClinicalEventStore } from "@clinical-event/application/clinical-event.store";
+import { NotificationStore } from "@notification/application/notification.store";
+import { SbarStore } from "@sbar/application/sbar.store";
+import { AuditStore } from "@audit/application/audit.store";
+import { AlertStatus } from "@notification/domain/model/alert.entity";
+import { VitalSign } from "@vital-sign/domain/model/vital-sign.entity";
 import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({

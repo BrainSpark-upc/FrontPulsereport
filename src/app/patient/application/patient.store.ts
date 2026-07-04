@@ -3,8 +3,8 @@ import { Patient, PatientStatusEnum } from "../domain/model/patient.entity";
 import { PatientApiEndpoint } from "../infrastructure/patient-api-endpoint";
 import { PatientAssembler } from "../infrastructure/patient-assembler";
 import { RegisterPatientRequest } from "../infrastructure/register-patient.request";
-import { AuditStore } from "../../audit/application/audit.store";
-import { AuditAction } from "../../audit/domain/model/audit-log.entity";
+import { AuditStore } from "@audit/application/audit.store";
+import { AuditAction } from "@audit/domain/model/audit-log.entity";
 
 @Injectable({ providedIn: "root" })
 export class PatientStore {
