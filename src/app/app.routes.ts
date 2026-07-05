@@ -11,6 +11,7 @@ import { ReportListComponent } from "@report/presentation/views/report-list/repo
 import { AuditLogListComponent } from "@audit/presentation/views/audit-log-list/audit-log-list";
 import { SignInComponent } from "@iam/presentation/views/sign-in/sign-in";
 import { SignUpComponent } from "@iam/presentation/views/sign-up/sign-up";
+import { UserManagementComponent } from "@iam/presentation/views/user-management/user-management";
 import { SubscriptionPlansComponent } from "@subscriptions/presentation/views/subscription-plans/subscription-plans";
 import {
   authGuard,
@@ -81,6 +82,12 @@ export const routes: Routes = [
         path: "audit",
         component: AuditLogListComponent,
         data: { titleKey: "common.audit" },
+      },
+      {
+        path: "users",
+        component: UserManagementComponent,
+        canActivate: [roleGuard(["ROLE_ADMIN"])],
+        data: { titleKey: "common.users" },
       },
       {
         path: "subscriptions",
