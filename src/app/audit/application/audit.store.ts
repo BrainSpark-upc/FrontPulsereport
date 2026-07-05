@@ -7,17 +7,21 @@ import {
 } from "../domain/model/audit-log.entity";
 import { AuditApiEndpoint } from "../infrastructure/audit-api-endpoint";
 import { AuditAssembler } from "../infrastructure/audit-assembler";
+import { AuthStore } from "@iam/application/auth.store";
 
 const DEFAULT_ACTOR = "Equipo clínico";
 
 @Injectable({ providedIn: "root" })
 export class AuditStore {
   private readonly api = inject(AuditApiEndpoint);
+  private readonly authStore = inject(AuthStore);
 
   private readonly _logs = signal<AuditLog[]>([]);
   readonly logs = this._logs.asReadonly();
 
   loadLogs(): void {
+    // Backend restricts audit reads to doctors and administrators.
+    if (!this.authStore.hasAnyRole(["ROLE_DOCTOR", "ROLE_ADMIN"])) return;
     this.api.getAll().subscribe((response) => {
       const logs = AuditAssembler.toEntityList(response).sort(
         (a, b) => b.performedAt.getTime() - a.performedAt.getTime(),
@@ -28,6 +32,8 @@ export class AuditStore {
   }
 
   register(action: AuditAction, description: string): void {
+    // Backend restricts audit writes to administrators.
+    if (!this.authStore.hasAnyRole(["ROLE_ADMIN"])) return;
     const context = this.resolveAuditContext(action);
 
     const request = {
@@ -35,7 +41,7 @@ export class AuditStore {
       entityType: context.entityType,
       entityId: crypto.randomUUID(),
       actionType: context.actionType,
-      performedBy: DEFAULT_ACTOR,
+      performedBy: this.authStore.user()?.username ?? DEFAULT_ACTOR,
       performedAt: new Date().toISOString(),
       metadata: {
         description,

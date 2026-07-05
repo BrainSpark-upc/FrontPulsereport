@@ -76,11 +76,13 @@ export const routes: Routes = [
       {
         path: "reports",
         component: ReportListComponent,
+        canActivate: [roleGuard(["ROLE_DOCTOR", "ROLE_ADMIN"])],
         data: { titleKey: "common.reports" },
       },
       {
         path: "audit",
         component: AuditLogListComponent,
+        canActivate: [roleGuard(["ROLE_DOCTOR", "ROLE_ADMIN"])],
         data: { titleKey: "common.audit" },
       },
       {
