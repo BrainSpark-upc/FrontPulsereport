@@ -6,6 +6,7 @@
     linear-gradient(135deg, rgba(15, 118, 110, 0.12), transparent 34%), #f6f8fb;
 }
 .access-panel {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,9 +17,10 @@
 }
 .access-topbar {
   position: absolute;
+  z-index: 5;
   top: 28px;
   left: clamp(24px, 6vw, 68px);
-  right: calc(50% + 32px);
+  right: clamp(24px, 6vw, 68px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -176,6 +178,7 @@
   background:
     linear-gradient(135deg, rgba(2, 132, 199, 0.2), transparent 42%), #122033;
   box-shadow: 0 34px 90px rgba(15, 23, 42, 0.24);
+  pointer-events: none;
 }
 .access-preview::after {
   content: "";
@@ -188,11 +191,73 @@
     transparent 1px 22px
   );
   transform: rotate(18deg);
+  pointer-events: none;
+}
+.preview-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(46px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.preview-orb.orb-a {
+  top: 16%;
+  left: 16%;
+  width: 230px;
+  height: 230px;
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.5), transparent 68%);
+  animation: orb-drift-a 11s ease-in-out infinite alternate;
+}
+.preview-orb.orb-b {
+  bottom: 13%;
+  right: 13%;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.42), transparent 68%);
+  animation: orb-drift-b 13s ease-in-out infinite alternate;
+}
+@keyframes orb-drift-a {
+  to {
+    transform: translate(46px, 34px) scale(1.14);
+  }
+}
+@keyframes orb-drift-b {
+  to {
+    transform: translate(-40px, -30px) scale(1.1);
+  }
+}
+.preview-chip {
+  position: absolute;
+  z-index: 1;
+  top: 15.5%;
+  right: 15%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(14px);
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 700;
+  animation:
+    preview-rise 0.55s ease-out 0.9s both,
+    chip-float 5.5s ease-in-out 1.5s infinite alternate;
+}
+.preview-chip svg {
+  color: #5eead4;
+}
+@keyframes chip-float {
+  to {
+    transform: translateY(9px);
+  }
 }
 .preview-card {
   position: relative;
   z-index: 1;
-  width: min(430px, 76%);
+  width: min(470px, 84%);
   display: grid;
   gap: 16px;
   padding: 26px;
@@ -200,6 +265,52 @@
   border-radius: 22px;
   background: rgba(255, 255, 255, 0.07);
   backdrop-filter: blur(14px);
+  animation:
+    preview-enter 0.6s ease-out both,
+    card-float 7s ease-in-out 1s infinite alternate;
+}
+@keyframes preview-enter {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes card-float {
+  to {
+    transform: translateY(-11px);
+  }
+}
+.preview-card > * {
+  animation: preview-rise 0.55s ease-out both;
+}
+.preview-card > :nth-child(1) {
+  animation-delay: 0.15s;
+}
+.preview-card > :nth-child(2) {
+  animation-delay: 0.28s;
+}
+.preview-card > :nth-child(3) {
+  animation-delay: 0.41s;
+}
+.preview-card > :nth-child(4) {
+  animation-delay: 0.54s;
+}
+.preview-card > :nth-child(5) {
+  animation-delay: 0.67s;
+}
+@keyframes preview-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .preview-top {
   display: flex;
@@ -290,6 +401,15 @@
   background: rgba(255, 255, 255, 0.05);
   text-align: center;
 }
+.vital-tile.heart {
+  border-top: 2px solid rgba(52, 211, 153, 0.6);
+}
+.vital-tile.oxygen {
+  border-top: 2px solid rgba(56, 189, 248, 0.6);
+}
+.vital-tile.temp {
+  border-top: 2px solid rgba(251, 191, 36, 0.6);
+}
 .vital-tile small {
   color: #94a3b8;
   font-size: 10.5px;
@@ -301,15 +421,52 @@
   text-overflow: ellipsis;
 }
 .vital-tile strong {
-  color: #5eead4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   font-size: 24px;
   line-height: 1.1;
+}
+.vital-tile.heart strong {
+  color: #34d399;
+}
+.vital-tile.oxygen strong {
+  color: #38bdf8;
+}
+.vital-tile.temp strong {
+  color: #fbbf24;
+}
+.heart-icon {
+  color: #fb7185;
+  animation: heart-beat 1.15s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes heart-beat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.32);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.2);
+  }
+  56% {
+    transform: scale(1);
+  }
 }
 .vital-tile span {
   color: #64748b;
   font-size: 11px;
 }
 .preview-ecg {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   height: 58px;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -321,6 +478,32 @@
       transparent 1px 24px
     ),
     rgba(255, 255, 255, 0.03);
+}
+.preview-ecg svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.preview-ecg::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -14%;
+  width: 12%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(45, 212, 191, 0.16) 55%,
+    rgba(45, 212, 191, 0.4)
+  );
+  animation: ecg-sweep 3.2s linear infinite;
+  pointer-events: none;
+}
+@keyframes ecg-sweep {
+  to {
+    left: 102%;
+  }
 }
 .preview-ecg polyline {
   fill: none;

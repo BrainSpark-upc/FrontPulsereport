@@ -362,8 +362,9 @@
   "access.preview.live": "Live",
   "access.preview.stable": "Stable",
   "access.preview.bed": "Bed",
-  "access.preview.heartRate": "Heart rate",
+  "access.preview.heartRate": "HR",
   "access.preview.bpmUnit": "bpm",
   "access.preview.temperature": "Temperature",
-  "access.preview.alertAttended": "Alert attended by nursing"
+  "access.preview.alertAttended": "Alert attended by nursing",
+  "access.preview.monitored": "12 patients monitored"
 }
