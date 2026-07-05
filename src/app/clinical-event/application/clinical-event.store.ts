@@ -11,6 +11,7 @@ import { AuditStore } from "@audit/application/audit.store";
 import { AuditAction } from "@audit/domain/model/audit-log.entity";
 import { NotificationStore } from "@notification/application/notification.store";
 import { AlertSeverity } from "@notification/domain/model/alert.entity";
+import { AuthStore } from "@iam/application/auth.store";
 
 const DEFAULT_ACTOR_ID = "clinical-team";
 const DEFAULT_ACTOR_NAME = "Equipo clínico";
@@ -21,11 +22,15 @@ export class ClinicalEventStore {
   private readonly patients = inject(PatientStore);
   private readonly audit = inject(AuditStore);
   private readonly notifications = inject(NotificationStore);
+  private readonly authStore = inject(AuthStore);
 
   private readonly _events = signal<ClinicalEvent[]>([]);
   readonly events = this._events.asReadonly();
 
   loadEvents(): void {
+    // Clinical events are stored in the audit-logs API, which the backend
+    // restricts to doctors and administrators.
+    if (!this.authStore.hasAnyRole(["ROLE_DOCTOR", "ROLE_ADMIN"])) return;
     this.api.getAll().subscribe((res) => {
       const events = ClinicalEventAssembler.toEntityList(res).sort(
         (a, b) => b.occurredAt.getTime() - a.occurredAt.getTime(),
