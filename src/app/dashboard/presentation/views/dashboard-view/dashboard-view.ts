@@ -11,6 +11,7 @@ import {
 } from "@notification/domain/model/alert.entity";
 import { TranslatePipe } from "@ngx-translate/core";
 import { ViewModeStore } from "@shared/application/view-mode.store";
+import { AuthStore } from "@iam/application/auth.store";
 
 @Component({
   selector: "app-dashboard-view",
@@ -24,11 +25,14 @@ export class DashboardViewComponent implements OnInit {
   protected notificationStore = inject(NotificationStore);
   protected auditStore = inject(AuditStore);
   protected viewModeStore = inject(ViewModeStore);
+  protected authStore = inject(AuthStore);
 
   ngOnInit(): void {
     this.patientStore.loadPatients();
     this.notificationStore.loadAlerts();
-    this.auditStore.loadLogs();
+    if (this.authStore.hasAnyRole(["ROLE_DOCTOR", "ROLE_ADMIN"])) {
+      this.auditStore.loadLogs();
+    }
   }
 
   protected activePatientsCount(): number {
