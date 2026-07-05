@@ -5,6 +5,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { TranslatePipe } from "@ngx-translate/core";
 import { switchMap } from "rxjs";
 import { AuthStore } from "../../../application/auth.store";
+import { ClinicalRegistrationRole } from "../../../infrastructure/sign-up.request";
 import { LanguageSwitcherComponent } from "@shared/presentation/components/language-switcher/language-switcher";
 
 @Component({
@@ -12,7 +13,7 @@ import { LanguageSwitcherComponent } from "@shared/presentation/components/langu
   standalone: true,
   imports: [FormsModule, RouterLink, TranslatePipe, LanguageSwitcherComponent],
   templateUrl: "./sign-up.html",
-  styleUrl: "../sign-in/sign-in.css",
+  styleUrls: ["../sign-in/sign-in.css", "./sign-up.css"],
 })
 export class SignUpComponent {
   private readonly router = inject(Router);
@@ -21,6 +22,7 @@ export class SignUpComponent {
   protected username = "";
   protected password = "";
   protected confirmPassword = "";
+  protected selectedRole: ClinicalRegistrationRole = "ROLE_NURSE";
   protected readonly errorKey = signal<string | null>(null);
 
   protected submit(): void {
@@ -43,7 +45,7 @@ export class SignUpComponent {
     this.errorKey.set(null);
     const credentials = { username, password: this.password };
     this.authStore
-      .signUp(credentials)
+      .signUp({ ...credentials, role: this.selectedRole })
       .pipe(switchMap(() => this.authStore.signIn(credentials)))
       .subscribe({
         next: () => this.router.navigate(["/dashboard"]),

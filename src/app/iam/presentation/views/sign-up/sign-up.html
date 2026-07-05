@@ -1,4 +1,4 @@
-<main class="access-page">
+<main class="access-page signup-page">
   <section class="access-panel">
     <div class="access-topbar">
       <div class="brand-mark">
@@ -43,6 +43,67 @@
         />
       </label>
 
+      <fieldset class="role-field">
+        <legend>{{ 'access.roleLabel' | translate }}</legend>
+        <p id="role-help">{{ 'access.roleHelp' | translate }}</p>
+
+        <div class="role-options" aria-describedby="role-help">
+          <label
+            class="role-option nurse"
+            [class.is-selected]="selectedRole === 'ROLE_NURSE'"
+          >
+            <input
+              type="radio"
+              name="role"
+              value="ROLE_NURSE"
+              [(ngModel)]="selectedRole"
+            />
+            <span class="role-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 4v16M4 12h16" />
+              </svg>
+            </span>
+            <span class="role-copy">
+              <strong>{{ 'access.nurseTitle' | translate }}</strong>
+              <small>{{ 'access.nurseRegistrationText' | translate }}</small>
+            </span>
+            <span class="role-check" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="none">
+                <path d="m3.5 8.2 2.8 2.7 6.2-6" />
+              </svg>
+            </span>
+          </label>
+
+          <label
+            class="role-option doctor"
+            [class.is-selected]="selectedRole === 'ROLE_DOCTOR'"
+          >
+            <input
+              type="radio"
+              name="role"
+              value="ROLE_DOCTOR"
+              [(ngModel)]="selectedRole"
+            />
+            <span class="role-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M7 3v5a5 5 0 0 0 10 0V3" />
+                <path d="M5 3h4M15 3h4M12 13v2a5 5 0 0 0 5 5" />
+                <circle cx="19" cy="18" r="2" />
+              </svg>
+            </span>
+            <span class="role-copy">
+              <strong>{{ 'access.doctorTitle' | translate }}</strong>
+              <small>{{ 'access.doctorRegistrationText' | translate }}</small>
+            </span>
+            <span class="role-check" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="none">
+                <path d="m3.5 8.2 2.8 2.7 6.2-6" />
+              </svg>
+            </span>
+          </label>
+        </div>
+      </fieldset>
+
       <label class="form-field">
         <span>{{ 'access.password' | translate }}</span>
         <input
@@ -77,10 +138,8 @@
       >
         @if (authStore.loading()) {
         <span class="submit-spinner" aria-hidden="true"></span>
-        {{ 'access.creatingAccount' | translate }}
-        } @else {
-        {{ 'access.signUp' | translate }}
-        }
+        {{ 'access.creatingAccount' | translate }} } @else { {{ 'access.signUp'
+        | translate }} }
       </button>
 
       <p class="access-alt">
@@ -117,7 +176,9 @@
       <div class="preview-top">
         <span class="pulse-dot" aria-hidden="true"></span>
         <strong>PulseReport</strong>
-        <span class="preview-live">{{ 'access.preview.live' | translate }}</span>
+        <span class="preview-live"
+          >{{ 'access.preview.live' | translate }}</span
+        >
       </div>
 
       <div class="preview-patient">
