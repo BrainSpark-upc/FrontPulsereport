@@ -362,8 +362,9 @@
   "access.preview.live": "En vivo",
   "access.preview.stable": "Estable",
   "access.preview.bed": "Cama",
-  "access.preview.heartRate": "Frec. cardíaca",
+  "access.preview.heartRate": "FC",
   "access.preview.bpmUnit": "lpm",
   "access.preview.temperature": "Temperatura",
-  "access.preview.alertAttended": "Alerta atendida por enfermería"
+  "access.preview.alertAttended": "Alerta atendida por enfermería",
+  "access.preview.monitored": "12 pacientes en monitoreo"
 }
