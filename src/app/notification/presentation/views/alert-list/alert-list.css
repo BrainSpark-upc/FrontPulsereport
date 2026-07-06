@@ -201,6 +201,41 @@
 .btn-sm:hover {
   filter: brightness(0.95);
 }
+.btn-sm:disabled {
+  cursor: wait;
+  filter: none;
+  opacity: 0.65;
+}
+.action-hint {
+  max-width: 150px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: right;
+}
+.action-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  border: 1px solid #fecaca;
+  border-radius: 14px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 13px;
+  font-weight: 700;
+}
+.action-error button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
 .empty-state {
   text-align: center;
   color: #94a3b8;

@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { Injectable, inject, signal } from "@angular/core";
+import { finalize } from "rxjs";
 import {
   Alert,
   AlertSeverity,
@@ -10,8 +12,11 @@ import { AlertAssembler } from "../infrastructure/alert-assembler";
 import { AuditStore } from "@audit/application/audit.store";
 import { AuditAction } from "@audit/domain/model/audit-log.entity";
 import { PatientStore } from "@patient/application/patient.store";
+import { AuthStore } from "@iam/application/auth.store";
+import { UserRole } from "@iam/domain/model/user.entity";
 
 const DEFAULT_ACTOR = "Equipo clínico";
+const ALERT_CLOSING_ROLES: UserRole[] = ["ROLE_DOCTOR", "ROLE_ADMIN"];
 
 interface ClinicalAlertPayload {
   patientId: string;
@@ -35,9 +40,13 @@ export class NotificationStore {
   private readonly api = inject(NotificationApiEndpoint);
   private readonly audit = inject(AuditStore);
   private readonly patientStore = inject(PatientStore);
+  private readonly authStore = inject(AuthStore);
 
   private _alerts = signal<Alert[]>([]);
   readonly alerts = this._alerts.asReadonly();
+  private readonly _pendingAlertIds = signal<ReadonlySet<string>>(new Set());
+  private readonly _actionErrorKey = signal<string | null>(null);
+  readonly actionErrorKey = this._actionErrorKey.asReadonly();
 
   loadAlerts(): void {
     this.api.getAll().subscribe((res) => {
@@ -95,35 +104,64 @@ export class NotificationStore {
   }
 
   acknowledge(alertId: string): void {
-    this.api.acknowledge(alertId, DEFAULT_ACTOR).subscribe((updated) => {
-      const alert = AlertAssembler.toEntity(
-        updated,
-        this.resolvePatientName(String(updated.patientId)),
-      );
-      this._alerts.update((list) =>
-        list.map((a) => (a.id === alert.id ? alert : a)),
-      );
-      this.audit.register(
-        AuditAction.ALERT_ACKNOWLEDGED,
-        `Atendió alerta de ${alert.patientName}: ${alert.title}`,
-      );
-    });
+    if (!this.beginAction(alertId)) return;
+
+    this.api
+      .acknowledge(alertId, this.currentActor())
+      .pipe(finalize(() => this.endAction(alertId)))
+      .subscribe({
+        next: (updated) => {
+          const alert = AlertAssembler.toEntity(
+            updated,
+            this.resolvePatientName(String(updated.patientId)),
+          );
+          this._alerts.update((list) =>
+            list.map((a) => (a.id === alert.id ? alert : a)),
+          );
+          this.audit.register(
+            AuditAction.ALERT_ACKNOWLEDGED,
+            `Atendió alerta de ${alert.patientName}: ${alert.title}`,
+          );
+        },
+        error: (error: unknown) => this.handleActionError(error),
+      });
   }
 
   resolve(alertId: string): void {
-    this.api.resolve(alertId, DEFAULT_ACTOR).subscribe((updated) => {
-      const alert = AlertAssembler.toEntity(
-        updated,
-        this.resolvePatientName(String(updated.patientId)),
-      );
-      this._alerts.update((list) =>
-        list.map((a) => (a.id === alert.id ? alert : a)),
-      );
-      this.audit.register(
-        AuditAction.ALERT_RESOLVED,
-        `Cerró alerta de ${alert.patientName}: ${alert.title}`,
-      );
-    });
+    if (!this.authStore.hasAnyRole(ALERT_CLOSING_ROLES)) {
+      this._actionErrorKey.set("alerts.closeForbidden");
+      return;
+    }
+
+    if (!this.beginAction(alertId)) return;
+
+    this.api
+      .resolve(alertId, this.currentActor())
+      .pipe(finalize(() => this.endAction(alertId)))
+      .subscribe({
+        next: (updated) => {
+          const alert = AlertAssembler.toEntity(
+            updated,
+            this.resolvePatientName(String(updated.patientId)),
+          );
+          this._alerts.update((list) =>
+            list.map((a) => (a.id === alert.id ? alert : a)),
+          );
+          this.audit.register(
+            AuditAction.ALERT_RESOLVED,
+            `Cerró alerta de ${alert.patientName}: ${alert.title}`,
+          );
+        },
+        error: (error: unknown) => this.handleActionError(error),
+      });
+  }
+
+  isActionPending(alertId: string): boolean {
+    return this._pendingAlertIds().has(alertId);
+  }
+
+  clearActionError(): void {
+    this._actionErrorKey.set(null);
   }
 
   filterBy(status: "Todas" | "Críticas" | "Moderadas"): Alert[] {
@@ -160,5 +198,37 @@ export class NotificationStore {
     if (severity === AlertSeverity.HIGH) return AlertSeverity.HIGH;
     if (severity === AlertSeverity.LOW) return AlertSeverity.LOW;
     return AlertSeverity.MEDIUM;
+  }
+
+  private currentActor(): string {
+    return this.authStore.user()?.username ?? DEFAULT_ACTOR;
+  }
+
+  private beginAction(alertId: string): boolean {
+    if (this.isActionPending(alertId)) return false;
+
+    this._actionErrorKey.set(null);
+    this._pendingAlertIds.update((current) => {
+      const next = new Set(current);
+      next.add(alertId);
+      return next;
+    });
+    return true;
+  }
+
+  private endAction(alertId: string): void {
+    this._pendingAlertIds.update((current) => {
+      const next = new Set(current);
+      next.delete(alertId);
+      return next;
+    });
+  }
+
+  private handleActionError(error: unknown): void {
+    const key =
+      error instanceof HttpErrorResponse && error.status === 403
+        ? "alerts.actionForbidden"
+        : "alerts.actionFailed";
+    this._actionErrorKey.set(key);
   }
 }
