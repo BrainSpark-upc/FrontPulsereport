@@ -34,6 +34,10 @@ export class HeaderComponent {
   );
 
   protected latestAlerts = computed(() => this.activeAlerts().slice(0, 5));
+  protected canResolveAlerts = computed(() =>
+    this.authStore.hasAnyRole(["ROLE_DOCTOR", "ROLE_ADMIN"]),
+  );
+  protected readonly AlertStatus = AlertStatus;
   protected modeTitleKey = computed(() => {
     if (this.viewModeStore.isAdmin()) return "access.adminTitle";
     if (this.viewModeStore.isDoctor()) return "access.doctorTitle";

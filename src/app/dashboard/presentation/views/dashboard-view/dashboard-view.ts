@@ -47,6 +47,13 @@ export class DashboardViewComponent implements OnInit {
       .filter((a) => a.status !== AlertStatus.CLOSED).length;
   }
 
+  protected criticalPatientsCount(): number {
+    return this.patientStore
+      .patients()
+      .filter((patient) => patient.status === PatientStatusEnum.CRITICAL)
+      .length;
+  }
+
   protected criticalAlertsCount(): number {
     return this.notificationStore
       .alerts()
@@ -98,5 +105,9 @@ export class DashboardViewComponent implements OnInit {
 
   protected latestAudits() {
     return this.auditStore.logs().slice(0, 5);
+  }
+
+  protected patientInitials(firstName: string, lastName: string): string {
+    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   }
 }

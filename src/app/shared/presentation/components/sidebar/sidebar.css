@@ -9,7 +9,7 @@
   left: 0;
   top: 0;
   z-index: 50;
-  box-shadow: 8px 0 30px rgba(15, 23, 42, 0.04);
+  box-shadow: 12px 0 36px rgba(15, 23, 42, 0.05);
 }
 .sidebar-brand {
   display: flex;
@@ -45,6 +45,14 @@
   gap: 2px;
   overflow-y: auto;
 }
+.nav-section-label {
+  padding: 3px 12px 7px;
+  color: #94a3b8;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
 .nav-item {
   position: relative;
   display: flex;
@@ -56,17 +64,21 @@
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
-  transition: all 0.15s ease;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease;
   cursor: pointer;
   white-space: nowrap;
 }
 .nav-item:hover {
-  background: #f0fdfa;
-  color: #0f766e;
+  background: var(--role-soft);
+  color: var(--role-accent);
+  transform: translateX(2px);
 }
 .nav-item.active {
-  background: #e6fffb;
-  color: #0f766e;
+  background: var(--role-soft);
+  color: var(--role-accent);
   font-weight: 800;
 }
 .nav-item.active::before {
@@ -77,12 +89,65 @@
   bottom: 10px;
   width: 3px;
   border-radius: 999px;
-  background: #0f766e;
+  background: var(--role-accent);
 }
 .nav-icon {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
+}
+.role-context {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 10px 12px;
+  padding: 12px;
+  border: 1px solid var(--role-border);
+  border-radius: 14px;
+  background: var(--role-soft);
+}
+.role-context-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 11px;
+  background: var(--role-accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+.role-context div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+.role-context small {
+  color: #74859a;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.role-context strong {
+  overflow: hidden;
+  color: #152238;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.role-status {
+  width: 7px;
+  height: 7px;
+  margin-left: auto;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: #10b981;
+  box-shadow: 0 0 0 2px #a7f3d0;
 }
 
 @media (max-width: 900px) {
@@ -112,6 +177,10 @@
     overflow-y: hidden;
     scrollbar-width: thin;
   }
+  .nav-section-label,
+  .role-context {
+    display: none;
+  }
   .nav-item {
     flex: 0 0 auto;
     padding: 9px 12px;
@@ -120,6 +189,9 @@
   }
   .nav-item.active::before {
     display: none;
+  }
+  .nav-item:hover {
+    transform: translateY(-1px);
   }
 }
 
