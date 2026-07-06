@@ -94,7 +94,6 @@ export const routes: Routes = [
       {
         path: "subscriptions",
         component: SubscriptionPlansComponent,
-        canActivate: [roleGuard(["ROLE_ADMIN"])],
         data: { titleKey: "common.subscriptions" },
       },
     ],
