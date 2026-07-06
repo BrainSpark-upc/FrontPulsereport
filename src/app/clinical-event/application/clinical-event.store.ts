@@ -5,16 +5,11 @@ import {
 } from "../domain/model/clinical-event.entity";
 import { ClinicalEventApiEndpoint } from "../infrastructure/clinical-event-api-endpoint";
 import { ClinicalEventAssembler } from "../infrastructure/clinical-event-assembler";
-import { ClinicalEventResponse } from "../infrastructure/clinical-event-response";
 import { PatientStore } from "@patient/application/patient.store";
 import { AuditStore } from "@audit/application/audit.store";
 import { AuditAction } from "@audit/domain/model/audit-log.entity";
 import { NotificationStore } from "@notification/application/notification.store";
 import { AlertSeverity } from "@notification/domain/model/alert.entity";
-import { AuthStore } from "@iam/application/auth.store";
-
-const DEFAULT_ACTOR_ID = "clinical-team";
-const DEFAULT_ACTOR_NAME = "Equipo clínico";
 
 @Injectable({ providedIn: "root" })
 export class ClinicalEventStore {
@@ -22,54 +17,62 @@ export class ClinicalEventStore {
   private readonly patients = inject(PatientStore);
   private readonly audit = inject(AuditStore);
   private readonly notifications = inject(NotificationStore);
-  private readonly authStore = inject(AuthStore);
 
   private readonly _events = signal<ClinicalEvent[]>([]);
   readonly events = this._events.asReadonly();
+  readonly errorKey = signal<string | null>(null);
 
   loadEvents(): void {
-    // Clinical events are stored in the audit-logs API, which the backend
-    // restricts to doctors and administrators.
-    if (!this.authStore.hasAnyRole(["ROLE_DOCTOR", "ROLE_ADMIN"])) return;
-    this.api.getAll().subscribe((res) => {
-      const events = ClinicalEventAssembler.toEntityList(res).sort(
-        (a, b) => b.occurredAt.getTime() - a.occurredAt.getTime(),
-      );
+    this.errorKey.set(null);
+    this.api.getAll().subscribe({
+      next: (responses) => {
+        const events = responses
+          .map((response) =>
+            ClinicalEventAssembler.toEntity(
+              response,
+              this.patientNameOf(String(response.patientId)),
+            ),
+          )
+          .sort((a, b) => b.occurredAt.getTime() - a.occurredAt.getTime());
 
-      this._events.set(events);
+        this._events.set(events);
+      },
+      error: () => this.errorKey.set("events.errors.load"),
     });
   }
 
-  registerEvent(
-    form: Omit<
-      ClinicalEventResponse,
-      "id" | "patientName" | "nurseId" | "nurseName" | "occurredAt"
-    >,
-  ): void {
-    const patient = this.patients
-      .patients()
-      .find((p) => p.id === form.patientId);
+  registerEvent(form: {
+    patientId: string;
+    eventType: string;
+    severity: string;
+    title: string;
+    description: string;
+  }): void {
+    this.errorKey.set(null);
+    this.api.register(ClinicalEventAssembler.toRequest(form)).subscribe({
+      next: (created) => {
+        const event = ClinicalEventAssembler.toEntity(
+          created,
+          this.patientNameOf(String(created.patientId)),
+        );
+        this._events.update((list) => [event, ...list]);
 
-    const request: ClinicalEventResponse = {
-      ...form,
-      id: crypto.randomUUID(),
-      patientName: patient?.fullName ?? "Paciente no identificado",
-      nurseId: DEFAULT_ACTOR_ID,
-      nurseName: DEFAULT_ACTOR_NAME,
-      occurredAt: new Date().toISOString(),
-    };
+        this.audit.register(
+          AuditAction.BUSINESS_TRANSACTION_EXECUTED,
+          `Transacción: evento clínico - alerta si aplica - auditoría para ${event.patientName}`,
+        );
 
-    this.api.register(request).subscribe((created) => {
-      const event = ClinicalEventAssembler.toEntity(created);
-      this._events.update((list) => [event, ...list]);
-
-      this.audit.register(
-        AuditAction.BUSINESS_TRANSACTION_EXECUTED,
-        `Transacción: evento clínico - alerta si aplica - auditoría para ${event.patientName}`,
-      );
-
-      this.createAlertWhenNeeded(event);
+        this.createAlertWhenNeeded(event);
+      },
+      error: () => this.errorKey.set("events.errors.save"),
     });
+  }
+
+  private patientNameOf(patientId: string): string {
+    return (
+      this.patients.patients().find((patient) => patient.id === patientId)
+        ?.fullName ?? `Paciente #${patientId}`
+    );
   }
 
   private createAlertWhenNeeded(event: ClinicalEvent): void {
