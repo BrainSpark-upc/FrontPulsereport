@@ -1,6 +1,11 @@
-<div class="dashboard">
+<div
+  class="dashboard"
+  [class.admin-dashboard]="viewModeStore.isAdmin()"
+  [class.doctor-dashboard]="viewModeStore.isDoctor()"
+  [class.nurse-dashboard]="viewModeStore.isNurse()"
+>
   <div class="dashboard-hero">
-    <div>
+    <div class="hero-copy">
       <span class="eyebrow">{{ 'dashboard.eyebrow' | translate }}</span>
       @if (viewModeStore.isAdmin()) {
       <h1>{{ 'dashboard.adminTitle' | translate }}</h1>
@@ -12,6 +17,16 @@
       <h1>{{ 'dashboard.nurseTitle' | translate }}</h1>
       <p>{{ 'dashboard.nurseSubtitle' | translate }}</p>
       }
+    </div>
+
+    <div class="hero-identity" aria-hidden="true">
+      <span class="hero-monogram">
+        @if (viewModeStore.isAdmin()) { AD } @else if (viewModeStore.isDoctor())
+        { MD } @else { EN }
+      </span>
+      <span class="hero-live"
+        ><i></i>{{ 'dashboard.liveData' | translate }}</span
+      >
     </div>
 
     <div class="hero-actions">
@@ -41,7 +56,7 @@
   </div>
 
   <div class="stats-row">
-    <div class="stat-card">
+    <div class="stat-card patients-stat">
       <div class="stat-icon patients-icon">
         <svg
           viewBox="0 0 24 24"
@@ -68,7 +83,7 @@
       </div>
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card alerts-stat">
       <div class="stat-icon alerts-icon">
         <svg
           viewBox="0 0 24 24"
@@ -97,7 +112,8 @@
       </div>
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card priority-stat">
+      @if (viewModeStore.isAdmin()) {
       <div class="stat-icon events-icon">
         <svg
           viewBox="0 0 24 24"
@@ -121,9 +137,35 @@
           date:'h:mm a' }}</span
         >
       </div>
+      } @else {
+      <div class="stat-icon events-icon">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          width="28"
+          height="28"
+        >
+          <path d="M12 3a9 9 0 109 9" />
+          <path d="M12 7v5l3 2" />
+          <path d="M17 3h4v4" />
+          <path d="M21 3l-5 5" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <span class="stat-number">{{ criticalPatientsCount() }}</span>
+        <span class="stat-label"
+          >{{ 'dashboard.priorityPatients' | translate }}</span
+        >
+        <span class="stat-sub"
+          >{{ 'dashboard.priorityPatientsHint' | translate }}</span
+        >
+      </div>
+      }
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card modules-stat">
       <div class="stat-icon inspections-icon">
         <svg
           viewBox="0 0 24 24"
@@ -157,19 +199,34 @@
     [class.admin]="viewModeStore.isAdmin()"
     [class.doctor]="viewModeStore.isDoctor()"
   >
-    <div>
-      <span>{{ 'access.currentView' | translate }}</span>
+    <span class="mode-summary-icon">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.7"
+      >
+        <path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z" />
+        <path d="M9 12l2 2 4-4" />
+      </svg>
+    </span>
+    <div class="mode-summary-copy">
+      <span>{{ 'dashboard.operationalFocus' | translate }}</span>
       <strong>
-        @if (viewModeStore.isAdmin()) { {{ 'access.adminTitle' | translate }} }
-        @else if (viewModeStore.isDoctor()) { {{ 'access.doctorTitle' |
-        translate }} } @else { {{ 'access.nurseTitle' | translate }} }
+        @if (viewModeStore.isAdmin()) { {{ 'dashboard.adminFocus' | translate }}
+        } @else if (viewModeStore.isDoctor()) { {{ 'dashboard.doctorFocus' |
+        translate }} } @else { {{ 'dashboard.nurseFocus' | translate }} }
       </strong>
+      <p>
+        @if (viewModeStore.isAdmin()) { {{ 'dashboard.adminModeText' | translate
+        }} } @else if (viewModeStore.isDoctor()) { {{ 'dashboard.doctorModeText'
+        | translate }} } @else { {{ 'dashboard.nurseModeText' | translate }} }
+      </p>
     </div>
-    <p>
-      @if (viewModeStore.isAdmin()) { {{ 'dashboard.adminModeText' | translate
-      }} } @else if (viewModeStore.isDoctor()) { {{ 'dashboard.doctorModeText' |
-      translate }} } @else { {{ 'dashboard.nurseModeText' | translate }} }
-    </p>
+    <div class="mode-permission">
+      <span>{{ 'dashboard.accessLevel' | translate }}</span>
+      <strong>{{ 'dashboard.roleBasedAccess' | translate }}</strong>
+    </div>
   </section>
 
   <div class="dashboard-grid">
@@ -196,14 +253,24 @@
           @for (patient of latestPatients(); track patient.id) {
           <tr>
             <td class="patient-cell">
-              <div class="patient-avatar"></div>
+              <div class="patient-avatar">
+                {{ patientInitials(patient.firstName, patient.lastName) }}
+              </div>
               <div>
                 <span class="patient-name">{{ patient.fullName }}</span><br />
                 <span class="patient-id">ID: {{ patient.code }}</span>
               </div>
             </td>
-            <td><span class="status-badge">{{ patient.statusLabel }}</span></td>
-            <td>{{ patient.roomNumber }} / {{ patient.bedNumber }}</td>
+            <td>
+              <span class="status-badge" [attr.data-status]="patient.status"
+                >{{ patient.statusLabel }}</span
+              >
+            </td>
+            <td>
+              <span class="room-chip"
+                >{{ patient.roomNumber }} / {{ patient.bedNumber }}</span
+              >
+            </td>
             <td>{{ patient.diagnosis }}</td>
             <td>
               <a
@@ -308,41 +375,82 @@
 
       <div class="actions-list">
         @if (viewModeStore.isAdmin()) {
-        <a routerLink="/reports" class="action-btn"
-          >{{ 'dashboard.goReports' | translate }}</a
-        >
-        <a routerLink="/audit" class="action-btn"
-          >{{ 'dashboard.goAudit' | translate }}</a
-        >
-        <a routerLink="/alerts" class="action-btn"
-          >{{ 'dashboard.goAlerts' | translate }}</a
-        >
+        <a routerLink="/reports" class="action-btn">
+          <span
+            ><strong>{{ 'dashboard.goReports' | translate }}</strong
+            ><small
+              >{{ 'dashboard.actionReportsHint' | translate }}</small
+            ></span
+          ><i>→</i>
+        </a>
+        <a routerLink="/audit" class="action-btn">
+          <span
+            ><strong>{{ 'dashboard.goAudit' | translate }}</strong
+            ><small>{{ 'dashboard.actionAuditHint' | translate }}</small></span
+          ><i>→</i>
+        </a>
+        <a routerLink="/alerts" class="action-btn">
+          <span
+            ><strong>{{ 'dashboard.goAlerts' | translate }}</strong
+            ><small>{{ 'dashboard.actionAlertsHint' | translate }}</small></span
+          ><i>→</i>
+        </a>
         } @else if (viewModeStore.isDoctor()) {
-        <a routerLink="/patients" class="action-btn"
-          >{{ 'dashboard.goPatients' | translate }}</a
-        >
-        <a routerLink="/clinical-events" class="action-btn"
-          >{{ 'dashboard.goClinicalEvents' | translate }}</a
-        >
-        <a routerLink="/reports" class="action-btn"
-          >{{ 'dashboard.goReports' | translate }}</a
-        >
-        <a routerLink="/alerts" class="action-btn"
-          >{{ 'dashboard.goAlerts' | translate }}</a
-        >
+        <a routerLink="/patients" class="action-btn">
+          <span
+            ><strong>{{ 'dashboard.goPatients' | translate }}</strong
+            ><small
+              >{{ 'dashboard.actionPatientsHint' | translate }}</small
+            ></span
+          ><i>→</i>
+        </a>
+        <a routerLink="/clinical-events" class="action-btn">
+          <span
+            ><strong>{{ 'dashboard.goClinicalEvents' | translate }}</strong
+            ><small>{{ 'dashboard.actionEventsHint' | translate }}</small></span
+          ><i>→</i>
+        </a>
+        <a routerLink="/reports" class="action-btn">
+          <span
+            ><strong>{{ 'dashboard.goReports' | translate }}</strong
+            ><small
+              >{{ 'dashboard.actionReportsHint' | translate }}</small
+            ></span
+          ><i>→</i>
+        </a>
+        <a routerLink="/alerts" class="action-btn">
+          <span
+            ><strong>{{ 'dashboard.goAlerts' | translate }}</strong
+            ><small>{{ 'dashboard.actionAlertsHint' | translate }}</small></span
+          ><i>→</i>
+        </a>
         } @else {
-        <a routerLink="/patients" class="action-btn"
-          >{{ 'dashboard.goPatients' | translate }}</a
-        >
-        <a routerLink="/clinical-events" class="action-btn"
-          >{{ 'dashboard.goClinicalEvents' | translate }}</a
-        >
-        <a routerLink="/sbar" class="action-btn"
-          >{{ 'dashboard.goSbar' | translate }}</a
-        >
-        <a routerLink="/alerts" class="action-btn"
-          >{{ 'dashboard.goAlerts' | translate }}</a
-        >
+        <a routerLink="/patients" class="action-btn">
+          <span
+            ><strong>{{ 'dashboard.goPatients' | translate }}</strong
+            ><small
+              >{{ 'dashboard.actionPatientsHint' | translate }}</small
+            ></span
+          ><i>→</i>
+        </a>
+        <a routerLink="/clinical-events" class="action-btn">
+          <span
+            ><strong>{{ 'dashboard.goClinicalEvents' | translate }}</strong
+            ><small>{{ 'dashboard.actionEventsHint' | translate }}</small></span
+          ><i>→</i>
+        </a>
+        <a routerLink="/sbar" class="action-btn">
+          <span
+            ><strong>{{ 'dashboard.goSbar' | translate }}</strong
+            ><small>{{ 'dashboard.actionSbarHint' | translate }}</small></span
+          ><i>→</i>
+        </a>
+        <a routerLink="/alerts" class="action-btn">
+          <span
+            ><strong>{{ 'dashboard.goAlerts' | translate }}</strong
+            ><small>{{ 'dashboard.actionAlertsHint' | translate }}</small></span
+          ><i>→</i>
+        </a>
         }
       </div>
     </div>

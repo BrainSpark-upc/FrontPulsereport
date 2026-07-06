@@ -1,5 +1,11 @@
 <header class="app-header">
-  <h1 class="page-title">{{ pageTitle | translate }}</h1>
+  <div class="page-heading">
+    <h1 class="page-title">{{ pageTitle | translate }}</h1>
+    <span class="role-chip">
+      <i></i>
+      {{ modeTitleKey() | translate }}
+    </span>
+  </div>
   <div class="header-actions">
     <div class="utility-wrapper" (click)="$event.stopPropagation()">
       <button
@@ -72,13 +78,16 @@
                 >
               </div>
               <p>{{ alert.title }}</p>
-              <small>{{ alert.triggeredAt | date:'short' }}</small>
+              <div class="notification-meta">
+                <small>{{ alert.triggeredAt | date:'short' }}</small>
+                <span>{{ alert.statusLabel }}</span>
+              </div>
               <div class="notification-actions">
-                @if (alert.isActive) {
+                @if (alert.status === AlertStatus.OPEN) {
                 <button type="button" (click)="acknowledgeAlert(alert.id)">
                   {{ 'alerts.acknowledge' | translate }}
                 </button>
-                }
+                } @if (canResolveAlerts()) {
                 <button
                   type="button"
                   class="resolve"
@@ -86,6 +95,7 @@
                 >
                   {{ 'alerts.resolve' | translate }}
                 </button>
+                }
               </div>
             </div>
           </article>
@@ -134,6 +144,65 @@
         </div>
 
         <div class="help-steps">
+          @if (viewModeStore.isAdmin()) {
+          <button type="button" (click)="goTo('/users')">
+            <span>1</span>
+            <div>
+              <strong>{{ 'help.stepUsersTitle' | translate }}</strong>
+              <small>{{ 'help.stepUsersText' | translate }}</small>
+            </div>
+          </button>
+          <button type="button" (click)="goTo('/audit')">
+            <span>2</span>
+            <div>
+              <strong>{{ 'help.stepAuditTitle' | translate }}</strong>
+              <small>{{ 'help.stepAuditText' | translate }}</small>
+            </div>
+          </button>
+          <button type="button" (click)="goTo('/reports')">
+            <span>3</span>
+            <div>
+              <strong>{{ 'help.stepReportsTitle' | translate }}</strong>
+              <small>{{ 'help.stepReportsText' | translate }}</small>
+            </div>
+          </button>
+          <button type="button" (click)="goTo('/alerts')">
+            <span>4</span>
+            <div>
+              <strong>{{ 'help.stepAlertsTitle' | translate }}</strong>
+              <small>{{ 'help.stepAlertsText' | translate }}</small>
+            </div>
+          </button>
+          } @else if (viewModeStore.isDoctor()) {
+          <button type="button" (click)="goTo('/patients')">
+            <span>1</span>
+            <div>
+              <strong>{{ 'help.stepPatientsTitle' | translate }}</strong>
+              <small>{{ 'help.stepPatientsText' | translate }}</small>
+            </div>
+          </button>
+          <button type="button" (click)="goTo('/clinical-events')">
+            <span>2</span>
+            <div>
+              <strong>{{ 'help.stepEventsTitle' | translate }}</strong>
+              <small>{{ 'help.stepEventsText' | translate }}</small>
+            </div>
+          </button>
+          <button type="button" (click)="goTo('/alerts')">
+            <span>3</span>
+            <div>
+              <strong>{{ 'help.stepAlertsTitle' | translate }}</strong>
+              <small>{{ 'help.stepAlertsText' | translate }}</small>
+            </div>
+          </button>
+          <button type="button" (click)="goTo('/reports')">
+            <span>4</span>
+            <div>
+              <strong>{{ 'help.stepReportsTitle' | translate }}</strong>
+              <small>{{ 'help.stepReportsText' | translate }}</small>
+            </div>
+          </button>
+          } @else {
           <button type="button" (click)="goTo('/patients')">
             <span>1</span>
             <div>
@@ -155,13 +224,14 @@
               <small>{{ 'help.stepSbarText' | translate }}</small>
             </div>
           </button>
-          <button type="button" (click)="goTo('/reports')">
+          <button type="button" (click)="goTo('/alerts')">
             <span>4</span>
             <div>
-              <strong>{{ 'help.stepReportsTitle' | translate }}</strong>
-              <small>{{ 'help.stepReportsText' | translate }}</small>
+              <strong>{{ 'help.stepAlertsTitle' | translate }}</strong>
+              <small>{{ 'help.stepAlertsText' | translate }}</small>
             </div>
           </button>
+          }
         </div>
       </section>
       }

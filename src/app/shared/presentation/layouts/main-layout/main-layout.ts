@@ -10,6 +10,7 @@ import { HeaderComponent } from "../../components/header/header";
 import { filter, map } from "rxjs";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { TranslatePipe } from "@ngx-translate/core";
+import { ViewModeStore } from "../../../application/view-mode.store";
 
 @Component({
   selector: "app-main-layout",
@@ -21,6 +22,8 @@ import { TranslatePipe } from "@ngx-translate/core";
 export class MainLayoutComponent {
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
+  protected readonly viewModeStore = inject(ViewModeStore);
+  protected readonly currentYear = new Date().getFullYear();
 
   pageTitle = toSignal(
     this.router.events.pipe(

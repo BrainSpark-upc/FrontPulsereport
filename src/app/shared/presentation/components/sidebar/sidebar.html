@@ -50,6 +50,7 @@
   </div>
 
   <nav class="sidebar-nav">
+    <span class="nav-section-label">{{ 'sidebar.workspace' | translate }}</span>
     <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
       <svg
         class="nav-icon"
@@ -172,43 +173,63 @@
       </svg>
       <span>{{ 'sidebar.audit' | translate }}</span>
     </a>
+    } @if (viewModeStore.isAdmin()) {
+    <a routerLink="/users" routerLinkActive="active" class="nav-item">
+      <svg
+        class="nav-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <circle cx="9" cy="7" r="4" />
+        <path d="M2 21v-2a4 4 0 014-4h6a4 4 0 014 4v2" />
+        <circle cx="19" cy="11" r="2" />
+        <path d="M19 8v1" />
+        <path d="M19 13v1" />
+        <path d="M21.6 9.5l-.87.5" />
+        <path d="M17.27 12l-.87.5" />
+        <path d="M16.4 9.5l.87.5" />
+        <path d="M20.73 12l.87.5" />
+      </svg>
+      <span>{{ 'sidebar.users' | translate }}</span>
+    </a>
     }
-      @if (viewModeStore.isAdmin()) {
-          <a routerLink="/users" routerLinkActive="active" class="nav-item">
-              <svg
-                      class="nav-icon"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.5"
-              >
-                  <circle cx="9" cy="7" r="4" />
-                  <path d="M2 21v-2a4 4 0 014-4h6a4 4 0 014 4v2" />
-                  <circle cx="19" cy="11" r="2" />
-                  <path d="M19 8v1" />
-                  <path d="M19 13v1" />
-                  <path d="M21.6 9.5l-.87.5" />
-                  <path d="M17.27 12l-.87.5" />
-                  <path d="M16.4 9.5l.87.5" />
-                  <path d="M20.73 12l.87.5" />
-              </svg>
-              <span>{{ 'sidebar.users' | translate }}</span>
-          </a>
-      }
 
-      <a routerLink="/subscriptions" routerLinkActive="active" class="nav-item">
-          <svg
-                  class="nav-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-          >
-              <rect x="2" y="5" width="20" height="14" rx="2" />
-              <line x1="2" y1="10" x2="22" y2="10" />
-              <line x1="6" y1="15" x2="10" y2="15" />
-          </svg>
-          <span>{{ 'sidebar.subscriptions' | translate }}</span>
-      </a>
+    <a routerLink="/subscriptions" routerLinkActive="active" class="nav-item">
+      <svg
+        class="nav-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <rect x="2" y="5" width="20" height="14" rx="2" />
+        <line x1="2" y1="10" x2="22" y2="10" />
+        <line x1="6" y1="15" x2="10" y2="15" />
+      </svg>
+      <span>{{ 'sidebar.subscriptions' | translate }}</span>
+    </a>
   </nav>
+
+  <div
+    class="role-context"
+    [class.admin]="viewModeStore.isAdmin()"
+    [class.doctor]="viewModeStore.isDoctor()"
+  >
+    <span class="role-context-icon">
+      @if (viewModeStore.isAdmin()) { AD } @else if (viewModeStore.isDoctor()) {
+      MD } @else { EN }
+    </span>
+    <div>
+      <small>{{ 'access.currentView' | translate }}</small>
+      <strong>
+        @if (viewModeStore.isAdmin()) { {{ 'access.adminTitle' | translate }} }
+        @else if (viewModeStore.isDoctor()) { {{ 'access.doctorTitle' |
+        translate }} } @else { {{ 'access.nurseTitle' | translate }} }
+      </strong>
+    </div>
+    <span class="role-status" [title]="'sidebar.secureSession' | translate">
+    </span>
+  </div>
 </aside>
