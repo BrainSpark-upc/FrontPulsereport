@@ -1,12 +1,10 @@
-﻿export interface ClinicalEventResponse {
-  id: string;
-  patientId: string;
-  patientName: string;
-  nurseId: string;
-  nurseName: string;
+export interface ClinicalEventResponse {
+  id: number | string;
+  patientId: number | string;
   eventType: string;
   severity: string;
   title: string;
   description: string;
+  registeredBy: string;
   occurredAt: string;
 }
