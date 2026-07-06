@@ -20,11 +20,6 @@
         </div>
       </div>
 
-      <div class="sandbox-pill">
-        <span></span>
-        {{ 'checkout.sandbox' | translate }}
-      </div>
-
       <div class="plan-summary">
         <span>{{ 'checkout.yourPlan' | translate }}</span>
         <h2>{{ plan().nameKey | translate }}</h2>
@@ -247,12 +242,6 @@
             <small>{{ 'checkout.securityCodeError' | translate }}</small>
             }
           </label>
-        </div>
-
-        <div class="demo-card">
-          <span>{{ 'checkout.testMode' | translate }}</span>
-          <strong>4242 4242 4242 4242</strong>
-          <small>{{ 'checkout.testModeHint' | translate }}</small>
         </div>
 
         @if (paymentError()) {
