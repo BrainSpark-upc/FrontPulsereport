@@ -8,8 +8,14 @@ import {
 import { AuditApiEndpoint } from "../infrastructure/audit-api-endpoint";
 import { AuditAssembler } from "../infrastructure/audit-assembler";
 import { AuthStore } from "@iam/application/auth.store";
+import { UserRole } from "@iam/domain/model/user.entity";
 
 const DEFAULT_ACTOR = "Equipo clínico";
+const CLINICAL_AUDIT_ROLES: UserRole[] = [
+  "ROLE_NURSE",
+  "ROLE_DOCTOR",
+  "ROLE_ADMIN",
+];
 
 @Injectable({ providedIn: "root" })
 export class AuditStore {
@@ -32,8 +38,7 @@ export class AuditStore {
   }
 
   register(action: AuditAction, description: string): void {
-    // Backend restricts audit writes to administrators.
-    if (!this.authStore.hasAnyRole(["ROLE_ADMIN"])) return;
+    if (!this.authStore.hasAnyRole(CLINICAL_AUDIT_ROLES)) return;
     const context = this.resolveAuditContext(action);
 
     const request = {
@@ -49,8 +54,16 @@ export class AuditStore {
       },
     };
 
-    this.api.create(request).subscribe((created) => {
-      this._logs.update((list) => [AuditAssembler.toEntity(created), ...list]);
+    this.api.create(request).subscribe({
+      next: (created) => {
+        this._logs.update((list) => [
+          AuditAssembler.toEntity(created),
+          ...list,
+        ]);
+      },
+      // Audit persistence must not interrupt the clinical operation that
+      // originated the entry. The backend remains the source of truth.
+      error: () => undefined,
     });
   }
 
