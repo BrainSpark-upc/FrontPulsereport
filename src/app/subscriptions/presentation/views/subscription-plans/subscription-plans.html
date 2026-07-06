@@ -5,6 +5,30 @@
     <p>{{ 'subscriptions.subtitle' | translate }}</p>
   </header>
 
+  @if (activatedPlan(); as plan) {
+  <div class="activation-banner" role="status">
+    <span>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m5 12 4 4L19 6" />
+      </svg>
+    </span>
+    <div>
+      <strong>{{ 'subscriptions.activationTitle' | translate }}</strong>
+      <p>
+        {{ plan.nameKey | translate }} · {{ 'subscriptions.activationText' |
+        translate }}
+      </p>
+    </div>
+    <button
+      type="button"
+      [attr.aria-label]="'common.close' | translate"
+      (click)="activatedPlan.set(null)"
+    >
+      &times;
+    </button>
+  </div>
+  }
+
   <div class="plan-grid">
     @for (plan of subscriptionStore.plans(); track plan.id) {
     <article
@@ -29,8 +53,8 @@
       </div>
 
       <p class="plan-seats">
-        {{ 'subscriptions.upTo' | translate }} {{ plan.maxSeats }}
-        {{ 'subscriptions.seats' | translate }}
+        {{ 'subscriptions.upTo' | translate }} {{ plan.maxSeats }} {{
+        'subscriptions.seats' | translate }}
       </p>
 
       <ul class="plan-features">
@@ -56,11 +80,7 @@
         {{ 'subscriptions.currentPlan' | translate }}
       </button>
       } @else {
-      <button
-        class="plan-action"
-        type="button"
-        (click)="choosePlan(plan.id)"
-      >
+      <button class="plan-action" type="button" (click)="choosePlan(plan)">
         {{ 'subscriptions.choosePlan' | translate }}
       </button>
       }
@@ -70,3 +90,11 @@
 
   <p class="subscriptions-note">{{ 'subscriptions.note' | translate }}</p>
 </section>
+
+@if (selectedPlan(); as plan) {
+<app-payment-checkout
+  [plan]="plan"
+  (closed)="closeCheckout()"
+  (completed)="completePayment($event)"
+/>
+}
