@@ -1,8 +1,12 @@
-import { Component, inject, OnInit, signal } from "@angular/core";
+import { Component, HostListener, inject, OnInit, signal } from "@angular/core";
 import { DatePipe } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { ReportStore } from "../../../application/report.store";
-import { ReportType } from "../../../domain/model/report.entity";
+import {
+  Report,
+  ReportSummary,
+  ReportType,
+} from "../../../domain/model/report.entity";
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 
 @Component({
@@ -18,6 +22,7 @@ export class ReportListComponent implements OnInit {
 
   showForm = signal(false);
   errorMessage = signal<string | null>(null);
+  selectedReport = signal<Report | null>(null);
 
   types = Object.values(ReportType);
 
@@ -47,8 +52,41 @@ export class ReportListComponent implements OnInit {
     this.showForm.set(false);
   }
 
-  download(reportTitle: string): void {
-    alert(`${this.translate.instant("reports.prepared")}: ${reportTitle}`);
+  openDetail(report: Report): void {
+    this.selectedReport.set(report);
+  }
+
+  closeDetail(): void {
+    this.selectedReport.set(null);
+  }
+
+  reportTone(report: Report): "critical" | "attention" | "stable" {
+    const summary = report.summary;
+    if (summary?.criticalAlerts) return "critical";
+    if (summary?.activeAlerts) return "attention";
+    return "stable";
+  }
+
+  reportToneKey(report: Report): string {
+    const tone = this.reportTone(report);
+    if (tone === "critical") return "reports.detail.critical";
+    if (tone === "attention") return "reports.detail.attention";
+    return "reports.detail.stable";
+  }
+
+  activityTotal(summary: ReportSummary): number {
+    return (
+      summary.vitalSigns +
+      summary.clinicalEvents +
+      summary.sbarTransfers +
+      summary.activeAlerts +
+      summary.auditLogs
+    );
+  }
+
+  @HostListener("document:keydown.escape")
+  closeDetailOnEscape(): void {
+    this.closeDetail();
   }
 
   private emptyForm() {
