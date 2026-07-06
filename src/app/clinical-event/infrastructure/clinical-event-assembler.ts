@@ -1,39 +1,60 @@
-﻿import {
+import {
   ClinicalEvent,
   ClinicalEventType,
   ClinicalEventSeverity,
 } from "../domain/model/clinical-event.entity";
 import { ClinicalEventResponse } from "./clinical-event-response";
-import { RegisterClinicalEventCommand } from "../domain/model/register-clinical-event.command";
 import { RegisterClinicalEventRequest } from "./register-clinical-event.request";
 
 export class ClinicalEventAssembler {
-  static toEntity(r: ClinicalEventResponse): ClinicalEvent {
+  static toEntity(
+    response: ClinicalEventResponse,
+    patientName: string,
+  ): ClinicalEvent {
     return new ClinicalEvent(
-      r.id,
-      r.patientId,
-      r.patientName,
-      r.nurseId,
-      r.nurseName,
-      r.eventType as ClinicalEventType,
-      r.severity as ClinicalEventSeverity,
-      r.title,
-      r.description,
-      new Date(r.occurredAt),
+      String(response.id),
+      String(response.patientId),
+      patientName,
+      response.registeredBy,
+      response.registeredBy,
+      ClinicalEventType[response.eventType as keyof typeof ClinicalEventType] ??
+        ClinicalEventType.OBSERVATION,
+      ClinicalEventSeverity[
+        response.severity as keyof typeof ClinicalEventSeverity
+      ] ?? ClinicalEventSeverity.LOW,
+      response.title,
+      response.description,
+      new Date(response.occurredAt),
     );
   }
-  static toEntityList(responses: ClinicalEventResponse[]): ClinicalEvent[] {
-    return responses.map((r) => this.toEntity(r));
-  }
-  static toRequest(
-    cmd: RegisterClinicalEventCommand,
-  ): RegisterClinicalEventRequest {
+
+  static toRequest(form: {
+    patientId: string;
+    eventType: string;
+    severity: string;
+    title: string;
+    description: string;
+  }): RegisterClinicalEventRequest {
     return {
-      patientId: cmd.patientId,
-      eventType: cmd.eventType,
-      severity: cmd.severity,
-      title: cmd.title,
-      description: cmd.description,
+      patientId: Number(form.patientId),
+      eventType: ClinicalEventAssembler.typeKey(form.eventType),
+      severity: ClinicalEventAssembler.severityKey(form.severity),
+      title: form.title,
+      description: form.description,
     };
+  }
+
+  private static typeKey(value: string): string {
+    return (
+      Object.entries(ClinicalEventType).find(([, v]) => v === value)?.[0] ??
+      "OBSERVATION"
+    );
+  }
+
+  private static severityKey(value: string): string {
+    return (
+      Object.entries(ClinicalEventSeverity).find(([, v]) => v === value)?.[0] ??
+      "LOW"
+    );
   }
 }

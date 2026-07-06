@@ -9,7 +9,9 @@
       {{ 'events.register' | translate }}
     </button>
   </div>
-  @if (showForm()) {
+  @if (store.errorKey()) {
+  <div class="form-error" role="alert">{{ store.errorKey()! | translate }}</div>
+  } @if (showForm()) {
   <div class="card form-card">
     <div class="form-title">
       <h3>{{ 'events.formTitle' | translate }}</h3>

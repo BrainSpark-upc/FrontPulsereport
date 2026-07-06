@@ -390,5 +390,7 @@
   "users.errors.selfChange": "No puedes cambiar tu propio rol.",
   "users.errors.notFound": "El usuario o rol ya no existe.",
   "users.errors.network": "No se pudo conectar con el servidor.",
-  "users.errors.generic": "Ocurrió un error al actualizar el rol."
+  "users.errors.generic": "Ocurrió un error al actualizar el rol.",
+  "events.errors.load": "No se pudieron cargar los eventos clínicos.",
+  "events.errors.save": "No se pudo registrar el evento clínico. Inténtalo de nuevo."
 }

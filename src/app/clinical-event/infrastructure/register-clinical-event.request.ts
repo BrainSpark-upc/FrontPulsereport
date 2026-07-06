@@ -1,5 +1,5 @@
-﻿export interface RegisterClinicalEventRequest {
-  patientId: string;
+export interface RegisterClinicalEventRequest {
+  patientId: number;
   eventType: string;
   severity: string;
   title: string;

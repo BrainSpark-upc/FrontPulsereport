@@ -390,5 +390,7 @@
   "users.errors.selfChange": "You cannot change your own role.",
   "users.errors.notFound": "The user or role no longer exists.",
   "users.errors.network": "Could not reach the server.",
-  "users.errors.generic": "An error occurred while updating the role."
+  "users.errors.generic": "An error occurred while updating the role.",
+  "events.errors.load": "Clinical events could not be loaded.",
+  "events.errors.save": "The clinical event could not be registered. Please try again."
 }
