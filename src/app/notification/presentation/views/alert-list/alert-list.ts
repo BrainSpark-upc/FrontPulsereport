@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from "@angular/core";
+import { Component, computed, inject, OnInit, signal } from "@angular/core";
 import { DatePipe } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { NotificationStore } from "../../../application/notification.store";
@@ -9,6 +9,7 @@ import {
   AlertType,
 } from "../../../domain/model/alert.entity";
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
+import { AuthStore } from "@iam/application/auth.store";
 
 @Component({
   selector: "app-alert-list",
@@ -20,11 +21,15 @@ import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 export class AlertListComponent implements OnInit {
   protected store = inject(NotificationStore);
   protected patientStore = inject(PatientStore);
+  protected authStore = inject(AuthStore);
   private translate = inject(TranslateService);
 
   protected readonly AlertStatus = AlertStatus;
   protected readonly AlertSeverity = AlertSeverity;
   protected readonly AlertType = AlertType;
+  protected readonly canCloseAlerts = computed(() =>
+    this.authStore.hasAnyRole(["ROLE_DOCTOR", "ROLE_ADMIN"]),
+  );
 
   selectedFilter = signal<"Todas" | "Críticas" | "Moderadas">("Todas");
   showForm = signal(false);
@@ -38,6 +43,7 @@ export class AlertListComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    this.store.clearActionError();
     this.patientStore.loadPatients();
     this.store.loadAlerts();
   }
@@ -84,10 +90,12 @@ export class AlertListComponent implements OnInit {
   }
 
   acknowledge(id: string): void {
+    if (this.store.isActionPending(id)) return;
     this.store.acknowledge(id);
   }
 
   resolve(id: string): void {
+    if (!this.canCloseAlerts() || this.store.isActionPending(id)) return;
     this.store.resolve(id);
   }
 

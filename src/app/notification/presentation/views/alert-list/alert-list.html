@@ -16,7 +16,18 @@
     </div>
   </div>
 
-  @if (showForm()) {
+  @if (store.actionErrorKey()) {
+  <div class="action-error" role="alert">
+    <span>{{ store.actionErrorKey()! | translate }}</span>
+    <button
+      type="button"
+      [attr.aria-label]="'common.close' | translate"
+      (click)="store.clearActionError()"
+    >
+      &times;
+    </button>
+  </div>
+  } @if (showForm()) {
   <div class="card create-alert-card">
     <div class="form-title">
       <h3>{{ 'alerts.formTitle' | translate }}</h3>
@@ -176,14 +187,28 @@
 
         <div class="button-row">
           @if (a.status === AlertStatus.OPEN) {
-          <button class="btn-sm" (click)="acknowledge(a.id)">
-            {{ 'alerts.acknowledge' | translate }}
+          <button
+            class="btn-sm"
+            [disabled]="store.isActionPending(a.id)"
+            (click)="acknowledge(a.id)"
+          >
+            {{ (store.isActionPending(a.id) ? 'alerts.processing' :
+            'alerts.acknowledge') | translate }}
           </button>
-          } @if (a.status === AlertStatus.ATTENDED) {
-          <button class="btn-sm resolve" (click)="resolve(a.id)">
-            {{ 'alerts.resolve' | translate }}
+          } @if (a.status === AlertStatus.ATTENDED) { @if (canCloseAlerts()) {
+          <button
+            class="btn-sm resolve"
+            [disabled]="store.isActionPending(a.id)"
+            (click)="resolve(a.id)"
+          >
+            {{ (store.isActionPending(a.id) ? 'alerts.processing' :
+            'alerts.resolve') | translate }}
           </button>
-          }
+          } @else {
+          <span class="action-hint">
+            {{ 'alerts.awaitingMedicalClosure' | translate }}
+          </span>
+          } }
         </div>
       </div>
     </div>
